@@ -1,7 +1,7 @@
 package app.daos;
 
 
-import app.entities.User;
+import app.entities.AppUser;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.AllArgsConstructor;
@@ -9,63 +9,63 @@ import lombok.AllArgsConstructor;
 import java.util.Set;
 
 @AllArgsConstructor
-public class UserDAO implements IDAO<User, Integer> {
+public class AppUserDAO implements IDAO<AppUser, Integer> {
     EntityManagerFactory emf;
 
 
     @Override
-    public User create(User user) {
+    public AppUser create(AppUser appUser) {
         EntityManager em = emf.createEntityManager();
 
         em.getTransaction().begin();
-        em.persist(user);
+        em.persist(appUser);
         em.getTransaction().commit();
         em.close();
-        return user;
+        return appUser;
     }
 
     @Override
-    public User getById(Integer id) {
+    public AppUser getById(Integer id) {
         EntityManager em = emf.createEntityManager();
 
         em.getTransaction().begin();
-        User user = em.find(User.class, id);
+        AppUser appUser = em.find(AppUser.class, id);
         em.getTransaction().commit();
         em.close();
-        return user;
+        return appUser;
     }
 
     @Override
-    public Set<User> getAll() {
+    public Set<AppUser> getAll() {
         EntityManager em = emf.createEntityManager();
 
         em.getTransaction().begin();
-        Set<User> allUsers = (Set<User>) em.createQuery("SELECT s FROM User s ", User.class)
+        Set<AppUser> allAppUsers = (Set<AppUser>) em.createQuery("SELECT u FROM AppUser u ", AppUser.class)
                 .getResultList();
         em.getTransaction().commit();
         em.close();
 
-        return allUsers;
+        return allAppUsers;
     }
 
     @Override
-    public User update(User user) {
+    public AppUser update(AppUser appUser) {
         EntityManager em = emf.createEntityManager();
 
         em.getTransaction().begin();
-        em.merge(user);
+        em.merge(appUser);
         em.getTransaction().commit();
         em.close();
 
-        return user;
+        return appUser;
     }
 
     @Override
-    public void delete(User user) {
+    public void delete(AppUser appUser) {
         EntityManager em = emf.createEntityManager();
 
         em.getTransaction().begin();
-        em.remove(user);
+        em.remove(appUser);
         em.getTransaction().commit();
         em.close();
     }

@@ -1,70 +1,71 @@
 package app.daos;
 
-import app.entities.Course;
-import app.entities.Student;
+
+import app.entities.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.AllArgsConstructor;
 
 import java.util.Set;
+
 @AllArgsConstructor
-public class StudentDAO implements IDAO<Student, Integer> {
+public class UserDAO implements IDAO<User, Integer> {
     EntityManagerFactory emf;
 
 
     @Override
-    public Student create(Student student) {
+    public User create(User user) {
         EntityManager em = emf.createEntityManager();
 
         em.getTransaction().begin();
-        em.persist(student);
+        em.persist(user);
         em.getTransaction().commit();
         em.close();
-        return student;
+        return user;
     }
 
     @Override
-    public Student getById(Integer id) {
+    public User getById(Integer id) {
         EntityManager em = emf.createEntityManager();
 
         em.getTransaction().begin();
-        Student student = em.find(Student.class, id);
+        User user = em.find(User.class, id);
         em.getTransaction().commit();
         em.close();
-        return student;
+        return user;
     }
 
     @Override
-    public Set<Student> getAll() {
+    public Set<User> getAll() {
         EntityManager em = emf.createEntityManager();
 
         em.getTransaction().begin();
-        Set<Student> allStudents = (Set<Student>) em.createQuery("SELECT s FROM Student s ", Student.class)
+        Set<User> allUsers = (Set<User>) em.createQuery("SELECT s FROM User s ", User.class)
                 .getResultList();
         em.getTransaction().commit();
         em.close();
 
-        return allStudents;
+        return allUsers;
     }
 
     @Override
-    public Student update(Student student) {
+    public User update(User user) {
         EntityManager em = emf.createEntityManager();
 
         em.getTransaction().begin();
-        em.merge(student);
+        em.merge(user);
         em.getTransaction().commit();
         em.close();
 
-        return student;
+        return user;
     }
 
     @Override
-    public void delete(Student student) {
+    public void delete(User user) {
         EntityManager em = emf.createEntityManager();
 
         em.getTransaction().begin();
-        em.remove(student);
+        em.remove(user);
         em.getTransaction().commit();
         em.close();
     }

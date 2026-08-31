@@ -4,6 +4,7 @@ package app.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -18,10 +19,11 @@ public class Chapter {
     @Id
     @GeneratedValue
     int chapterId;
+    int userId;
     String title;
     String subtitle;
-    Date startDate;
-    Date endDate;
+    LocalDate startDate;
+    LocalDate endDate;
 
 
     // RELATIONS

@@ -68,18 +68,9 @@ Atlas is being developed as a full-stack application.
 
 ## ✦ Project Status
 
-🚧 **Atlas is currently under active development.**
+ **Atlas is currently under active development.**
 
 The application is being developed incrementally, with the frontend and backend being built and connected as the project evolves.
 
 Features and architecture may therefore change as development continues.
 
----
-
-## ✦ Design Philosophy
-
-Atlas aims for a visual style that is **clean, calm, modern, and personal**.
-
-The interface takes inspiration from editorial layouts, Japanese-inspired minimalism, and modern data visualisation. The design is intended to make large amounts of personal information feel organised without making the application feel clinical or overwhelming.
-
-The goal is not simply to store information, but to make **exploring your own life feel meaningful**.

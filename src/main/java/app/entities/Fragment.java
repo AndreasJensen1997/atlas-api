@@ -1,9 +1,6 @@
 package app.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -28,6 +25,7 @@ public class Fragment {
 
     // M:1
     @ManyToOne
+    @JoinColumn(name = "user_id")
     @Setter
     AppUser appUser;
 

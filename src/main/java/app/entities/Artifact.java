@@ -17,13 +17,14 @@ public class Artifact {
 
     @Id
     @GeneratedValue
-    Integer fragment_id;
+    Integer fragmentId;
     String title;
     String subTitle;
     LocalDate createdAt;
 
 
     @ManyToOne
+    @JoinColumn(name = "user_id")
     @Setter
     AppUser appUser;
 

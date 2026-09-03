@@ -32,11 +32,12 @@ public class Story {
     Chapter chapter;
 
 
-    // 1:M
-    @OneToMany(mappedBy = "mention")
-    @Setter
-   private Set<Mention> mentions = new HashSet<>();
 
+    // 1:M
+//    @OneToMany(mappedBy = "mention")
+//    @Setter
+//   private Set<Mention> mentions = new HashSet<>();
+//
 
 
 

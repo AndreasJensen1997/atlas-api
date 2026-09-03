@@ -26,11 +26,10 @@ public class Chapter {
 
     // ===== RELATIONS =====
 
-    // M:1
     @ManyToOne
+    @JoinColumn(name = "user_id")
     @Setter
     AppUser appUser;
-
 
     // 1:M
     @OneToMany(mappedBy = "chapter")

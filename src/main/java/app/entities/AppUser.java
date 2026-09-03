@@ -28,31 +28,31 @@ public class AppUser {
     // RELATIONS
 
     // 1:M
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "appUser")
     @Setter
     private Set<Chapter> chapters = new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "appUser")
     @Setter
     private Set<Artifact> artifacts = new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "appUser")
     @Setter
     private Set<Person> people = new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "appUser")
     @Setter
     private Set<Place> places = new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "appUser")
     @Setter
     private Set<List> lists = new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "appUser")
     @Setter
     private Set<TimeCapsule> timeCapsules = new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "appUser")
     @Setter
     private Set<Fragment> fragments = new HashSet<>();
 

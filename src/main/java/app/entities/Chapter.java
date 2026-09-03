@@ -1,11 +1,10 @@
 package app.entities;
 
-
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -18,19 +17,23 @@ public class Chapter {
 
     @Id
     @GeneratedValue
-    int chapterId;
-    int userId;
+    Integer chapterId;
     String title;
     String subtitle;
     LocalDate startDate;
     LocalDate endDate;
 
 
-    // RELATIONS
+    // ===== RELATIONS =====
 
     // M:1
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @Setter
     AppUser appUser;
+
+
+    // 1:M
+    @OneToMany(mappedBy = "chapter")
+    private Set<Story> stories = new HashSet<>();
 
 }

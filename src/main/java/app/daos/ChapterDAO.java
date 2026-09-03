@@ -1,8 +1,10 @@
 package app.daos;
 
 import app.entities.Chapter;
+import app.exceptions.ApiException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.PersistenceException;
 import lombok.AllArgsConstructor;
 
 import java.util.Set;
@@ -62,13 +64,32 @@ public class ChapterDAO implements IDAO<Chapter, Integer> {
     }
 
     @Override
-    public void delete(Chapter chapter) {
-        EntityManager em = emf.createEntityManager();
-
-        em.getTransaction().begin();
-        em.remove(chapter);
-        em.getTransaction().commit();
-        em.close();
-
+    public boolean delete(Integer id) {
+        if (id == null) {
+            throw new ApiException(400, "Study id is required");
+        }
+        try (EntityManager em = emf.createEntityManager()){
+            em.getTransaction().begin();
+            try {
+                Chapter studyToRemove = em.find(Chapter.class, id);
+                if (studyToRemove != null) {
+                    em.remove(studyToRemove);
+                } else {
+                    throw new ApiException(404, "Study not found");
+                }
+                em.getTransaction().commit();
+            }  catch (PersistenceException e) {
+                if (em.getTransaction().isActive()) {
+                    em.getTransaction().rollback();
+                }
+                throw new ApiException(500, "Delete study failed: " + e.getMessage());
+            } catch (RuntimeException e) {
+                if (em.getTransaction().isActive()) {
+                    em.getTransaction().rollback();
+                }
+                throw e;
+            }
+        }
+        return true;
     }
 }

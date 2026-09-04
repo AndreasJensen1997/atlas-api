@@ -3,12 +3,9 @@ package app.daos;
 import app.config.HibernateTestConfig;
 import app.entities.AppUser;
 import app.exceptions.ApiException;
-import app.testUtils.AppUserTestPopulator;
+import app.testUtils.TestPopulator;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.*;
-
-import java.time.LocalDate;
-import java.util.Map;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -19,13 +16,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class AppUserDAOTest {
 
     private final EntityManagerFactory emf = HibernateTestConfig.getEntityManagerFactory();
-
     private AppUserDAO appUserDAO;
-    private Map<String, AppUser> seeded;
+    private TestPopulator.SeededData seeded;
 
     @BeforeEach
-    void beforeEach(){
-        seeded = AppUserTestPopulator.populate(emf);
+    void setUp() {
+        seeded = TestPopulator.populate(emf);
         appUserDAO = new AppUserDAO(emf);
     }
 
@@ -36,21 +32,23 @@ class AppUserDAOTest {
 
     @Test
     void create() {
-        AppUser user = AppUser.builder().name("andreas").email("andreas.jensen@outlook.dk").password("1234").build();
+        AppUser newUser = AppUser.builder()
+                .name("Sofie")
+                .email("sofie.jensen@outlook.dk")
+                .password("1234")
+                .build();
 
-        AppUser createdUser = appUserDAO.create(user);
+        AppUser created = appUserDAO.create(newUser);
 
-        assertThat(createdUser.getUserId(), notNullValue());
-        AppUser fetched = appUserDAO.getById(createdUser.getUserId());
-
-
-        assertThat(fetched.getName(), is("andreas"));
-        assertThat(fetched.getEmail(), is("andreas.jensen@outlook.dk"));
+        assertThat(created.getUserId(), notNullValue());
+        AppUser fetched = appUserDAO.getById(created.getUserId());
+        assertThat(fetched.getName(), is("Sofie"));
+        assertThat(fetched.getEmail(), is("sofie.jensen@outlook.dk"));
     }
 
     @Test
     void getById() {
-        AppUser seed = seeded.get("user1");
+        AppUser seed = seeded.user1();
         AppUser fetched = appUserDAO.getById(seed.getUserId());
         assertThat(fetched.getUserId(), is(seed.getUserId()));
         assertThat(fetched.getName(), is(seed.getName()));
@@ -60,13 +58,12 @@ class AppUserDAOTest {
     void getAll() {
         Set<AppUser> all = appUserDAO.getAll();
         assertThat(all, hasSize(3));
-        assertThat(all, containsInAnyOrder(seeded.get("user1"), seeded.get("user2"), seeded.get("user3")));
+        assertThat(all, containsInAnyOrder(seeded.user1(), seeded.user2(), seeded.user3()));
     }
 
     @Test
     void update() {
-        AppUser seed = seeded.get("user2");
-        LocalDate priorUpdatedAt = LocalDate.now().minusDays(2);
+        AppUser seed = seeded.user2();
         AppUser updated = AppUser.builder()
                 .userId(seed.getUserId())
                 .name("Updated name")
@@ -80,12 +77,11 @@ class AppUserDAOTest {
         assertThat(result.getName(), is("Updated name"));
         assertThat(result.getEmail(), is(seed.getEmail()));
         assertThat(result.getPassword(), is(seed.getPassword()));
-
     }
 
     @Test
     void delete() {
-        AppUser seed = seeded.get("user1");
+        AppUser seed = seeded.user1();
 
         boolean deleted = appUserDAO.delete(seed.getUserId());
 

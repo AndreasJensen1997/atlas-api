@@ -35,12 +35,15 @@ class ChapterDAOTest {
 
     @Test
     void create() {
+        AppUser existingUser = seeded.user1();
+
         Chapter newChapter = Chapter.builder()
                 .title("China")
                 .subtitle("My two year exchange in china")
                 .content("This will cover my years in china")
                 .startDate(LocalDate.of(2012,1,1))
                 .endDate(LocalDate.of(2014,1,1))
+                .appUser(existingUser)
                 .build();
 
         Chapter created = chapterDAO.create(newChapter);
@@ -56,19 +59,19 @@ class ChapterDAOTest {
 
     @Test
     void getById() {
-        AppUser seed = seeded.user1();
-        AppUser fetched = appUserDAO.getById(seed.getUserId());
-        assertThat(fetched.getUserId(), is(seed.getUserId()));
-        assertThat(fetched.getName(), is(seed.getName()));
+        Chapter seed = seeded.chapter1();
+        Chapter fetched = chapterDAO.getById(seed.getChapterId());
+        assertThat(fetched.getChapterId(), is(seed.getChapterId()));
+        assertThat(fetched.getTitle(), is(seed.getTitle()));
     }
-//
-//    @Test
-//    void getAll() {
-//        Set<AppUser> all = appUserDAO.getAll();
-//        assertThat(all, hasSize(3));
-//        assertThat(all, containsInAnyOrder(seeded.user1(), seeded.user2(), seeded.user3()));
-//    }
-//
+
+    @Test
+    void getAll() {
+        Set<Chapter> all = chapterDAO.getAll();
+        assertThat(all, hasSize(3));
+        assertThat(all, containsInAnyOrder(seeded.chapter1(), seeded.chapter2(), seeded.chapter3()));
+    }
+
 //    @Test
 //    void update() {
 //        AppUser seed = seeded.user2();

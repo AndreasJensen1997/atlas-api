@@ -15,7 +15,9 @@ public final class TestPopulator {
             AppUser user1,
             AppUser user2,
             AppUser user3,
-            Chapter chapter1
+            Chapter chapter1,
+            Chapter chapter2,
+            Chapter chapter3
     ) {}
 
     public static SeededData populate(EntityManagerFactory emf) {
@@ -40,13 +42,17 @@ public final class TestPopulator {
             em.persist(user3);
 
             // If Chapter requires a user or artifact, link it here
-            Chapter chapter1 = Chapter.builder().title("Years in china ").build();
+            Chapter chapter1 = Chapter.builder().title("Years in china ").subtitle("My exchange years in china").appUser(user1).build();
+            Chapter chapter2 = Chapter.builder().title("Early life ").subtitle("from crawling to walking").appUser(user2).build();
+            Chapter chapter3 = Chapter.builder().title("University").subtitle("how i spent my 3 years at uni").appUser(user3).build();
             em.persist(chapter1);
+            em.persist(chapter2);
+            em.persist(chapter3);
 
             em.getTransaction().commit();
 
             // Return everything neatly packaged
-            return new SeededData(user1, user2, user3, chapter1);
+            return new SeededData(user1, user2, user3, chapter1, chapter2, chapter3);
         }
     }
 }

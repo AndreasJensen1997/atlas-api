@@ -25,8 +25,8 @@ public class TimeCapsule {
     // RELATIONS
 
     // M:1
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
     @Setter
     AppUser appUser;
 

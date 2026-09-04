@@ -13,8 +13,8 @@ public class List {
 
 
 
-    @ManyToOne
-    @JoinColumn(name = "user_id") // Explicitly names the foreign key column in the artifact table
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
     @Setter
     AppUser appUser;
 }

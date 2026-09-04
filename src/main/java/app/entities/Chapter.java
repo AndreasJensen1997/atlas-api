@@ -30,8 +30,8 @@ public class Chapter {
 
     // ===== RELATIONS =====
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
     @Setter
     AppUser appUser;
 

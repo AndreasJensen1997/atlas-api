@@ -23,9 +23,8 @@ public class Artifact {
     LocalDate createdAt;
 
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
     @Setter
     AppUser appUser;
-
 }

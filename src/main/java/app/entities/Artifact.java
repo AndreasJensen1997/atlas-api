@@ -46,7 +46,6 @@ public class Artifact implements LinkableEntity {
     private Set<Mention> mentions = new HashSet<>();
 
 
-
     @Override
     public Integer getId() {
         return artifactId;

@@ -25,7 +25,6 @@ public class Main {
         chapterDAO.create(chapter);
 
 
-
         emf.close();
 
 

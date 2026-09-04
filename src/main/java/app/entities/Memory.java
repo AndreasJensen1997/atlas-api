@@ -5,8 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
+
 
 @Entity
 @NoArgsConstructor
@@ -29,19 +28,10 @@ public class Memory implements LinkableEntity {
     // RELATIONS
 
     // M:1
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
     @Setter
-    Chapter chapter;
-
-    @ManyToOne
-    @Setter
-    Chapter Story;
-
-
-    // 1:M
-    @OneToMany(mappedBy = "artifact", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
-    private Set<Mention> mentions = new HashSet<>();
+    private AppUser appUser;
 
 
     @Override

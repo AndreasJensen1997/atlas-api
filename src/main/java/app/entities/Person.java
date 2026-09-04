@@ -17,6 +17,7 @@ public class Person {
     @GeneratedValue
     Integer personId;
     String name;
+    String content;
     String relation;
 
     // RELATIONS

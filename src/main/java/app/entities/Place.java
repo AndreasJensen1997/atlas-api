@@ -16,6 +16,7 @@ public class Place {
     @GeneratedValue
     Integer placeId;
     private String name;
+    String content;
     // x-cordinate
     // y-cordinate
 

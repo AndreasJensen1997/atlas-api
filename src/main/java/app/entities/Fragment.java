@@ -17,6 +17,7 @@ public class Fragment {
     Integer fragmentId;
     private String title;
     private String subTitle;
+    String content;
     LocalDate createdAt;
     int wordCount;
 

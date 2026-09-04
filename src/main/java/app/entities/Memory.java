@@ -22,6 +22,7 @@ public class Memory {
     Integer memory_id;
     String title;
     String subTitle;
+    String content;
     LocalDate date;
 
 

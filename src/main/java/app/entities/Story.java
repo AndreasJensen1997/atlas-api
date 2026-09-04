@@ -21,6 +21,7 @@ public class Story {
     Integer storyId;
     String title;
     String subTitle;
+    String content;
     LocalDate startDate;
     LocalDate endDate;
 

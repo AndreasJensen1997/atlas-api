@@ -15,8 +15,7 @@ import java.util.Set;
 @Getter
 @ToString
 @Builder
-public class Chapter {
-
+public class Chapter implements LinkableEntity {
 
     @Id
     @GeneratedValue
@@ -29,7 +28,7 @@ public class Chapter {
 
 
     // ===== RELATIONS =====
-
+    // M:1
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @Setter
@@ -38,6 +37,12 @@ public class Chapter {
     // 1:M
     @OneToMany(mappedBy = "chapter")
     private Set<Story> stories = new HashSet<>();
+
+
+    @Override
+    public Integer getId() {
+        return chapterId;
+    }
 
 
     @Override

@@ -14,12 +14,12 @@ import java.util.Set;
 @Getter
 @ToString
 @Builder
-public class Memory {
+public class Memory implements LinkableEntity {
 
 
     @Id
     @GeneratedValue
-    Integer memory_id;
+    Integer memoryId;
     String title;
     String subTitle;
     String content;
@@ -38,12 +38,16 @@ public class Memory {
     Chapter Story;
 
 
-
     // 1:M
-//    @OneToMany (mappedBy = "memory")
-//    @Setter
-//    private Set<Mention> mentions = new HashSet<>();
-//
+    @OneToMany(mappedBy = "artifact", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    private Set<Mention> mentions = new HashSet<>();
+
+
+    @Override
+    public Integer getId() {
+        return memoryId;
+    }
 
 
 }

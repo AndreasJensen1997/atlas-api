@@ -14,7 +14,7 @@ import java.util.Set;
 @Getter
 @ToString
 @Builder
-public class Story {
+public class Story implements LinkableEntity {
 
     @Id
     @GeneratedValue
@@ -33,12 +33,17 @@ public class Story {
     Chapter chapter;
 
 
-
     // 1:M
-//    @OneToMany(mappedBy = "mention")
-//    @Setter
-//   private Set<Mention> mentions = new HashSet<>();
-//
+    @OneToMany(mappedBy = "artifact", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ToString.Exclude
+    private Set<Mention> mentions = new HashSet<>();
+
+
+
+    @Override
+    public Integer getId() {
+        return storyId;
+    }
 
 
 

@@ -42,6 +42,8 @@ class AppUserDAOTest {
 
         assertThat(createdUser.getUserId(), notNullValue());
         AppUser fetched = appUserDAO.getById(createdUser.getUserId());
+
+
         assertThat(fetched.getName(), is("andreas"));
         assertThat(fetched.getEmail(), is("andreas.jensen@outlook.dk"));
     }

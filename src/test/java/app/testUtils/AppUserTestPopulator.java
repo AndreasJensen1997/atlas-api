@@ -17,10 +17,9 @@ public final class AppUserTestPopulator {
         try (EntityManager em = emf.createEntityManager()) {
 
             em.getTransaction().begin();
-            LocalDate baseDate = LocalDate.of(2028,2,1);
             AppUser user1 = AppUser.builder().name("andreas").email("andreas.jensen@outlook.dk").password("1234").build();
-            AppUser user2 = AppUser.builder().name("andreas").email("andreas.jensen@outlook.dk").password("1234").build();
-            AppUser user3 = AppUser.builder().name("andreas").email("andreas.jensen@outlook.dk").password("1234").build();
+            AppUser user2 = AppUser.builder().name("morten").email("morten.jensen@outlook.dk").password("1234").build();
+            AppUser user3 = AppUser.builder().name("theis").email("theis.jensen@outlook.dk").password("1234").build();
 
 
             try {

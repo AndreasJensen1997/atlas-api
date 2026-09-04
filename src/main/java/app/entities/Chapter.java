@@ -20,6 +20,7 @@ public class Chapter {
     Integer chapterId;
     String title;
     String subtitle;
+    String content;
     LocalDate startDate;
     LocalDate endDate;
 

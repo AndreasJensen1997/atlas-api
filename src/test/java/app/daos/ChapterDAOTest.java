@@ -72,78 +72,99 @@ class ChapterDAOTest {
         assertThat(all, containsInAnyOrder(seeded.chapter1(), seeded.chapter2(), seeded.chapter3()));
     }
 
-//    @Test
-//    void update() {
-//        AppUser seed = seeded.user2();
-//        AppUser updated = AppUser.builder()
-//                .userId(seed.getUserId())
-//                .name("Updated name")
-//                .email(seed.getEmail())
-//                .password(seed.getPassword())
-//                .build();
-//
-//        AppUser result = appUserDAO.update(updated);
-//
-//        assertThat(result.getUserId(), is(seed.getUserId()));
-//        assertThat(result.getName(), is("Updated name"));
-//        assertThat(result.getEmail(), is(seed.getEmail()));
-//        assertThat(result.getPassword(), is(seed.getPassword()));
-//    }
-//
-//    @Test
-//    void delete() {
-//        AppUser seed = seeded.user1();
-//
-//        boolean deleted = appUserDAO.delete(seed.getUserId());
-//
-//        assertThat(deleted, is(true));
-//        assertThrows(ApiException.class, () -> appUserDAO.getById(seed.getUserId()));
-//    }
-//
-//    @Test
-//    void create_withNullStudy_throwsApiException() {
-//        ApiException ex = assertThrows(ApiException.class, () -> appUserDAO.create(null));
-//        assertThat(ex.getCode(), is(400));
-//    }
-//
-//    @Test
-//    void getById_withNullId_throwsApiException() {
-//        ApiException ex = assertThrows(ApiException.class, () -> appUserDAO.getById(null));
-//        assertThat(ex.getCode(), is(400));
-//    }
-//
-//    @Test
-//    void getById_withMissingId_throwsApiException() {
-//        ApiException ex = assertThrows(ApiException.class, () -> appUserDAO.getById(999_999));
-//        assertThat(ex.getCode(), is(404));
-//    }
-//
-//    @Test
-//    void update_withNullStudy_throwsApiException() {
-//        ApiException ex = assertThrows(ApiException.class, () -> appUserDAO.update(null));
-//        assertThat(ex.getCode(), is(400));
-//    }
-//
-//    @Test
-//    void update_withMissingId_throwsApiException() {
-//        AppUser missing = AppUser.builder()
-//                .userId(999_999)
-//                .name("Missing")
-//                .build();
-//
-//        ApiException ex = assertThrows(ApiException.class, () -> appUserDAO.update(missing));
-//        assertThat(ex.getCode(), is(404));
-//    }
-//
-//    @Test
-//    void delete_withNullId_throwsApiException() {
-//        ApiException ex = assertThrows(ApiException.class, () -> appUserDAO.delete(null));
-//        assertThat(ex.getCode(), is(400));
-//    }
-//
-//    @Test
-//    void delete_withMissingId_throwsApiException() {
-//        ApiException ex = assertThrows(ApiException.class, () -> appUserDAO.delete(999_999));
-//        assertThat(ex.getCode(), is(404));
-//    }
+   @Test
+   void getAllChaptersByUserId(){
+
+       Set<Chapter> all = chapterDAO.getAllChaptersByUserId(seeded.user1().getUserId());
+
+       assertThat(all, hasSize(1));
+       assertThat(all, containsInAnyOrder(seeded.chapter1()));
+       for (Chapter c : all) {
+           assertThat(c.getAppUser().getUserId(), is(seeded.user1().getUserId()));
+           System.out.println(c.getAppUser().getUserId() + "-" +  seeded.user1().getUserId());
+       }
+   }
+
+    @Test
+    void update() {
+        Chapter seed = seeded.chapter2();
+        AppUser newUser = seeded.user2();
+
+        Chapter updated = Chapter.builder()
+                .chapterId(seed.getChapterId())
+                .title("updated title")
+                .subtitle("updated subtitle")
+                .content("updated content")
+                .startDate(LocalDate.of(2004,1,1))
+                .endDate(LocalDate.of(2005,1,1))
+                .appUser(newUser)
+
+                .build();
+
+        Chapter result = chapterDAO.update(updated);
+
+        assertThat(result.getChapterId(), is(seed.getChapterId()));
+        assertThat(result.getTitle(), is("updated title"));
+        assertThat(result.getSubtitle(), is("updated subtitle"));
+        assertThat(result.getContent(), is("updated content"));
+        assertThat(result.getStartDate(), is(LocalDate.of(2004,1,1)));
+        assertThat(result.getEndDate(), is(LocalDate.of(2005,1,1)));
+    }
+
+    @Test
+    void delete() {
+        Chapter seed = seeded.chapter1();
+
+        boolean deleted = chapterDAO.delete(seed.getChapterId());
+
+        assertThat(deleted, is(true));
+        assertThrows(ApiException.class, () -> chapterDAO.getById(seed.getChapterId()));
+    }
+
+    @Test
+    void create_withNullStudy_throwsApiException() {
+        ApiException ex = assertThrows(ApiException.class, () -> chapterDAO.create(null));
+        assertThat(ex.getCode(), is(400));
+    }
+
+    @Test
+    void getById_withNullId_throwsApiException() {
+        ApiException ex = assertThrows(ApiException.class, () -> chapterDAO.getById(null));
+        assertThat(ex.getCode(), is(400));
+    }
+
+    @Test
+    void getById_withMissingId_throwsApiException() {
+        ApiException ex = assertThrows(ApiException.class, () -> chapterDAO.getById(999_999));
+        assertThat(ex.getCode(), is(404));
+    }
+
+    @Test
+    void update_withNullStudy_throwsApiException() {
+        ApiException ex = assertThrows(ApiException.class, () -> chapterDAO.update(null));
+        assertThat(ex.getCode(), is(400));
+    }
+
+    @Test
+    void update_withMissingId_throwsApiException() {
+        Chapter missing = Chapter.builder()
+                .chapterId(999_999)
+                .title("Missing")
+                .build();
+
+        ApiException ex = assertThrows(ApiException.class, () -> chapterDAO.update(missing));
+        assertThat(ex.getCode(), is(404));
+    }
+
+    @Test
+    void delete_withNullId_throwsApiException() {
+        ApiException ex = assertThrows(ApiException.class, () -> chapterDAO.delete(null));
+        assertThat(ex.getCode(), is(400));
+    }
+
+    @Test
+    void delete_withMissingId_throwsApiException() {
+        ApiException ex = assertThrows(ApiException.class, () -> chapterDAO.delete(999_999));
+        assertThat(ex.getCode(), is(404));
+    }
 }

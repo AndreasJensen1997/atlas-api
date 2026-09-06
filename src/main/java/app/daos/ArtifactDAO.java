@@ -2,13 +2,14 @@ package app.daos;
 
 import app.entities.AppUser;
 import app.entities.Artifact;
+import app.entities.Chapter;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
-public class ArtifactDAO extends AbstractDAO<Artifact, Integer> {
+public class ArtifactDAO extends UserOwnedDAO<Artifact, Integer> {
 
 
     public ArtifactDAO(EntityManagerFactory emf) {

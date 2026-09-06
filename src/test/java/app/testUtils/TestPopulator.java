@@ -1,9 +1,6 @@
 package app.testUtils;
 
-import app.entities.AppUser;
-import app.entities.Artifact;
-import app.entities.ArtifactType;
-import app.entities.Chapter;
+import app.entities.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.PersistenceException;
@@ -19,7 +16,8 @@ public final class TestPopulator {
             AppUser user1, AppUser user2, AppUser user3,
             Chapter chapter1, Chapter chapter2, Chapter chapter3,
             Artifact artifact1, Artifact artifact2, Artifact artifact3,
-            ArtifactType musicType,  ArtifactType objectType,ArtifactType vehicleType
+            ArtifactType musicType,  ArtifactType objectType,ArtifactType vehicleType,
+            Fragment fragment1, Fragment fragment2, Fragment fragment3
     ) {
     }
 
@@ -29,7 +27,7 @@ public final class TestPopulator {
 
             // Clear all tables including the new ones in reverse dependency order
             try {
-                em.createNativeQuery("TRUNCATE TABLE artifact, artifacttype, chapter, appuser RESTART IDENTITY CASCADE").executeUpdate();
+                em.createNativeQuery("TRUNCATE TABLE fragment,artifact, artifacttype, chapter, appuser RESTART IDENTITY CASCADE").executeUpdate();
             } catch (PersistenceException e) {
                 // Fallback if tables don't exist yet
             }
@@ -70,12 +68,22 @@ public final class TestPopulator {
             em.persist(artifact2);
             em.persist(artifact3);
 
+            // Fragments
+            Fragment fragment1 = Fragment.builder().title("idea for wedding speech").subTitle("Daniels wedding").content("talk about vacation in sweden").createdAt(LocalDate.of(2026,1,1)).appUser(user1).build();
+            Fragment fragment2 = Fragment.builder().title("book title idea").subTitle("book project").content("in the beginning").createdAt(LocalDate.of(2026,3,3)).appUser(user1).build();
+            Fragment fragment3 = Fragment.builder().title("dinner with jamie").subTitle("dinner date").content("remember to buy tomatoes").createdAt(LocalDate.of(2026,4,5)).appUser(user2).build();
+
+            em.persist(fragment1);
+            em.persist(fragment2);
+            em.persist(fragment3);
+
             em.getTransaction().commit();
 
             return new SeededData(user1, user2, user3,
                     chapter1, chapter2, chapter3,
                     artifact1, artifact2, artifact3,
-                    musicType,objectType,vehicleType);
+                    musicType,objectType,vehicleType,
+                    fragment1,fragment2,fragment3);
         }
     }
 }

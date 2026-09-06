@@ -3,9 +3,11 @@ package app.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDate;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -21,7 +23,7 @@ public class Artifact implements LinkableEntity {
     @GeneratedValue
     Integer artifactId;
     String title;
-    String subTitle;
+    String subtitle;
     String content;
     LocalDate createdAt;
 
@@ -44,6 +46,33 @@ public class Artifact implements LinkableEntity {
     @Override
     public Integer getId() {
         return artifactId;
+    }
+
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null)
+            return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer()
+                .getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer()
+                .getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass)
+            return false;
+        Artifact artifact = (Artifact) o;
+        return getArtifactId() != null && Objects.equals(getArtifactId(), artifact.getArtifactId());
+    }
+
+
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer()
+                .getPersistentClass()
+                .hashCode() : getClass().hashCode();
+
+
     }
 
 

@@ -29,31 +29,31 @@ public class AppUser {
     // RELATIONS
 
     // 1:M
-    @OneToMany(mappedBy = "appUser")
+    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter
     private Set<Chapter> chapters = new HashSet<>();
 
-    @OneToMany(mappedBy = "appUser")
+    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter
     private Set<Artifact> artifacts = new HashSet<>();
 
-    @OneToMany(mappedBy = "appUser")
+    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter
     private Set<Person> people = new HashSet<>();
 
-    @OneToMany(mappedBy = "appUser")
+    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter
     private Set<Place> places = new HashSet<>();
 
-    @OneToMany(mappedBy = "appUser")
+    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter
     private Set<List> lists = new HashSet<>();
 
-    @OneToMany(mappedBy = "appUser")
+    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter
     private Set<TimeCapsule> timeCapsules = new HashSet<>();
 
-    @OneToMany(mappedBy = "appUser")
+    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter
     private Set<Fragment> fragments = new HashSet<>();
 

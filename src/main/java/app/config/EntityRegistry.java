@@ -17,7 +17,8 @@ final class EntityRegistry {
         configuration.addAnnotatedClass(Fragment.class);
         configuration.addAnnotatedClass(List.class);
         configuration.addAnnotatedClass(Memory.class);
-//        configuration.addAnnotatedClass(Mention.class);
+        configuration.addAnnotatedClass(Mention.class);
+        configuration.addAnnotatedClass(ArtifactType.class);
         configuration.addAnnotatedClass(Person.class);
         configuration.addAnnotatedClass(Place.class);
         configuration.addAnnotatedClass(Story.class);

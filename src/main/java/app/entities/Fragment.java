@@ -39,4 +39,17 @@ public class Fragment implements LinkableEntity {
     }
 
 
+    // Automatically calculate word count before saving or updating
+    @PrePersist
+    @PreUpdate
+    public void calculateWordCount() {
+        if (content == null || content.trim().isEmpty()) {
+            this.wordCount = 0;
+        } else {
+            // Splits by whitespace to count words accurately
+            this.wordCount = content.trim().split("\\s+").length;
+        }
+    }
+
+
 }

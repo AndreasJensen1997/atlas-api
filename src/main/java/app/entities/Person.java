@@ -4,8 +4,6 @@ package app.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @NoArgsConstructor
@@ -31,10 +29,7 @@ public class Person implements LinkableEntity {
     @Setter
     AppUser appUser;
 
-    // 1:M
-    @OneToMany(mappedBy = "artifact", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
-    private Set<Mention> mentions = new HashSet<>();
+
 
 
 

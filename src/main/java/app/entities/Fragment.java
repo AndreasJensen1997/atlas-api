@@ -32,12 +32,6 @@ public class Fragment implements LinkableEntity {
     @Setter
     AppUser appUser;
 
-    // 1:M
-    @OneToMany(mappedBy = "artifact", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
-    private Set<Mention> mentions = new HashSet<>();
-
-
 
     @Override
     public Integer getId() {

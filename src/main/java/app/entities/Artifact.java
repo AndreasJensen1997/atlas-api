@@ -3,6 +3,7 @@ package app.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,7 +22,6 @@ public class Artifact implements LinkableEntity {
     Integer artifactId;
     String title;
     String subTitle;
-
     String content;
     LocalDate createdAt;
 
@@ -40,20 +40,11 @@ public class Artifact implements LinkableEntity {
     private ArtifactType artifactType;
 
 
-    // 1:M
-    @OneToMany(mappedBy = "artifact", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
-    private Set<Mention> mentions = new HashSet<>();
-
 
     @Override
     public Integer getId() {
         return artifactId;
     }
-
-
-
-
 
 
 }

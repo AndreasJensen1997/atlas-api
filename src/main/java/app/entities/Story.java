@@ -33,10 +33,6 @@ public class Story implements LinkableEntity {
     Chapter chapter;
 
 
-    // 1:M
-    @OneToMany(mappedBy = "artifact", cascade = CascadeType.ALL, orphanRemoval = true)
-    @ToString.Exclude
-    private Set<Mention> mentions = new HashSet<>();
 
 
 

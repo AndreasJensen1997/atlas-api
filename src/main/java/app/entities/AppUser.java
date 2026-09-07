@@ -59,6 +59,14 @@ public class AppUser {
 
 
 
+    // ===== JPA LIFECYCLE CALLBACKS =====
+    @PrePersist
+    @PreUpdate
+    public void normalizeEmail() {
+        if (email != null) {
+            this.email = email.trim().toLowerCase();
+        }
+    }
 
 
     @Override

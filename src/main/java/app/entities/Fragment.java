@@ -2,10 +2,12 @@ package app.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -19,7 +21,7 @@ public class Fragment implements LinkableEntity {
     @GeneratedValue
     Integer fragmentId;
     private String title;
-    private String subTitle;
+    private String subtitle;
     String content;
     LocalDate createdAt;
     LocalDate updatedAt;
@@ -44,7 +46,9 @@ public class Fragment implements LinkableEntity {
 
     @PrePersist
     protected void onCreate() {
-        createdAt = LocalDate.now();
+        if (createdAt == null) {
+            createdAt = LocalDate.now();
+        }
         updatedAt = LocalDate.now();
         calculateWordCount();
     }
@@ -61,6 +65,33 @@ public class Fragment implements LinkableEntity {
         } else {
             this.wordCount = content.trim().split("\\s+").length;
         }
+    }
+
+
+    // ===== EQUALS & HASHCODE =====
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o)
+            return true;
+        if (o == null)
+            return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer()
+                .getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer()
+                .getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass)
+            return false;
+        Fragment fragment = (Fragment) o;
+        return getFragmentId() != null && Objects.equals(getFragmentId(), fragment.getFragmentId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer()
+                .getPersistentClass()
+                .hashCode() : getClass().hashCode();
+
+
     }
 
 

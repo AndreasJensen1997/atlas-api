@@ -69,9 +69,9 @@ public final class TestPopulator {
             em.persist(artifact3);
 
             // Fragments
-            Fragment fragment1 = Fragment.builder().title("idea for wedding speech").subTitle("Daniels wedding").content("talk about vacation in sweden").createdAt(LocalDate.of(2026,1,1)).appUser(user1).build();
-            Fragment fragment2 = Fragment.builder().title("book title idea").subTitle("book project").content("in the beginning").createdAt(LocalDate.of(2026,3,3)).appUser(user1).build();
-            Fragment fragment3 = Fragment.builder().title("dinner with jamie").subTitle("dinner date").content("remember to buy tomatoes").createdAt(LocalDate.of(2026,4,5)).appUser(user2).build();
+            Fragment fragment1 = Fragment.builder().title("idea for wedding speech").subtitle("Daniels wedding").content("talk about vacation in sweden").createdAt(LocalDate.of(2026,1,1)).appUser(user1).build();
+            Fragment fragment2 = Fragment.builder().title("book title idea").subtitle("book project").content("in the beginning").createdAt(LocalDate.of(2026,3,3)).appUser(user1).build();
+            Fragment fragment3 = Fragment.builder().title("dinner with jamie").subtitle("dinner date").content("remember to buy tomatoes").createdAt(LocalDate.of(2026,4,5)).appUser(user2).build();
 
             em.persist(fragment1);
             em.persist(fragment2);

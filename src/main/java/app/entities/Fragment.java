@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,10 +22,11 @@ public class Fragment implements LinkableEntity {
     private String subTitle;
     String content;
     LocalDate createdAt;
+    LocalDate updatedAt;
     int wordCount;
 
 
-    // RELATIONS
+    // ===== RELATIONS =====
 
     // M:1
     @ManyToOne(optional = false)
@@ -38,15 +40,25 @@ public class Fragment implements LinkableEntity {
         return fragmentId;
     }
 
+    // ===== JPA LIFECYCLE CALLBACKS =====
 
-    // Automatically calculate word count before saving or updating
     @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDate.now();
+        updatedAt = LocalDate.now();
+        calculateWordCount();
+    }
+
     @PreUpdate
-    public void calculateWordCount() {
+    protected void onUpdate() {
+        updatedAt = LocalDate.now();
+        calculateWordCount();
+    }
+
+    private void calculateWordCount() {
         if (content == null || content.trim().isEmpty()) {
             this.wordCount = 0;
         } else {
-            // Splits by whitespace to count words accurately
             this.wordCount = content.trim().split("\\s+").length;
         }
     }

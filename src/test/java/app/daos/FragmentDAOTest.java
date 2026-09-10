@@ -84,87 +84,87 @@ class FragmentDAOTest {
             System.out.println(f.getAppUser().getUserId() + "-" +  seeded.fragment1().getAppUser().getUserId());
         }
     }
-//
-//    @Test
-//    void update() {
-//        Artifact seed = seeded.artifact2();
-//        AppUser newUser = seeded.user2();
-//
-//        Artifact updated = Artifact.builder()
-//                .artifactId(seed.getArtifactId())
-//                .title("updated title")
-//                .subtitle("updated subtitle")
-//                .content("updated content")
-//                .createdAt(LocalDate.of(2002,1,1))
-//                .artifactType(seeded.musicType())
-//                .appUser(newUser)
-//
-//                .build();
-//
-//        Artifact result = artifactDAO.update(updated);
-//
-//        assertThat(result.getArtifactId(), is(seed.getArtifactId()));
-//        assertThat(result.getTitle(), is("updated title"));
-//        assertThat(result.getSubtitle(), is("updated subtitle"));
-//        assertThat(result.getContent(), is("updated content"));
-//        assertThat(result.getCreatedAt(), is(LocalDate.of(2002,1,1)));
-//        assertThat(result.getArtifactType(), is(seeded.musicType()));
-//    }
-//
-//    @Test
-//    void delete() {
-//        Artifact seed = seeded.artifact1();
-//
-//        boolean deleted = artifactDAO.delete(seed.getArtifactId());
-//
-//        assertThat(deleted, is(true));
-//        assertThrows(ApiException.class, () -> artifactDAO.getById(seed.getArtifactId()));
-//    }
-//
-//    @Test
-//    void create_withNullStudy_throwsApiException() {
-//        ApiException ex = assertThrows(ApiException.class, () -> artifactDAO.create(null));
-//        assertThat(ex.getCode(), is(400));
-//    }
-//
-//    @Test
-//    void getById_withNullId_throwsApiException() {
-//        ApiException ex = assertThrows(ApiException.class, () -> artifactDAO.getById(null));
-//        assertThat(ex.getCode(), is(400));
-//    }
-//
-//    @Test
-//    void getById_withMissingId_throwsApiException() {
-//        ApiException ex = assertThrows(ApiException.class, () -> artifactDAO.getById(999_999));
-//        assertThat(ex.getCode(), is(404));
-//    }
-//
-//    @Test
-//    void update_withNullStudy_throwsApiException() {
-//        ApiException ex = assertThrows(ApiException.class, () -> artifactDAO.update(null));
-//        assertThat(ex.getCode(), is(400));
-//    }
-//
-//    @Test
-//    void update_withMissingId_throwsApiException() {
-//        Artifact missing = Artifact.builder()
-//                .artifactId(999_999)
-//                .title("Missing")
-//                .build();
-//
-//        ApiException ex = assertThrows(ApiException.class, () ->  artifactDAO.update(missing));
-//        assertThat(ex.getCode(), is(404));
-//    }
-//
-//    @Test
-//    void delete_withNullId_throwsApiException() {
-//        ApiException ex = assertThrows(ApiException.class, () -> artifactDAO.delete(null));
-//        assertThat(ex.getCode(), is(400));
-//    }
-//
-//    @Test
-//    void delete_withMissingId_throwsApiException() {
-//        ApiException ex = assertThrows(ApiException.class, () -> artifactDAO.delete(999_999));
-//        assertThat(ex.getCode(), is(404));
-//    }
+
+    @Test
+    void update() {
+        Fragment seed = seeded.fragment2();
+        AppUser newUser = seeded.user2();
+
+        Fragment updated = Fragment.builder()
+                .fragmentId(seed.getFragmentId())
+                .title("updated title")
+                .subtitle("updated subtitle")
+                .content("updated content")
+                .createdAt(LocalDate.of(2002,1,1))
+                .appUser(newUser)
+
+                .build();
+
+        Fragment result = fragmentDAO.update(updated);
+
+        assertThat(result.getFragmentId(), is(seed.getFragmentId()));
+        assertThat(result.getTitle(), is("updated title"));
+        assertThat(result.getSubtitle(), is("updated subtitle"));
+        assertThat(result.getContent(), is("updated content"));
+        assertThat(result.getCreatedAt(), is(LocalDate.of(2002,1,1)));
+        assertThat(result.getAppUser(), is(newUser));
+        assertThat(result.getWordCount(), is(2));
+    }
+
+    @Test
+    void delete() {
+        Fragment seed = seeded.fragment1();
+
+        boolean deleted = fragmentDAO.delete(seed.getFragmentId());
+
+        assertThat(deleted, is(true));
+        assertThrows(ApiException.class, () -> fragmentDAO.getById(seed.getFragmentId()));
+    }
+
+    @Test
+    void create_withNullStudy_throwsApiException() {
+        ApiException ex = assertThrows(ApiException.class, () -> fragmentDAO.create(null));
+        assertThat(ex.getCode(), is(400));
+    }
+
+    @Test
+    void getById_withNullId_throwsApiException() {
+        ApiException ex = assertThrows(ApiException.class, () -> fragmentDAO.getById(null));
+        assertThat(ex.getCode(), is(400));
+    }
+
+    @Test
+    void getById_withMissingId_throwsApiException() {
+        ApiException ex = assertThrows(ApiException.class, () -> fragmentDAO.getById(999_999));
+        assertThat(ex.getCode(), is(404));
+    }
+
+    @Test
+    void update_withNullStudy_throwsApiException() {
+        ApiException ex = assertThrows(ApiException.class, () -> fragmentDAO.update(null));
+        assertThat(ex.getCode(), is(400));
+    }
+
+    @Test
+    void update_withMissingId_throwsApiException() {
+        Fragment missing = Fragment.builder()
+                .fragmentId(999_999)
+                .title("Missing")
+                .build();
+
+        ApiException ex = assertThrows(ApiException.class, () ->  fragmentDAO.update(missing));
+        assertThat(ex.getCode(), is(404));
+    }
+
+    @Test
+    void delete_withNullId_throwsApiException() {
+        ApiException ex = assertThrows(ApiException.class, () -> fragmentDAO.delete(null));
+        assertThat(ex.getCode(), is(400));
+    }
+
+    @Test
+    void delete_withMissingId_throwsApiException() {
+        ApiException ex = assertThrows(ApiException.class, () -> fragmentDAO.delete(999_999));
+        assertThat(ex.getCode(), is(404));
+    }
 }

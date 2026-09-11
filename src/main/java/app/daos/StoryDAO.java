@@ -18,19 +18,4 @@ public class StoryDAO extends AbstractDAO<Story, Integer> {
         super(emf, Story.class);
     }
 
-    public Set<Story> getAllStoriesByUserId(int id) {
-        try (EntityManager em = emf.createEntityManager()) {
-
-            String jpql = "SELECT s FROM Story s WHERE s.chapter.appUser.userId = :id";
-            TypedQuery<Story> query = em.createQuery(jpql, Story.class);
-            query.setParameter("id", id);
-
-            List<Story> list = query.getResultList();
-            return new HashSet<>(list);
-        } catch (PersistenceException e) {
-            throw new ApiException(500, "Failed to retrieve story list: " + e.getMessage());
-        }
-    }
-
-
 }

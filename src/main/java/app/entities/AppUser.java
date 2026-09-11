@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.awt.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -31,30 +30,37 @@ public class AppUser {
     // 1:M
     @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter
+    @ToString.Exclude
     private Set<Chapter> chapters = new HashSet<>();
 
     @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter
+    @ToString.Exclude
     private Set<Artifact> artifacts = new HashSet<>();
 
     @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter
+    @ToString.Exclude
     private Set<Person> people = new HashSet<>();
 
     @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter
+    @ToString.Exclude
     private Set<Place> places = new HashSet<>();
 
     @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter
-    private Set<List> lists = new HashSet<>();
+    @ToString.Exclude
+    private Set<EntityList> lists = new HashSet<>();
 
     @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter
+    @ToString.Exclude
     private Set<TimeCapsule> timeCapsules = new HashSet<>();
 
     @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter
+    @ToString.Exclude
     private Set<Fragment> fragments = new HashSet<>();
 
 

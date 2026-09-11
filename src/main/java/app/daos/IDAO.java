@@ -1,5 +1,5 @@
 package app.daos;
-import java.util.Set;
+import java.util.List;
 
 
 public interface IDAO<T, I> {
@@ -9,7 +9,7 @@ public interface IDAO<T, I> {
 
     T getById(I i);
 
-    Set<T> getAll();
+    List<T> getAll();
 
     T update ( T t);
 

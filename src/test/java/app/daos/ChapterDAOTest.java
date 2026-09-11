@@ -9,6 +9,7 @@ import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.*;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -67,7 +68,7 @@ class ChapterDAOTest {
 
     @Test
     void getAll() {
-        Set<Chapter> all = chapterDAO.getAll();
+        List<Chapter> all = chapterDAO.getAll();
         assertThat(all, hasSize(3));
         assertThat(all, containsInAnyOrder(seeded.chapter1(), seeded.chapter2(), seeded.chapter3()));
     }
@@ -75,7 +76,7 @@ class ChapterDAOTest {
    @Test
    void getAllChaptersByUserId(){
 
-       Set<Chapter> all = chapterDAO.getAllChaptersByUserId(seeded.user1().getUserId());
+       List<Chapter> all = chapterDAO.getAllByUserId(seeded.user1().getUserId());
 
        assertThat(all, hasSize(1));
        assertThat(all, containsInAnyOrder(seeded.chapter1()));

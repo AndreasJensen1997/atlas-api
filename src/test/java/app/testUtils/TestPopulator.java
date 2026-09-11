@@ -22,7 +22,8 @@ public final class TestPopulator {
             Fragment fragment1, Fragment fragment2, Fragment fragment3,
             EntityList entityList1,
             Memory memory1, Memory memory2, Memory memory3,
-            Person person1, Person person2, Person person3
+            Person person1, Person person2, Person person3,
+            Place place1, Place place2, Place place3
     ) {
     }
 
@@ -32,7 +33,7 @@ public final class TestPopulator {
 
             // Clear all tables including the new ones in reverse dependency order
             try {
-                em.createNativeQuery("TRUNCATE TABLE person,memory,entityList,fragment,artifact, artifacttype, chapter, appuser RESTART IDENTITY CASCADE").executeUpdate();
+                em.createNativeQuery("TRUNCATE TABLE place,person,memory,entityList,fragment,artifact, artifacttype, chapter, appuser RESTART IDENTITY CASCADE").executeUpdate();
             } catch (PersistenceException e) {
                 // Fallback if tables don't exist yet
             }
@@ -109,6 +110,16 @@ public final class TestPopulator {
             em.persist(person2);
             em.persist(person3);
 
+            // Inside your TestPopulator.populate() method:
+
+            Place place1 = Place.builder().name("Copenhagen Central").content("Main station area").latitude(55.6761).longitude(12.5683).address("Bernstorffsgade 16").city("Copenhagen").country("Denmark").appUser(user1).build();
+            Place place2 = Place.builder().name("Aarhus Ø").content("Modern harbor front").latitude(56.1629).longitude(10.2039).address("Ankersgade 1").city("Aarhus").country("Denmark").appUser(user2).build();
+            Place place3 = Place.builder().name("Odense Zoo").content("Family attraction").latitude(55.3852).longitude(10.3736).address("Sdr. Boulevard 306").city("Odense").country("Denmark").appUser(user3).build();
+
+            em.persist(place1);
+            em.persist(place2);
+            em.persist(place3);
+
 
             em.getTransaction().commit();
 
@@ -119,7 +130,8 @@ public final class TestPopulator {
                     fragment1, fragment2, fragment3,
                     entityList1,
                     memory1, memory2, memory3,
-                    person1, person2, person3);
+                    person1, person2, person3,
+                    place1,place2,place3);
         }
     }
 }

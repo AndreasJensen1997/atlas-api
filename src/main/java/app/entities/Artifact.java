@@ -30,7 +30,6 @@ public class Artifact implements LinkableEntity {
 
     // ===== RELATIONS =====
 
-
     // M:1
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
@@ -42,12 +41,22 @@ public class Artifact implements LinkableEntity {
     private ArtifactType artifactType;
 
 
-
     @Override
     public Integer getId() {
         return artifactId;
     }
 
+
+    // ===== JPA LIFECYCLE CALLBACKS =====
+    @PrePersist
+    public void setDefaultDate() {
+        if (this.createdAt == null) {
+            this.createdAt = LocalDate.now();
+        }
+    }
+
+
+    // ===== EQUALS & HASHCODE =====
     @Override
     public final boolean equals(Object o) {
         if (this == o)
@@ -64,8 +73,6 @@ public class Artifact implements LinkableEntity {
         return getArtifactId() != null && Objects.equals(getArtifactId(), artifact.getArtifactId());
     }
 
-
-
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer()
@@ -74,6 +81,4 @@ public class Artifact implements LinkableEntity {
 
 
     }
-
-
 }

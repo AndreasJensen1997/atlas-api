@@ -6,6 +6,8 @@ import app.exceptions.ApiException;
 import app.testUtils.TestPopulator;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.*;
+
+import java.util.List;
 import java.util.Set;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -56,7 +58,7 @@ class AppUserDAOTest {
 
     @Test
     void getAll() {
-        Set<AppUser> all = appUserDAO.getAll();
+        List<AppUser> all = appUserDAO.getAll();
         assertThat(all, hasSize(3));
         assertThat(all, containsInAnyOrder(seeded.user1(), seeded.user2(), seeded.user3()));
     }

@@ -31,4 +31,6 @@ public class ArtifactDAO extends UserOwnedDAO<Artifact, Integer> {
 
 
 
+
+
 }

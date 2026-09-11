@@ -19,7 +19,7 @@ public final class TestPopulator {
             Artifact artifact1, Artifact artifact2, Artifact artifact3,
             ArtifactType musicType,  ArtifactType objectType,ArtifactType vehicleType,
             Fragment fragment1, Fragment fragment2, Fragment fragment3,
-            EntityList entityList1, EntityList entityList2,EntityList entityList3
+            EntityList entityList1
             ) {
     }
 
@@ -79,13 +79,12 @@ public final class TestPopulator {
             em.persist(fragment2);
             em.persist(fragment3);
 
-            List<LinkableEntity> listOfEntities1 = List.of(artifact1,artifact2,artifact3);
-            List<LinkableEntity> listOfEntities2 = List.of(chapter1,chapter2,chapter3);
-            List<LinkableEntity> listOfEntities3 = List.of(fragment1,fragment2);
+            EntityList entityList1 = EntityList.builder().title("top movies").subtitle("my favourite work of arts").appUser(user1).build();
+            entityList1.addItem(EntityListItem.builder().text("Interstellar").build());
+            entityList1.addItem(EntityListItem.builder().text("The Matrix").build());
+            entityList1.addItem(EntityListItem.builder().text("odyssey").build());
 
-            EntityList entityList1 = EntityList.builder().title("top movies").subtitle("my favourite work of arts").listOfEntities(listOfEntities1).appUser(user1).build();
-            EntityList entityList2 = EntityList.builder().title("best chapters").subtitle("the chapters that shaped my life").listOfEntities(listOfEntities2).appUser(user2).build();
-            EntityList entityList3 = EntityList.builder().title("favourite quotes").subtitle("my favourite quotes").listOfEntities(listOfEntities3).appUser(user3).build();
+            em.persist(entityList1);
 
 
             em.getTransaction().commit();
@@ -95,7 +94,7 @@ public final class TestPopulator {
                     artifact1, artifact2, artifact3,
                     musicType,objectType,vehicleType,
                     fragment1,fragment2,fragment3,
-                    entityList1,entityList2,entityList3);
+                    entityList1);
         }
     }
 }

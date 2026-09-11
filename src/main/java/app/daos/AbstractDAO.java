@@ -7,9 +7,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.PersistenceException;
 import jakarta.persistence.TypedQuery;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public abstract class AbstractDAO <T,I> implements IDAO <T,I> {
 
@@ -72,7 +70,7 @@ public abstract class AbstractDAO <T,I> implements IDAO <T,I> {
 
 
     @Override
-    public Set<T> getAll() {
+    public List<T> getAll() {
         String entityName = entityClass.getSimpleName();
 
         try (EntityManager em = emf.createEntityManager()) {
@@ -80,9 +78,8 @@ public abstract class AbstractDAO <T,I> implements IDAO <T,I> {
             String jpql = "SELECT e FROM " + entityName + " e";
 
             TypedQuery<T> query = em.createQuery(jpql, entityClass);
-            List<T> list = query.getResultList();
 
-            return new HashSet<>(list);
+            return query.getResultList();
         } catch (PersistenceException e) {
             throw new ApiException(500, "Failed to retrieve " + entityName + " list: " + e.getMessage());
         }

@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class MemoryDAO extends AbstractDAO <Memory, Integer> {
+public class MemoryDAO extends UserOwnedDAO <Memory, Integer> {
 
     public MemoryDAO(EntityManagerFactory emf) {
         super(emf, Memory.class);

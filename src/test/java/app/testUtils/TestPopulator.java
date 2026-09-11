@@ -19,7 +19,8 @@ public final class TestPopulator {
             Artifact artifact1, Artifact artifact2, Artifact artifact3,
             ArtifactType musicType,  ArtifactType objectType,ArtifactType vehicleType,
             Fragment fragment1, Fragment fragment2, Fragment fragment3,
-            EntityList entityList1
+            EntityList entityList1,
+            Memory memory1, Memory memory2, Memory memory3
             ) {
     }
 
@@ -70,7 +71,7 @@ public final class TestPopulator {
             em.persist(artifact2);
             em.persist(artifact3);
 
-            // Fragments
+            // FRAGMENTS
             Fragment fragment1 = Fragment.builder().title("idea for wedding speech").subtitle("Daniels wedding").content("talk about vacation in sweden").createdAt(LocalDate.of(2026,1,1)).appUser(user1).build();
             Fragment fragment2 = Fragment.builder().title("book title idea").subtitle("book project").content("in the beginning").createdAt(LocalDate.of(2026,3,3)).appUser(user1).build();
             Fragment fragment3 = Fragment.builder().title("dinner with jamie").subtitle("dinner date").content("remember to buy tomatoes").createdAt(LocalDate.of(2026,4,5)).appUser(user2).build();
@@ -87,6 +88,19 @@ public final class TestPopulator {
             em.persist(entityList1);
 
 
+            // MEMORIES
+
+            Memory memory1 = Memory.builder().title("wedding night").subTitle("best moments from wedding night").content("The night was magic").appUser(user1).build();
+            Memory memory2 = Memory.builder().title("graduation day").subTitle("The night we finised").content("The night was magic").appUser(user2).build();
+            Memory memory3 = Memory.builder().title("surgery").subTitle("hip surgery").content("the day we fixed my issue").appUser(user3).build();
+
+            em.persist(memory1);
+            em.persist(memory2);
+            em.persist(memory3);
+
+
+
+
             em.getTransaction().commit();
 
             return new SeededData(user1, user2, user3,
@@ -94,7 +108,8 @@ public final class TestPopulator {
                     artifact1, artifact2, artifact3,
                     musicType,objectType,vehicleType,
                     fragment1,fragment2,fragment3,
-                    entityList1);
+                    entityList1,
+                    memory1, memory2, memory3);
         }
     }
 }

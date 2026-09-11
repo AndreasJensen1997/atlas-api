@@ -1,6 +1,7 @@
 package app.testUtils;
 
 import app.entities.*;
+import app.enums.Relation;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.PersistenceException;
@@ -17,11 +18,12 @@ public final class TestPopulator {
             AppUser user1, AppUser user2, AppUser user3,
             Chapter chapter1, Chapter chapter2, Chapter chapter3,
             Artifact artifact1, Artifact artifact2, Artifact artifact3,
-            ArtifactType musicType,  ArtifactType objectType,ArtifactType vehicleType,
+            ArtifactType musicType, ArtifactType objectType, ArtifactType vehicleType,
             Fragment fragment1, Fragment fragment2, Fragment fragment3,
             EntityList entityList1,
-            Memory memory1, Memory memory2, Memory memory3
-            ) {
+            Memory memory1, Memory memory2, Memory memory3,
+            Person person1, Person person2, Person person3
+    ) {
     }
 
     public static SeededData populate(EntityManagerFactory emf) {
@@ -30,7 +32,7 @@ public final class TestPopulator {
 
             // Clear all tables including the new ones in reverse dependency order
             try {
-                em.createNativeQuery("TRUNCATE TABLE EntityList,fragment,artifact, artifacttype, chapter, appuser RESTART IDENTITY CASCADE").executeUpdate();
+                em.createNativeQuery("TRUNCATE TABLE person,memory,entityList,fragment,artifact, artifacttype, chapter, appuser RESTART IDENTITY CASCADE").executeUpdate();
             } catch (PersistenceException e) {
                 // Fallback if tables don't exist yet
             }
@@ -63,18 +65,18 @@ public final class TestPopulator {
             em.persist(vehicleType);
 
             // Create and persist Artifacts
-            Artifact artifact1 = Artifact.builder().title("I forget where we were").subtitle("ben howard album").content("my favourite album").createdAt(LocalDate.of(2026,1,1)).appUser(user1).artifactType(musicType).build();
-            Artifact artifact2 = Artifact.builder().title("Magnus the teddy").subtitle("childhood teddy").content("my favourite teddy as a kid").createdAt(LocalDate.of(2022,1,1)).appUser(user2).artifactType(objectType).build();
-            Artifact artifact3 = Artifact.builder().title("Red bike").subtitle("My first bike").content("my mom got me this for my third birthday").createdAt(LocalDate.of(2002,1,1)).appUser(user3).artifactType(vehicleType).build();
+            Artifact artifact1 = Artifact.builder().title("I forget where we were").subtitle("ben howard album").content("my favourite album").createdAt(LocalDate.of(2026, 1, 1)).appUser(user1).artifactType(musicType).build();
+            Artifact artifact2 = Artifact.builder().title("Magnus the teddy").subtitle("childhood teddy").content("my favourite teddy as a kid").createdAt(LocalDate.of(2022, 1, 1)).appUser(user2).artifactType(objectType).build();
+            Artifact artifact3 = Artifact.builder().title("Red bike").subtitle("My first bike").content("my mom got me this for my third birthday").createdAt(LocalDate.of(2002, 1, 1)).appUser(user3).artifactType(vehicleType).build();
 
             em.persist(artifact1);
             em.persist(artifact2);
             em.persist(artifact3);
 
             // FRAGMENTS
-            Fragment fragment1 = Fragment.builder().title("idea for wedding speech").subtitle("Daniels wedding").content("talk about vacation in sweden").createdAt(LocalDate.of(2026,1,1)).appUser(user1).build();
-            Fragment fragment2 = Fragment.builder().title("book title idea").subtitle("book project").content("in the beginning").createdAt(LocalDate.of(2026,3,3)).appUser(user1).build();
-            Fragment fragment3 = Fragment.builder().title("dinner with jamie").subtitle("dinner date").content("remember to buy tomatoes").createdAt(LocalDate.of(2026,4,5)).appUser(user2).build();
+            Fragment fragment1 = Fragment.builder().title("idea for wedding speech").subtitle("Daniels wedding").content("talk about vacation in sweden").createdAt(LocalDate.of(2026, 1, 1)).appUser(user1).build();
+            Fragment fragment2 = Fragment.builder().title("book title idea").subtitle("book project").content("in the beginning").createdAt(LocalDate.of(2026, 3, 3)).appUser(user1).build();
+            Fragment fragment3 = Fragment.builder().title("dinner with jamie").subtitle("dinner date").content("remember to buy tomatoes").createdAt(LocalDate.of(2026, 4, 5)).appUser(user2).build();
 
             em.persist(fragment1);
             em.persist(fragment2);
@@ -99,6 +101,13 @@ public final class TestPopulator {
             em.persist(memory3);
 
 
+            Person person1 = Person.builder().name("jimmi").relation(Relation.FATHER).appUser(user1).build();
+            Person person2 = Person.builder().name("trine").relation(Relation.MOTHER).appUser(user2).build();
+            Person person3 = Person.builder().name("daniel").relation(Relation.FRIEND).appUser(user3).build();
+
+            em.persist(person1);
+            em.persist(person2);
+            em.persist(person3);
 
 
             em.getTransaction().commit();
@@ -106,10 +115,11 @@ public final class TestPopulator {
             return new SeededData(user1, user2, user3,
                     chapter1, chapter2, chapter3,
                     artifact1, artifact2, artifact3,
-                    musicType,objectType,vehicleType,
-                    fragment1,fragment2,fragment3,
+                    musicType, objectType, vehicleType,
+                    fragment1, fragment2, fragment3,
                     entityList1,
-                    memory1, memory2, memory3);
+                    memory1, memory2, memory3,
+                    person1, person2, person3);
         }
     }
 }

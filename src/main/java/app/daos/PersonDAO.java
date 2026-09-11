@@ -4,7 +4,7 @@ import app.entities.Memory;
 import app.entities.Person;
 import jakarta.persistence.EntityManagerFactory;
 
-public class PersonDAO extends AbstractDAO<Person, Integer> {
+public class PersonDAO extends UserOwnedDAO<Person, Integer> {
 
 
     public PersonDAO(EntityManagerFactory emf) {

@@ -36,6 +36,11 @@ public class AppUser {
     @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter
     @ToString.Exclude
+    private Set<Memory> memories = new HashSet<>();
+
+    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Setter
+    @ToString.Exclude
     private Set<Artifact> artifacts = new HashSet<>();
 
     @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)

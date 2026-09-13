@@ -29,12 +29,6 @@ public class Story implements LinkableEntity {
 
     // RELATIONS
 
-    // M:1
-    @ManyToOne
-    @Setter
-    Chapter chapter;
-
-
 
 
 

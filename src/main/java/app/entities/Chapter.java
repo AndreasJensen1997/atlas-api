@@ -34,9 +34,6 @@ public class Chapter implements LinkableEntity {
     @Setter
     private AppUser appUser;
 
-    // 1:M
-    @OneToMany(mappedBy = "chapter")
-    private Set<Story> stories = new HashSet<>();
 
 
     @Override

@@ -29,10 +29,6 @@ public class Memory implements LinkableEntity {
 
     // RELATIONS
 
-    // M:1
-    @ManyToOne
-    @Setter
-    Chapter chapter;
 
     // M:1
     @ManyToOne(optional = false)

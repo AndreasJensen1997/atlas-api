@@ -28,10 +28,7 @@ class TimeCapsuleDAOTest {
         timeCapsuleDAO = new TimeCapsuleDAO(emf);
     }
 
-    @AfterAll
-    void shutdown() {
-        emf.close();
-    }
+
 
     @Test
     void create() {

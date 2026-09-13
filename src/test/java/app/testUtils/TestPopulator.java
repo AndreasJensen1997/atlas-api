@@ -2,6 +2,7 @@ package app.testUtils;
 
 import app.entities.*;
 import app.enums.Relation;
+import app.enums.TargetType;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.PersistenceException;
@@ -26,7 +27,8 @@ public final class TestPopulator {
             Person person1, Person person2, Person person3,
             Place place1, Place place2, Place place3,
             Story story1,Story story2, Story story3,
-            TimeCapsule timeCapsule1,TimeCapsule timeCapsule2, TimeCapsule timeCapsule3
+            TimeCapsule timeCapsule1,TimeCapsule timeCapsule2, TimeCapsule timeCapsule3,
+            Mention mention1, Mention mention2, Mention mention3
     ) {
     }
 
@@ -36,7 +38,7 @@ public final class TestPopulator {
 
             // Clear all tables including the new ones in reverse dependency order
             try {
-                em.createNativeQuery("TRUNCATE TABLE timecapsule,story,place,person,memory,entityList,fragment,artifact, artifacttype, chapter, appuser RESTART IDENTITY CASCADE").executeUpdate();
+                em.createNativeQuery("TRUNCATE TABLE mention,timecapsule,story,place,person,memory,entityList,fragment,artifact, artifacttype, chapter, appuser RESTART IDENTITY CASCADE").executeUpdate();
             } catch (PersistenceException e) {
                 // Fallback if tables don't exist yet
             }
@@ -123,9 +125,9 @@ public final class TestPopulator {
             em.persist(place2);
             em.persist(place3);
 
-            Story story1 = Story.builder().title("First Story").subTitle("Beginning").content("Content of the first story...").startDate(LocalDate.of(2026, 1, 1)).endDate(LocalDate.of(2026, 1, 3)).chapter(chapter1).build();
-            Story story2 = Story.builder().title("Second Story").subTitle("Middle").content("Content of the second story...").startDate(LocalDate.of(2026, 1, 4)).endDate(LocalDate.of(2026, 1, 6)).chapter(chapter2).build();
-            Story story3 = Story.builder().title("Third Story").subTitle("End").content("Content of the third story...").startDate(LocalDate.of(2026, 1, 7)).endDate(LocalDate.of(2026, 1, 10)).chapter(chapter3).build();
+            Story story1 = Story.builder().title("First Story").subTitle("Beginning").content("Content of the first story...").startDate(LocalDate.of(2026, 1, 1)).endDate(LocalDate.of(2026, 1, 3)).build();
+            Story story2 = Story.builder().title("Second Story").subTitle("Middle").content("Content of the second story...").startDate(LocalDate.of(2026, 1, 4)).endDate(LocalDate.of(2026, 1, 6)).build();
+            Story story3 = Story.builder().title("Third Story").subTitle("End").content("Content of the third story...").startDate(LocalDate.of(2026, 1, 7)).endDate(LocalDate.of(2026, 1, 10)).build();
 
             em.persist(story1);
             em.persist(story2);
@@ -139,6 +141,14 @@ public final class TestPopulator {
             em.persist(timeCapsule2);
             em.persist(timeCapsule3);
 
+            Mention mention1 = Mention.builder().targetType(TargetType.PERSON).targetId(person1.getPersonId()). ownerType(TargetType.MEMORY).ownerId(memory1.getMemoryId()).build();
+            Mention mention2 = Mention.builder().targetType(TargetType.PLACE).targetId(place1.getPlaceId()).ownerType(TargetType.STORY).ownerId(story1.getStoryId()).build();
+            Mention mention3 = Mention.builder().targetType(TargetType.PERSON).targetId(person2.getPersonId()).ownerType(TargetType.CHAPTER).ownerId(chapter1.getChapterId()).build();
+
+            em.persist(mention1);
+            em.persist(mention2);
+            em.persist(mention3);
+
 
             em.getTransaction().commit();
 
@@ -151,7 +161,8 @@ public final class TestPopulator {
                     memory1, memory2, memory3,
                     person1, person2, person3,
                     place1,place2,place3,story1,story2,story3,
-                    timeCapsule1,timeCapsule2,timeCapsule3);
+                    timeCapsule1,timeCapsule2,timeCapsule3,
+                    mention1, mention2, mention3);
         }
     }
 }

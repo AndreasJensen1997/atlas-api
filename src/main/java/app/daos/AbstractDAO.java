@@ -1,6 +1,7 @@
 package app.daos;
 
 import app.entities.AppUser;
+import app.enums.TargetType;
 import app.exceptions.ApiException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -142,6 +143,19 @@ public abstract class AbstractDAO <T,I> implements IDAO <T,I> {
                 T entityToRemove = em.find(entityClass, id);
                 if (entityToRemove == null) {
                     throw new ApiException(404, entityName + " not found");
+                }
+
+                // Automatically clean up mentions where this entity is the owner or target
+                try {
+                    TargetType type = TargetType.valueOf(entityName.toUpperCase());
+                    em.createQuery(
+                                    "DELETE FROM Mention m WHERE (m.ownerId = :id AND m.ownerType = :type) OR (m.targetId = :id AND m.targetType = :type)"
+                            )
+                            .setParameter("id", id) // Pass id directly without casting
+                            .setParameter("type", type)
+                            .executeUpdate();
+                } catch (IllegalArgumentException e) {
+                    // Skips cleanup if an entity type doesn't have a matching TargetType enum
                 }
 
                 em.remove(entityToRemove);

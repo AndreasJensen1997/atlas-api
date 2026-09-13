@@ -19,12 +19,12 @@ public class Chapter implements LinkableEntity {
 
     @Id
     @GeneratedValue
-    Integer chapterId;
-    String title;
-    String subtitle;
-    String content;
-    LocalDate startDate;
-    LocalDate endDate;
+    private Integer chapterId;
+    private String title;
+    private String subtitle;
+    private String content;
+    private LocalDate startDate;
+    private LocalDate endDate;
 
 
     // ===== RELATIONS =====
@@ -32,7 +32,7 @@ public class Chapter implements LinkableEntity {
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @Setter
-    AppUser appUser;
+    private AppUser appUser;
 
     // 1:M
     @OneToMany(mappedBy = "chapter")
@@ -44,7 +44,7 @@ public class Chapter implements LinkableEntity {
         return chapterId;
     }
 
-
+    // ===== EQUALS & HASHCODE =====
     @Override
     public final boolean equals(Object o) {
         if (this == o)
@@ -60,7 +60,6 @@ public class Chapter implements LinkableEntity {
         Chapter chapter = (Chapter) o;
         return getChapterId() != null && Objects.equals(getChapterId(), chapter.getChapterId());
     }
-
 
 
     @Override

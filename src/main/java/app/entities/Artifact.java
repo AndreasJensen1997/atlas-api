@@ -21,11 +21,11 @@ public class Artifact implements LinkableEntity {
 
     @Id
     @GeneratedValue
-    Integer artifactId;
-    String title;
-    String subtitle;
-    String content;
-    LocalDate createdAt;
+    private Integer artifactId;
+    private String title;
+    private String subtitle;
+    private String content;
+    private LocalDate createdAt;
 
 
     // ===== RELATIONS =====
@@ -34,7 +34,7 @@ public class Artifact implements LinkableEntity {
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @Setter
-    AppUser appUser;
+    private AppUser appUser;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "artifact_type_id", nullable = false)

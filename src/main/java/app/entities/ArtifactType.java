@@ -27,7 +27,7 @@ public class ArtifactType {
 
 
 
-
+    // ===== EQUALS & HASHCODE =====
     @Override
     public final boolean equals(Object o) {
         if (this == o)

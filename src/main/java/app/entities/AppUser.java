@@ -75,6 +75,8 @@ public class AppUser {
     }
 
 
+
+    // ===== EQUALS & HASHCODE =====
     @Override
     public final boolean equals(Object o) {
         if (this == o)
@@ -90,7 +92,6 @@ public class AppUser {
         AppUser appUser = (AppUser) o;
         return getUserId() != null && Objects.equals(getUserId(), appUser.getUserId());
     }
-
 
 
     @Override

@@ -20,31 +20,27 @@ public class EntityList {
 
     @Id
     @GeneratedValue
-    Integer listId;
-    String title;
-    String subtitle;
-    LocalDate createdAt;
-    LocalDate updatedAt;
-    int itemAmount;
+    private Integer listId;
+    private String title;
+    private String subtitle;
+    private LocalDate createdAt;
+    private LocalDate updatedAt;
+    private int itemAmount;
 
     // RELATIONS //
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @Setter
-    AppUser appUser;
+    private AppUser appUser;
 
-    @OneToMany(
-            mappedBy = "entityList",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true,
-            fetch = FetchType.EAGER
-
-    )
+    @OneToMany(mappedBy = "entityList", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @Builder.Default
     @ToString.Exclude
     private List<EntityListItem> items = new ArrayList<>();
 
+
+    // ===== JPA LIFECYCLE CALLBACKS =====
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDate.now();
@@ -52,13 +48,11 @@ public class EntityList {
         calculateEntityAmount();
     }
 
-
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDate.now();
         calculateEntityAmount();
     }
-
 
     public void calculateEntityAmount() {
         if (items == null || items.isEmpty()) {
@@ -68,12 +62,25 @@ public class EntityList {
         }
     }
 
+    // ===== RELATIONSHIP HELPERS =====
     public void addItem(EntityListItem item) {
         items.add(item);
         item.setEntityList(this);
         calculateEntityAmount();
     }
 
+    public void removeItem(EntityListItem item) {
+        items.remove(item);
+        item.setEntityList(null);
+        calculateEntityAmount();
+    }
+
+    public void clearAllItems() {
+        for (EntityListItem item : new ArrayList<>(items)) {
+            removeItem(item);
+        }
+    }
+    // ===== EQUALS & HASHCODE =====
     @Override
     public final boolean equals(Object o) {
         if (this == o)
@@ -90,14 +97,11 @@ public class EntityList {
         return getListId() != null && Objects.equals(getListId(), entityList.getListId());
     }
 
-
-
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer()
                 .getPersistentClass()
                 .hashCode() : getClass().hashCode();
-
 
     }
 

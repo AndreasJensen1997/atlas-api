@@ -113,6 +113,35 @@ class EntityListDAOTest {
     }
 
     @Test
+    void deleteItem() {
+        EntityList seed = EntityList.builder().title("top movies").build();
+        seed.addItem(EntityListItem.builder().text("Interstellar").build());
+        seed.addItem(EntityListItem.builder().text("The Matrix").build());
+        seed.addItem(EntityListItem.builder().text("odyssey").build());
+
+        // Grab the third item ("odyssey") using its index and remove it
+        EntityListItem itemToRemove = seed.getItems().get(2);
+        seed.removeItem(itemToRemove);
+
+        assertThat(seed.getItems(), hasSize(2));
+        assertThat(seed.getItems().get(0).getText(), is("Interstellar"));
+        assertThat(seed.getItems().get(1).getText(), is("The Matrix"));
+    }
+
+
+    @Test
+    void deleteALl(){
+        EntityList seed = EntityList.builder().title("top movies").build();
+        seed.addItem(EntityListItem.builder().text("Interstellar").build());
+        seed.addItem(EntityListItem.builder().text("The Matrix").build());
+        seed.addItem(EntityListItem.builder().text("odyssey").build());
+
+        seed.clearAllItems();
+
+        assertThat(seed.getItems(), hasSize(0));
+    }
+
+    @Test
     void create_withNullEntityList_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> entityListDAO.create(null));
         assertThat(ex.getCode(), is(400));

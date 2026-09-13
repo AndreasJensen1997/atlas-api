@@ -32,10 +32,7 @@ class ArtifactDAOTest {
         artifactDAO = new ArtifactDAO(emf);
     }
 
-    @AfterAll
-    void shutdown() {
-        emf.close();
-    }
+
 
     @Test
     void create() {

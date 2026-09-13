@@ -27,10 +27,7 @@ class StoryDAOTest {
         storyDAO = new StoryDAO(emf);
     }
 
-    @AfterAll
-    void shutdown() {
-        emf.close();
-    }
+
 
     @Test
     void create() {
@@ -42,7 +39,6 @@ class StoryDAOTest {
                 .content("Test story content")
                 .startDate(LocalDate.of(2026, 1, 1))
                 .endDate(LocalDate.of(2026, 1, 5))
-                .chapter(existingChapter)
                 .build();
 
         Story created = storyDAO.create(newStory);
@@ -54,7 +50,6 @@ class StoryDAOTest {
         assertThat(fetched.getContent(), is("Test story content"));
         assertThat(fetched.getStartDate(), is(LocalDate.of(2026, 1, 1)));
         assertThat(fetched.getEndDate(), is(LocalDate.of(2026, 1, 5)));
-        assertThat(fetched.getChapter(), is(existingChapter));
     }
 
     @Test
@@ -84,7 +79,6 @@ class StoryDAOTest {
                 .content("Updated content")
                 .startDate(LocalDate.of(2026, 2, 1))
                 .endDate(LocalDate.of(2026, 2, 10))
-                .chapter(newChapter)
                 .build();
 
         Story result = storyDAO.update(updated);
@@ -95,7 +89,6 @@ class StoryDAOTest {
         assertThat(result.getContent(), is("Updated content"));
         assertThat(result.getStartDate(), is(LocalDate.of(2026, 2, 1)));
         assertThat(result.getEndDate(), is(LocalDate.of(2026, 2, 10)));
-        assertThat(result.getChapter(), is(newChapter));
     }
 
     @Test

@@ -27,10 +27,6 @@ class EntityListDAOTest {
         entityListDAO = new EntityListDAO(emf);
     }
 
-    @AfterAll
-    void shutdown() {
-        emf.close();
-    }
 
     @Test
     void createAutomaticallyCalculatesItemCountAndDate() {

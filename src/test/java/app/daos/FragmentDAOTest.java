@@ -29,10 +29,7 @@ class FragmentDAOTest {
         fragmentDAO = new FragmentDAO(emf);
     }
 
-    @AfterAll
-    void shutdown() {
-        emf.close();
-    }
+
 
     @Test
     void createAutomaticallyCalculatesWordCountAndDate() {

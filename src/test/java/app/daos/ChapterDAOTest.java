@@ -29,10 +29,7 @@ class ChapterDAOTest {
         chapterDAO = new ChapterDAO(emf);
     }
 
-    @AfterAll
-    void shutdown() {
-        emf.close();
-    }
+
 
     @Test
     void create() {

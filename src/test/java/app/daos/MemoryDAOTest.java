@@ -27,10 +27,7 @@ class MemoryDAOTest {
         memoryDAO = new MemoryDAO(emf);
     }
 
-    @AfterAll
-    void shutdown() {
-        emf.close();
-    }
+
 
     @Test
     void create() {
@@ -74,6 +71,24 @@ class MemoryDAOTest {
         for (Memory m : all) {
             assertThat(m.getAppUser().getUserId(), is(seeded.user1().getUserId()));
         }
+    }
+
+    @Test
+    void searchByName_withValidKeyword_returnsMatchingItems() {
+        Memory seed = seeded.memory1();
+        String keyword = seed.getTitle().substring(0, 3).toLowerCase(); // Test partial and case-insensitive match
+
+        List<Memory> results = memoryDAO.searchByName(keyword);
+
+        assertThat(results, not(empty()));
+        assertThat(results, hasItem(seed));
+    }
+
+    @Test
+    void searchByName_withNonExistentKeyword_returnsEmptyList() {
+        List<Memory> results = memoryDAO.searchByName("DoesNotExist12345");
+
+        assertThat(results, is(empty()));
     }
 
     @Test

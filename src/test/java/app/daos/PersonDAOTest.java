@@ -27,10 +27,7 @@ class PersonDAOTest {
         personDAO = new PersonDAO(emf);
     }
 
-    @AfterAll
-    void shutdown() {
-        emf.close();
-    }
+
 
     @Test
     void create() {

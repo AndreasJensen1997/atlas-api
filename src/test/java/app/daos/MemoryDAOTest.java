@@ -27,8 +27,6 @@ class MemoryDAOTest {
         memoryDAO = new MemoryDAO(emf);
     }
 
-
-
     @Test
     void create() {
         AppUser existingUser = seeded.user1();

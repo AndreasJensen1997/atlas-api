@@ -19,19 +19,7 @@ public class MemoryDAO extends UserOwnedDAO <Memory, Integer> {
     }
 
 
-    public Set<Memory> getAllMemoriesByUserId(int id) {
-        try (EntityManager em = emf.createEntityManager()) {
-            String jpql = "SELECT m FROM Memory m WHERE m.chapter.appUser.userId = :id";
 
-            TypedQuery<Memory> query = em.createQuery(jpql, Memory.class);
-            query.setParameter("id", id);
-
-            List<Memory> list = query.getResultList();
-            return new HashSet<>(list);
-        } catch (PersistenceException e) {
-            throw new ApiException(500, "Failed to retrieve memory list: " + e.getMessage());
-        }
-    }
 
 
 }

@@ -1,19 +1,16 @@
 package app.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import tools.jackson.databind.JsonNode;
 import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Map;
 
-public class APIReader {
+public class GeminiAPIReader {
 
     ObjectMapper objectMapper = new ObjectMapper();
 
@@ -53,15 +50,4 @@ public class APIReader {
         }
         return response.body();
     }
-
-    public <T> T getApiAsDTO(String url, Class<T> tclass) {
-        try {
-            JsonNode node = objectMapper.readTree(new URI(url).toURL().openStream());
-            return objectMapper.treeToValue(node, tclass);
-        } catch (URISyntaxException | IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
 }

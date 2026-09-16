@@ -30,7 +30,11 @@ public class Story implements LinkableEntity {
     // RELATIONS
 
 
-
+    // M:1
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    @Setter
+    private AppUser appUser;
 
     @Override
     public Integer getId() {

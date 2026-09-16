@@ -19,6 +19,8 @@ public class TimeCapsule {
     @Id
     @GeneratedValue
     Integer timeCapsuleId;
+    String title;
+    String subtitle;
     String content;
     LocalDate unlockDate;
     LocalDate dateOpened;

@@ -12,7 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class StoryDAO extends AbstractDAO<Story, Integer> {
+public class StoryDAO extends UserOwnedDAO <Story, Integer> {
 
     public StoryDAO(EntityManagerFactory emf) {
         super(emf, Story.class);

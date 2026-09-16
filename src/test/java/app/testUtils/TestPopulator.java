@@ -19,7 +19,7 @@ public final class TestPopulator {
     public record SeededData(
             AppUser user1, AppUser user2, AppUser user3,
             Chapter chapter1, Chapter chapter2, Chapter chapter3,
-            Artifact artifact1, Artifact artifact2, Artifact artifact3,
+            Artifact artifact1, Artifact artifact2, Artifact artifact3,Artifact artifact4,
             ArtifactType musicType, ArtifactType objectType, ArtifactType vehicleType,
             Fragment fragment1, Fragment fragment2, Fragment fragment3,
             EntityList entityList1,
@@ -74,6 +74,7 @@ public final class TestPopulator {
             Artifact artifact1 = Artifact.builder().title("I forget where we were").subtitle("ben howard album").content("my favourite album").createdAt(LocalDate.of(2026, 1, 1)).appUser(user1).artifactType(musicType).build();
             Artifact artifact2 = Artifact.builder().title("Magnus the teddy").subtitle("childhood teddy").content("my favourite teddy as a kid").createdAt(LocalDate.of(2022, 1, 1)).appUser(user2).artifactType(objectType).build();
             Artifact artifact3 = Artifact.builder().title("Red bike").subtitle("My first bike").content("my mom got me this for my third birthday").createdAt(LocalDate.of(2002, 1, 1)).appUser(user3).artifactType(vehicleType).build();
+            Artifact artifact4 = Artifact.builder().title("My first car").subtitle("car").content("first car").createdAt(LocalDate.of(2022, 1, 1)).appUser(user2).artifactType(vehicleType).build();
 
             em.persist(artifact1);
             em.persist(artifact2);
@@ -125,17 +126,17 @@ public final class TestPopulator {
             em.persist(place2);
             em.persist(place3);
 
-            Story story1 = Story.builder().title("First Story").subTitle("Beginning").content("Content of the first story...").startDate(LocalDate.of(2026, 1, 1)).endDate(LocalDate.of(2026, 1, 3)).build();
-            Story story2 = Story.builder().title("Second Story").subTitle("Middle").content("Content of the second story...").startDate(LocalDate.of(2026, 1, 4)).endDate(LocalDate.of(2026, 1, 6)).build();
-            Story story3 = Story.builder().title("Third Story").subTitle("End").content("Content of the third story...").startDate(LocalDate.of(2026, 1, 7)).endDate(LocalDate.of(2026, 1, 10)).build();
+            Story story1 = Story.builder().title("First Story").subTitle("Beginning").content("Content of the first story...").startDate(LocalDate.of(2026, 1, 1)).endDate(LocalDate.of(2026, 1, 3)).appUser(user1).build();
+            Story story2 = Story.builder().title("Second Story").subTitle("Middle").content("Content of the second story...").startDate(LocalDate.of(2026, 1, 4)).endDate(LocalDate.of(2026, 1, 6)).appUser(user2).build();
+            Story story3 = Story.builder().title("Third Story").subTitle("End").content("Content of the third story...").startDate(LocalDate.of(2026, 1, 7)).endDate(LocalDate.of(2026, 1, 10)).appUser(user3).build();
 
             em.persist(story1);
             em.persist(story2);
             em.persist(story3);
 
-            TimeCapsule timeCapsule1 = TimeCapsule.builder().content("Memory from 2024").unlockDate(LocalDate.of(2029,1,1)).lockStatus(false).appUser(user1).build();
-            TimeCapsule timeCapsule2 = TimeCapsule.builder().content("Open in 2030").unlockDate(LocalDate.of(2023,1,1)).lockStatus(true).appUser(user2).build();
-            TimeCapsule timeCapsule3 = TimeCapsule.builder().content("Open in 2050").unlockDate(LocalDate.of(2023,1,1)).lockStatus(true).appUser(user3).build();
+            TimeCapsule timeCapsule1 = TimeCapsule.builder().title("first capsule").subtitle("my first capsule").content("Memory from 2024").unlockDate(LocalDate.of(2029,1,1)).lockStatus(false).appUser(user1).build();
+            TimeCapsule timeCapsule2 = TimeCapsule.builder().title("second capsule").subtitle("my second capsule").content("Open in 2030").unlockDate(LocalDate.of(2023,1,1)).lockStatus(true).appUser(user2).build();
+            TimeCapsule timeCapsule3 = TimeCapsule.builder().title("third capsule").subtitle("my third capsule").content("Open in 2050").unlockDate(LocalDate.of(2023,1,1)).lockStatus(true).appUser(user3).build();
 
             em.persist(timeCapsule1);
             em.persist(timeCapsule2);
@@ -154,7 +155,7 @@ public final class TestPopulator {
 
             return new SeededData(user1, user2, user3,
                     chapter1, chapter2, chapter3,
-                    artifact1, artifact2, artifact3,
+                    artifact1, artifact2, artifact3, artifact4,
                     musicType, objectType, vehicleType,
                     fragment1, fragment2, fragment3,
                     entityList1,

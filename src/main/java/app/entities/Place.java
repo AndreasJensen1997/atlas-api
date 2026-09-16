@@ -17,7 +17,6 @@ import java.util.Set;
 @Builder
 public class Place implements LinkableEntity {
 
-
     @Id
     @GeneratedValue
     Integer placeId;
@@ -29,7 +28,6 @@ public class Place implements LinkableEntity {
     private String city;
     private String country;
     private LocalDate createdAt;
-
 
 
     // RELATIONS

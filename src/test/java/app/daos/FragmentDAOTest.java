@@ -83,6 +83,19 @@ class FragmentDAOTest {
     }
 
     @Test
+    void searchByName() {
+        Fragment seed = seeded.fragment1();
+        String keyword = seed.getTitle().substring(0, 3).toLowerCase();
+
+        List<Fragment> results = fragmentDAO.searchByName(keyword);
+
+        assertThat(results, not(empty()));
+        assertThat(results, hasItem(seed));
+    }
+
+
+
+    @Test
     void update() {
         Fragment seed = seeded.fragment2();
         AppUser newUser = seeded.user2();
@@ -163,5 +176,12 @@ class FragmentDAOTest {
     void delete_withMissingId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> fragmentDAO.delete(999_999));
         assertThat(ex.getCode(), is(404));
+    }
+
+    @Test
+    void searchByName_withNonExistentKeyword_returnsEmptyList() {
+        List<Fragment> results = fragmentDAO.searchByName("DoesNotExist12345");
+
+        assertThat(results, is(empty()));
     }
 }

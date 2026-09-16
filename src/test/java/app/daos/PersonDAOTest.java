@@ -33,11 +33,7 @@ class PersonDAOTest {
     void create() {
         AppUser existingUser = seeded.user1();
 
-        Person newPerson = Person.builder()
-                .name("Test Person")
-                .relation(Relation.FRIEND)
-                .appUser(existingUser)
-                .build();
+        Person newPerson = Person.builder().name("Test Person").relation(Relation.FRIEND).appUser(existingUser).build();
 
         Person created = personDAO.create(newPerson);
         Person fetched = personDAO.getById(created.getPersonId());
@@ -72,6 +68,17 @@ class PersonDAOTest {
         for (Person p : all) {
             assertThat(p.getAppUser().getUserId(), is(seeded.user1().getUserId()));
         }
+    }
+
+    @Test
+    void searchByName() {
+        Person seed = seeded.person1();
+        String keyword = seed.getName().substring(0, 3).toLowerCase();
+
+        List<Person> results = personDAO.searchByName(keyword);
+
+        assertThat(results, not(empty()));
+        assertThat(results, hasItem(seed));
     }
 
     @Test
@@ -149,5 +156,12 @@ class PersonDAOTest {
     void delete_withMissingId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> personDAO.delete(999_999));
         assertThat(ex.getCode(), is(404));
+    }
+
+    @Test
+    void searchByName_withNonExistentKeyword_returnsEmptyList() {
+        List<Person> results = personDAO.searchByName("DoesNotExist12345");
+
+        assertThat(results, is(empty()));
     }
 }

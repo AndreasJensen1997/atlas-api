@@ -7,6 +7,7 @@ import app.testUtils.TestPopulator;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.*;
 
+import java.sql.Time;
 import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
@@ -35,6 +36,8 @@ class TimeCapsuleDAOTest {
         AppUser existingUser = seeded.user1();
 
         TimeCapsule newCapsule = TimeCapsule.builder()
+                .title("secret message")
+                .subtitle("my first timecapsule")
                 .content("Secret message for the future")
                 .unlockDate(LocalDate.of(2029,1,1))
                 .lockStatus(true)
@@ -45,6 +48,8 @@ class TimeCapsuleDAOTest {
         TimeCapsule fetched = timeCapsuleDAO.getById(created.getTimeCapsuleId());
 
         assertThat(created.getTimeCapsuleId(), notNullValue());
+        assertThat(fetched.getTitle(), is("secret message"));
+        assertThat(fetched.getSubtitle(), is("my first timecapsule"));
         assertThat(fetched.getContent(), is("Secret message for the future"));
         assertThat(fetched.isLockStatus(), is(true));
         assertThat(fetched.getAppUser(), is(existingUser));
@@ -74,6 +79,19 @@ class TimeCapsuleDAOTest {
             assertThat(t.getAppUser().getUserId(), is(seeded.user1().getUserId()));
         }
     }
+
+    @Test
+    void searchByName() {
+        TimeCapsule seed = seeded.timeCapsule1();
+        String keyword = seed.getTitle().substring(0, 3).toLowerCase();
+
+        List<TimeCapsule> results = timeCapsuleDAO.searchByName(keyword);
+
+        assertThat(results, not(empty()));
+        assertThat(results, hasItem(seed));
+    }
+
+
 
     @Test
     void update() {
@@ -151,5 +169,12 @@ class TimeCapsuleDAOTest {
     void delete_withMissingId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> timeCapsuleDAO.delete(999_999));
         assertThat(ex.getCode(), is(404));
+    }
+
+    @Test
+    void searchByName_withNonExistentKeyword_returnsEmptyList() {
+        List<TimeCapsule> results = timeCapsuleDAO.searchByName("DoesNotExist12345");
+
+        assertThat(results, is(empty()));
     }
 }

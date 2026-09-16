@@ -72,9 +72,9 @@ class MemoryDAOTest {
     }
 
     @Test
-    void searchByName_withValidKeyword_returnsMatchingItems() {
+    void searchByName() {
         Memory seed = seeded.memory1();
-        String keyword = seed.getTitle().substring(0, 3).toLowerCase(); // Test partial and case-insensitive match
+        String keyword = seed.getTitle().substring(0, 3).toLowerCase();
 
         List<Memory> results = memoryDAO.searchByName(keyword);
 
@@ -82,12 +82,7 @@ class MemoryDAOTest {
         assertThat(results, hasItem(seed));
     }
 
-    @Test
-    void searchByName_withNonExistentKeyword_returnsEmptyList() {
-        List<Memory> results = memoryDAO.searchByName("DoesNotExist12345");
 
-        assertThat(results, is(empty()));
-    }
 
     @Test
     void update() {
@@ -164,5 +159,11 @@ class MemoryDAOTest {
     void delete_withMissingId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> memoryDAO.delete(999_999));
         assertThat(ex.getCode(), is(404));
+    }
+    @Test
+    void searchByName_withNonExistentKeyword_returnsEmptyList() {
+        List<Memory> results = memoryDAO.searchByName("DoesNotExist12345");
+
+        assertThat(results, is(empty()));
     }
 }

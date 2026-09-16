@@ -2,11 +2,13 @@ package app.daos;
 
 import app.config.HibernateTestConfig;
 import app.entities.AppUser;
+import app.entities.Artifact;
 import app.entities.Chapter;
 import app.exceptions.ApiException;
 import app.testUtils.TestPopulator;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.*;
+import org.testcontainers.shaded.org.checkerframework.checker.units.qual.C;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -82,6 +84,20 @@ class ChapterDAOTest {
            System.out.println(c.getAppUser().getUserId() + "-" +  seeded.user1().getUserId());
        }
    }
+
+    @Test
+    void searchByName() {
+        Chapter seed = seeded.chapter1();
+        String keyword = seed.getTitle().substring(0, 3).toLowerCase();
+
+        List<Chapter> results = chapterDAO.searchByName(keyword);
+
+        assertThat(results, not(empty()));
+        assertThat(results, hasItem(seed));
+    }
+
+
+
 
     @Test
     void update() {
@@ -164,5 +180,12 @@ class ChapterDAOTest {
     void delete_withMissingId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> chapterDAO.delete(999_999));
         assertThat(ex.getCode(), is(404));
+    }
+
+    @Test
+    void searchByName_withNonExistentKeyword_returnsEmptyList() {
+        List<Chapter> results = chapterDAO.searchByName("DoesNotExist12345");
+
+        assertThat(results, is(empty()));
     }
 }

@@ -1,10 +1,7 @@
 package app.daos;
 
 import app.config.HibernateTestConfig;
-import app.entities.AppUser;
-import app.entities.Artifact;
-import app.entities.ArtifactType;
-import app.entities.Chapter;
+import app.entities.*;
 import app.exceptions.ApiException;
 import app.testUtils.TestPopulator;
 import jakarta.persistence.EntityManagerFactory;
@@ -90,6 +87,29 @@ class ArtifactDAOTest {
     }
 
     @Test
+    void searchByName() {
+        Artifact seed = seeded.artifact1();
+        String keyword = seed.getTitle().substring(0, 3).toLowerCase();
+
+        List<Artifact> results = artifactDAO.searchByName(keyword);
+
+        assertThat(results, not(empty()));
+        assertThat(results, hasItem(seed));
+    }
+
+    @Test
+    void getArtifactsByType() {
+        Artifact seed = seeded.artifact1();
+        Integer userId = seed.getAppUser().getUserId();
+        Integer typeId = seed.getArtifactType().getArtifactTypeId();
+
+        List<Artifact> results = artifactDAO.getArtifactsByType(userId, typeId);
+
+        assertThat(results, hasSize(1));
+        assertThat(results, hasItem(seed));
+    }
+
+    @Test
     void update() {
         Artifact seed = seeded.artifact2();
         AppUser newUser = seeded.user2();
@@ -170,5 +190,22 @@ class ArtifactDAOTest {
     void delete_withMissingId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> artifactDAO.delete(999_999));
         assertThat(ex.getCode(), is(404));
+    }
+
+    @Test
+    void getArtifactsByType_withNonExistentType_returnsEmptyList() {
+        Artifact seed = seeded.artifact1();
+        Integer userId = seed.getAppUser().getUserId();
+
+        List<Artifact> results = artifactDAO.getArtifactsByType(userId, 999_999);
+
+        assertThat(results, is(empty()));
+    }
+
+    @Test
+    void searchByName_withNonExistentKeyword_returnsEmptyList() {
+        List<Artifact> results = artifactDAO.searchByName("DoesNotExist12345");
+
+        assertThat(results, is(empty()));
     }
 }

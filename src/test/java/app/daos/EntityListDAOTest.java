@@ -78,6 +78,18 @@ class EntityListDAOTest {
         }
     }
 
+
+    @Test
+    void searchByName() {
+        EntityList seed = seeded.entityList1();
+        String keyword = seed.getTitle().substring(0, 3).toLowerCase();
+
+        List<EntityList> results = entityListDAO.searchByName(keyword);
+
+        assertThat(results, not(empty()));
+        assertThat(results, hasItem(seed));
+    }
+
     @Test
     void update() {
         EntityList seed = seeded.entityList1();
@@ -182,5 +194,12 @@ class EntityListDAOTest {
     void delete_withMissingId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> entityListDAO.delete(999_999));
         assertThat(ex.getCode(), is(404));
+    }
+
+    @Test
+    void searchByName_withNonExistentKeyword_returnsEmptyList() {
+        List<EntityList> results = entityListDAO.searchByName("DoesNotExist12345");
+
+        assertThat(results, is(empty()));
     }
 }

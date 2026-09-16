@@ -84,6 +84,17 @@ class PlaceDAOTest {
     }
 
     @Test
+    void searchByName() {
+        Place seed = seeded.place1();
+        String keyword = seed.getName().substring(0, 3).toLowerCase();
+
+        List<Place> results = placeDAO.searchByName(keyword);
+
+        assertThat(results, not(empty()));
+        assertThat(results, hasItem(seed));
+    }
+
+    @Test
     void update() {
         Place seed = seeded.place1();
         AppUser newUser = seeded.user2();
@@ -145,10 +156,7 @@ class PlaceDAOTest {
 
     @Test
     void update_withMissingId_throwsApiException() {
-        Place missing = Place.builder()
-                .placeId(999_999)
-                .name("Missing")
-                .build();
+        Place missing = Place.builder().placeId(999_999).name("Missing").build();
 
         ApiException ex = assertThrows(ApiException.class, () -> placeDAO.update(missing));
         assertThat(ex.getCode(), is(404));
@@ -164,5 +172,12 @@ class PlaceDAOTest {
     void delete_withMissingId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> placeDAO.delete(999_999));
         assertThat(ex.getCode(), is(404));
+    }
+
+    @Test
+    void searchByName_withNonExistentKeyword_returnsEmptyList() {
+        List<Place> results = placeDAO.searchByName("DoesNotExist12345");
+
+        assertThat(results, is(empty()));
     }
 }

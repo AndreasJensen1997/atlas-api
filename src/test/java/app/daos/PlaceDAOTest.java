@@ -1,13 +1,13 @@
 package app.daos;
 
 import app.config.HibernateTestConfig;
+import app.daos.userOwned.PlaceDAO;
 import app.entities.*;
 import app.exceptions.ApiException;
 import app.testUtils.TestPopulator;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;

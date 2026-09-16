@@ -3,8 +3,8 @@ package app;
 import app.config.HibernateConfig;
 import app.daos.AppUserDAO;
 
-import app.daos.ChapterDAO;
-import app.daos.MentionDAO;
+import app.daos.userOwned.ChapterDAO;
+import app.daos.userOwned.MentionDAO;
 import app.entities.AppUser;
 import app.entities.Chapter;
 import app.entities.Mention;

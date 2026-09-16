@@ -1,6 +1,7 @@
 package app.daos;
 
 import app.config.HibernateTestConfig;
+import app.daos.userOwned.MentionDAO;
 import app.entities.*;
 import app.enums.TargetType;
 import app.exceptions.ApiException;

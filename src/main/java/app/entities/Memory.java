@@ -1,6 +1,7 @@
 package app.entities;
 
 
+import app.entities.generics.LinkableEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;

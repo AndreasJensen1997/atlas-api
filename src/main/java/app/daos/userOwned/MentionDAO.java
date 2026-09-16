@@ -1,5 +1,6 @@
-package app.daos;
+package app.daos.userOwned;
 
+import app.daos.generics.GenericDAO;
 import app.entities.Mention;
 import app.enums.TargetType;
 import jakarta.persistence.EntityManager;
@@ -8,7 +9,7 @@ import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
-public class MentionDAO extends AbstractDAO<Mention, Integer> {
+public class MentionDAO extends GenericDAO<Mention, Integer> {
 
 
     public MentionDAO(EntityManagerFactory emf) {

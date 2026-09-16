@@ -1,6 +1,5 @@
-package app.daos;
+package app.daos.generics;
 
-import app.entities.AppUser;
 import app.enums.TargetType;
 import app.exceptions.ApiException;
 import jakarta.persistence.EntityManager;
@@ -10,13 +9,13 @@ import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
-public abstract class AbstractDAO <T,I> implements IDAO <T,I> {
+public abstract class GenericDAO<T,I> implements IDAO<T,I> {
 
     protected EntityManagerFactory emf;
     protected Class<T> entityClass;
 
 
-    public AbstractDAO(EntityManagerFactory emf, Class<T> entityClass) {
+    public GenericDAO(EntityManagerFactory emf, Class<T> entityClass) {
         this.emf = emf;
         this.entityClass = entityClass;
     }

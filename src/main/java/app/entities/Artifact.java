@@ -1,14 +1,13 @@
 package app.entities;
 
 
+import app.entities.generics.LinkableEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDate;
-import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
 @NoArgsConstructor

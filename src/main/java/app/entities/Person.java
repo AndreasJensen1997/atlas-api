@@ -1,6 +1,7 @@
 package app.entities;
 
 
+import app.entities.generics.LinkableEntity;
 import app.enums.Relation;
 import jakarta.persistence.*;
 import lombok.*;

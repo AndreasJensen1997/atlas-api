@@ -1,6 +1,7 @@
 package app.daos;
 
 import app.config.HibernateTestConfig;
+import app.daos.userOwned.EntityListDAO;
 import app.entities.*;
 import app.exceptions.ApiException;
 import app.testUtils.TestPopulator;

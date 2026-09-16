@@ -1,8 +1,5 @@
-package app.daos;
+package app.daos.generics;
 
-import app.entities.Memory;
-import app.entities.Mention;
-import app.enums.TargetType;
 import app.exceptions.ApiException;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -10,9 +7,8 @@ import jakarta.persistence.PersistenceException;
 import jakarta.persistence.TypedQuery;
 
 import java.util.List;
-import java.util.Set;
 
-public class UserOwnedDAO<T,I> extends AbstractDAO <T, I> {
+public class UserOwnedDAO<T,I> extends GenericDAO<T, I> {
 
 
     protected UserOwnedDAO(EntityManagerFactory emf, Class<T> entityClass) {

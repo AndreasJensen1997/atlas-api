@@ -1,4 +1,4 @@
-package app.daos;
+package app.daos.generics;
 import java.util.List;
 
 

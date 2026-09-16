@@ -1,6 +1,7 @@
-package app.daos;
+package app.daos.userOwned;
 
 
+import app.daos.generics.UserOwnedDAO;
 import app.entities.Chapter;
 import jakarta.persistence.EntityManagerFactory;
 

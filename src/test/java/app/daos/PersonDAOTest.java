@@ -1,6 +1,7 @@
 package app.daos;
 
 import app.config.HibernateTestConfig;
+import app.daos.userOwned.PersonDAO;
 import app.entities.*;
 import app.enums.Relation;
 import app.exceptions.ApiException;

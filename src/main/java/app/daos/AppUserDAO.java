@@ -2,7 +2,12 @@ package app.daos;
 
 import app.daos.generics.GenericDAO;
 import app.entities.AppUser;
+import app.entities.Artifact;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.TypedQuery;
+
+import java.util.List;
 
 public class AppUserDAO extends GenericDAO<AppUser, Integer> {
 
@@ -10,6 +15,14 @@ public class AppUserDAO extends GenericDAO<AppUser, Integer> {
         super(emf, AppUser.class); // Passes both the factory and the entity class up
     }
 
-    // You only write custom methods here if AppUser needs
-    // something unique (like findByEmail), otherwise you are done!
+
+    public AppUser getUserByEmail(String email) {
+        try (EntityManager em = emf.createEntityManager()) {
+            String jpql = "SELECT a FROM AppUser a WHERE a.email = :email";
+            TypedQuery<AppUser> query = em.createQuery(jpql, AppUser.class);
+            query.setParameter("email", email);
+            return query.getResultStream().findFirst().orElse(null);
+        }
+    }
+
 }

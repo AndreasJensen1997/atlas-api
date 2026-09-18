@@ -1,50 +1,38 @@
 package app;
 
 import app.config.HibernateConfig;
+import app.controllers.UserController;
 import app.daos.AppUserDAO;
 
-import app.daos.userOwned.ChapterDAO;
-import app.daos.userOwned.MentionDAO;
-import app.dtos.GeminiResponseDTO;
 import app.dtos.UserLoginDTO;
 import app.dtos.UserRegistrationDTO;
-import app.entities.AppUser;
-import app.entities.Chapter;
-import app.entities.Mention;
-import app.enums.TargetType;
-import app.service.GeminiAPIReader;
-import app.service.UserService;
+import app.services.UserService;
+import io.javalin.Javalin;
 import jakarta.persistence.EntityManagerFactory;
-import tools.jackson.databind.ObjectMapper;
-
-import java.time.LocalDate;
 
 public class Main {
     public static void main(String[] args) {
 
+        // 1. Initialize Database
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
         AppUserDAO appUserDAO = new AppUserDAO(emf);
         UserService userService = new UserService(appUserDAO);
+        UserController userController = new UserController(userService);
 
-        UserRegistrationDTO user1 = new UserRegistrationDTO("Andreas", "andreas.jensen@outlook.dk", "12345678!", "12345678!");
-        UserRegistrationDTO user2 = new UserRegistrationDTO("Morten", "morten.h@outlook.dk", "12345678!", "12345678!");
-        UserLoginDTO userLoginDTO1 = new UserLoginDTO("morten.h@outlook.dk", "12345678!");
+        // 2. Start Javalin Server
+        Javalin app = Javalin.create(config -> {
+            config.bundledPlugins.enableCors(cors -> {
+                cors.addRule(it -> {
+                    it.anyHost();
+                });
+            });
+        }).start(7070);
 
-        userService.registerUser(user1);
-        userService.registerUser(user2);
+        // 3. Define API Routes
+        app.post("/api/register", userController::register);
+        app.post("/api/login", userController::login);
 
-
-        userService.login(userLoginDTO1);
-
-
-//
-//        GeminiAPIReader reader = new GeminiAPIReader();
-//        ObjectMapper mapper = new ObjectMapper();
-//
-//        System.out.println(reader.askGemini("give me an idea of something i can write about in my journal"));
-
-
-        emf.close();
+        System.out.println("Atlas API is running on http://localhost:7070");
 
 
     }

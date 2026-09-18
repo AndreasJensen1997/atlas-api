@@ -1,8 +1,8 @@
-package app.service;
+package app.services;
 
 import app.dtos.GeminiResponseDTO;
-import tools.jackson.databind.ObjectMapper;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -18,7 +18,7 @@ public class GeminiAPIReader {
     String apiKey = System.getenv("GEMINI_API_KEY");
 
 
-    public String geminiRequest(String prompt) {
+    public String geminiRequest(String prompt) throws JsonProcessingException {
         Map<String, Object> body = Map.of(
                 "contents", List.of(
                         Map.of("parts", List.of(
@@ -52,7 +52,7 @@ public class GeminiAPIReader {
         return response.body();
     }
 
-    public String askGemini(String userInput) {
+    public String askGemini(String userInput) throws JsonProcessingException {
         String rawJson = geminiRequest(userInput);
 
         try {

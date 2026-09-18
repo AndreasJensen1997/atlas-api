@@ -1,4 +1,4 @@
-package app.service;
+package app.services;
 
 import app.daos.AppUserDAO;
 import app.dtos.UserLoginDTO;

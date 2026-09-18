@@ -1,5 +1,6 @@
 package app.entities;
 
+import app.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -20,7 +21,8 @@ public class AppUser {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
     private String name;
-
+    @Enumerated(EnumType.STRING)
+    private Role role; // ADMIN or USER
     private String email;
     private String password;
 

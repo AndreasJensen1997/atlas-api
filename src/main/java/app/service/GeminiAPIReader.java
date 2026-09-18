@@ -1,5 +1,6 @@
 package app.service;
 
+import app.dtos.GeminiResponseDTO;
 import tools.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
@@ -49,5 +50,18 @@ public class GeminiAPIReader {
             throw new RuntimeException(e);
         }
         return response.body();
+    }
+
+    public String askGemini(String userInput) {
+        String rawJson = geminiRequest(userInput);
+
+        try {
+            GeminiResponseDTO responseDto = objectMapper.readValue(rawJson, GeminiResponseDTO.class);
+
+            return responseDto.candidates().get(0).content().parts().get(0).text();
+
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to parse Gemini response: " + e.getMessage(), e);
+        }
     }
 }

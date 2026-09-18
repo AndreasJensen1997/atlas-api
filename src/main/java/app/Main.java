@@ -5,12 +5,17 @@ import app.daos.AppUserDAO;
 
 import app.daos.userOwned.ChapterDAO;
 import app.daos.userOwned.MentionDAO;
+import app.dtos.GeminiResponseDTO;
+import app.dtos.UserLoginDTO;
+import app.dtos.UserRegistrationDTO;
 import app.entities.AppUser;
 import app.entities.Chapter;
 import app.entities.Mention;
 import app.enums.TargetType;
 import app.service.GeminiAPIReader;
+import app.service.UserService;
 import jakarta.persistence.EntityManagerFactory;
+import tools.jackson.databind.ObjectMapper;
 
 import java.time.LocalDate;
 
@@ -18,48 +23,26 @@ public class Main {
     public static void main(String[] args) {
 
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
+        AppUserDAO appUserDAO = new AppUserDAO(emf);
+        UserService userService = new UserService(appUserDAO);
 
-//        AppUserDAO appUserDAO = new AppUserDAO(emf);
-//        ChapterDAO chapterDAO = new ChapterDAO(emf);
-//        MentionDAO mentionDAO = new MentionDAO(emf);
+        UserRegistrationDTO user1 = new UserRegistrationDTO("Andreas", "andreas.jensen@outlook.dk", "12345678!", "12345678!");
+        UserRegistrationDTO user2 = new UserRegistrationDTO("Morten", "morten.h@outlook.dk", "12345678!", "12345678!");
+        UserLoginDTO userLoginDTO1 = new UserLoginDTO("morten.h@outlook.dk", "12345678!");
+
+        userService.registerUser(user1);
+        userService.registerUser(user2);
+
+
+        userService.login(userLoginDTO1);
+
+
 //
-//        AppUser andreas = AppUser.builder().name("andreas").email("andreas.jensen@outlook.dk").password("1234").build();
-//        Chapter chapter1 = Chapter.builder().title("years in china").subtitle("my time in china in school").startDate(LocalDate.of(2012,1,1)).endDate(LocalDate.of(2014,1,1)).appUser(andreas).build();
-//        Chapter chapter2 = Chapter.builder().title("years in japan").subtitle("my solo trip to japan").startDate(LocalDate.of(2020,1,1)).endDate(LocalDate.of(2014,1,1)).appUser(andreas).build();
+//        GeminiAPIReader reader = new GeminiAPIReader();
+//        ObjectMapper mapper = new ObjectMapper();
 //
-//        appUserDAO.create(andreas);
-//        chapterDAO.create(chapter1);
-//        chapterDAO.create(chapter2);
-//
-//        Mention mention = Mention.builder()
-//                .ownerId(chapter1.getChapterId())
-//                .ownerType(TargetType.CHAPTER)
-//                .startIndex(2)
-//                .endIndex(10)
-//                .selectedText("Text")
-//                .targetId(chapter2.getChapterId())
-//                .targetType(TargetType.CHAPTER)
-//                .build();
-//
-//        mentionDAO.create(mention);
-//
-//        System.out.println(mention);
+//        System.out.println(reader.askGemini("give me an idea of something i can write about in my journal"));
 
-
-        GeminiAPIReader reader = new GeminiAPIReader();
-
-        String prompt = "Give me a short description of java threads";
-        System.out.println("Sending request to Gemini...");
-
-        try {
-            String response = reader.geminiRequest(prompt);
-            System.out.println("\nResponse from Gemini:");
-            System.out.println(response);
-
-        } catch (Exception e) {
-            System.err.println("An error occurred while testing the API:");
-            e.printStackTrace();
-        }
 
         emf.close();
 

@@ -3,11 +3,13 @@ package app.daos;
 import app.config.HibernateTestConfig;
 import app.daos.userOwned.MemoryDAO;
 import app.entities.*;
+import app.enums.Visibility;
 import app.exceptions.ApiException;
 import app.testUtils.TestPopulator;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -43,6 +45,7 @@ class MemoryDAOTest {
         assertThat(created.getMemoryId(), notNullValue());
         assertThat(fetched.getTitle(), is("Test Memory"));
         assertThat(fetched.getContent(), is("Test memory content"));
+        assertThat(fetched.getVisibility(), is(Visibility.PRIVATE));
         assertThat(fetched.getAppUser(), is(existingUser));
     }
 
@@ -101,6 +104,7 @@ class MemoryDAOTest {
         assertThat(result.getMemoryId(), is(seed.getMemoryId()));
         assertThat(result.getTitle(), is("Updated memory title"));
         assertThat(result.getContent(), is("Updated memory content"));
+        assertThat(result.getUpdatedAt(), is(LocalDate.now()));
         assertThat(result.getAppUser(), is(newUser));
     }
 

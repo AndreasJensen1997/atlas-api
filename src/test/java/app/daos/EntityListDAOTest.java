@@ -3,6 +3,7 @@ package app.daos;
 import app.config.HibernateTestConfig;
 import app.daos.userOwned.EntityListDAO;
 import app.entities.*;
+import app.enums.Visibility;
 import app.exceptions.ApiException;
 import app.testUtils.TestPopulator;
 import jakarta.persistence.EntityManagerFactory;
@@ -47,6 +48,7 @@ class EntityListDAOTest {
         assertThat(created.getListId(), notNullValue());
         assertThat(fetched.getTitle(), is("Test entityList"));
         assertThat(fetched.getSubtitle(), is("Test entityList subtitle"));
+        assertThat(fetched.getVisibility(), is(Visibility.PRIVATE));
         assertThat(fetched.getItems().size(), is(3));
         assertThat(fetched.getCreatedAt(), is(LocalDate.now()));
         assertThat(fetched.getAppUser(), is(existingUser));
@@ -108,6 +110,7 @@ class EntityListDAOTest {
         assertThat(result.getListId(), is(seed.getListId()));
         assertThat(result.getTitle(), is("updated title"));
         assertThat(result.getSubtitle(), is("updated subtitle"));
+        assertThat(result.getUpdatedAt(), is(LocalDate.now()));
         assertThat(result.getAppUser(), is(newUser));
     }
 

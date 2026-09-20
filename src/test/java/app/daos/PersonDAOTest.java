@@ -4,11 +4,13 @@ import app.config.HibernateTestConfig;
 import app.daos.userOwned.PersonDAO;
 import app.entities.*;
 import app.enums.Relation;
+import app.enums.Visibility;
 import app.exceptions.ApiException;
 import app.testUtils.TestPopulator;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -42,6 +44,7 @@ class PersonDAOTest {
         assertThat(created.getPersonId(), notNullValue());
         assertThat(fetched.getName(), is("Test Person"));
         assertThat(fetched.getRelation(), is(Relation.FRIEND));
+        assertThat(fetched.getVisibility(), is(Visibility.PRIVATE));
         assertThat(fetched.getAppUser(), is(existingUser));
     }
 
@@ -99,6 +102,7 @@ class PersonDAOTest {
         assertThat(result.getPersonId(), is(seed.getPersonId()));
         assertThat(result.getName(), is("Updated Person Name"));
         assertThat(result.getRelation(), is(Relation.MOTHER));
+        assertThat(result.getUpdatedAt(), is(LocalDate.now()));
         assertThat(result.getAppUser(), is(newUser));
     }
 

@@ -4,6 +4,7 @@ import app.config.HibernateTestConfig;
 import app.daos.userOwned.ChapterDAO;
 import app.entities.AppUser;
 import app.entities.Chapter;
+import app.enums.Visibility;
 import app.exceptions.ApiException;
 import app.testUtils.TestPopulator;
 import jakarta.persistence.EntityManagerFactory;
@@ -51,6 +52,7 @@ class ChapterDAOTest {
         assertThat(fetched.getTitle(), is("China"));
         assertThat(fetched.getSubtitle(), is("My two year exchange in china"));
         assertThat(fetched.getContent(), is("This will cover my years in china"));
+        assertThat(fetched.getVisibility(), is(Visibility.PRIVATE));
         assertThat(fetched.getStartDate(), is(LocalDate.of(2012,1,1)));
         assertThat(fetched.getEndDate(), is(LocalDate.of(2014,1,1)));
     }
@@ -119,6 +121,7 @@ class ChapterDAOTest {
         assertThat(result.getTitle(), is("updated title"));
         assertThat(result.getSubtitle(), is("updated subtitle"));
         assertThat(result.getContent(), is("updated content"));
+        assertThat(result.getUpdatedAt(), is(LocalDate.now()));
         assertThat(result.getStartDate(), is(LocalDate.of(2004,1,1)));
         assertThat(result.getEndDate(), is(LocalDate.of(2005,1,1)));
     }

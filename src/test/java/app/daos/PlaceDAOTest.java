@@ -3,11 +3,13 @@ package app.daos;
 import app.config.HibernateTestConfig;
 import app.daos.userOwned.PlaceDAO;
 import app.entities.*;
+import app.enums.Visibility;
 import app.exceptions.ApiException;
 import app.testUtils.TestPopulator;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -52,6 +54,7 @@ class PlaceDAOTest {
         assertThat(fetched.getLatitude(), is(55.6761));
         assertThat(fetched.getLongitude(), is(12.5683));
         assertThat(fetched.getAddress(), is("Rådhuspladsen 1"));
+        assertThat(fetched.getVisibility(), is(Visibility.PRIVATE));
         assertThat(fetched.getCity(), is("Copenhagen"));
         assertThat(fetched.getCountry(), is("Denmark"));
         assertThat(fetched.getAppUser(), is(existingUser));
@@ -117,6 +120,7 @@ class PlaceDAOTest {
         assertThat(result.getName(), is("Updated Place Name"));
         assertThat(result.getContent(), is("Updated content"));
         assertThat(result.getCity(), is("Aarhus"));
+        assertThat(result.getUpdatedAt(), is(LocalDate.now()));
         assertThat(result.getAppUser(), is(newUser));
     }
 

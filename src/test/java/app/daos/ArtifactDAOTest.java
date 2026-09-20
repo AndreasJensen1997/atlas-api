@@ -131,6 +131,7 @@ class ArtifactDAOTest {
         assertThat(result.getTitle(), is("updated title"));
         assertThat(result.getSubtitle(), is("updated subtitle"));
         assertThat(result.getContent(), is("updated content"));
+        assertThat(result.getUpdatedAt(), is(LocalDate.now()));
         assertThat(result.getCreatedAt(), is(LocalDate.of(2002,1,1)));
         assertThat(result.getArtifactType(), is(seeded.musicType()));
     }

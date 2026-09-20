@@ -3,6 +3,7 @@ package app.daos;
 import app.config.HibernateTestConfig;
 import app.daos.userOwned.StoryDAO;
 import app.entities.*;
+import app.enums.Visibility;
 import app.exceptions.ApiException;
 import app.testUtils.TestPopulator;
 import jakarta.persistence.EntityManagerFactory;
@@ -50,6 +51,7 @@ class StoryDAOTest {
         assertThat(fetched.getTitle(), is("Test Story"));
         assertThat(fetched.getSubTitle(), is("Test Subtitle"));
         assertThat(fetched.getContent(), is("Test story content"));
+        assertThat(fetched.getVisibility(), is(Visibility.PRIVATE));
         assertThat(fetched.getStartDate(), is(LocalDate.of(2026, 1, 1)));
         assertThat(fetched.getEndDate(), is(LocalDate.of(2026, 1, 5)));
     }
@@ -112,6 +114,7 @@ class StoryDAOTest {
         assertThat(result.getTitle(), is("Updated Story Title"));
         assertThat(result.getSubTitle(), is("Updated Subtitle"));
         assertThat(result.getContent(), is("Updated content"));
+        assertThat(result.getUpdatedAt(), is(LocalDate.now()));
         assertThat(result.getStartDate(), is(LocalDate.of(2026, 2, 1)));
         assertThat(result.getEndDate(), is(LocalDate.of(2026, 2, 10)));
     }

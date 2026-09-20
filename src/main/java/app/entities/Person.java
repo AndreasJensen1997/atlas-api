@@ -3,10 +3,12 @@ package app.entities;
 
 import app.entities.generics.LinkableEntity;
 import app.enums.Relation;
+import app.enums.Visibility;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 
@@ -27,6 +29,15 @@ public class Person implements LinkableEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     Relation relation;
+    @Enumerated(EnumType.STRING)
+    private Visibility visibility;
+    LocalDate createdAt;
+    LocalDate updatedAt;
+
+    @Override
+    public Integer getId() {
+        return personId;
+    }
 
     // RELATIONS
 
@@ -37,13 +48,37 @@ public class Person implements LinkableEntity {
     AppUser appUser;
 
 
-
-
-
-    @Override
-    public Integer getId() {
-        return personId;
+    // ===== JPA LIFECYCLE CALLBACKS =====
+    @PrePersist
+    protected void onCreate() {
+     setCreatedDate();
+     setDefaultVisibility();
     }
+
+    @PreUpdate
+    protected void onUpdate() {
+        setUpdatedDate();
+    }
+
+    public void setCreatedDate() {
+        if (this.createdAt == null) {
+            this.createdAt = LocalDate.now();
+        }
+    }
+
+    public void setUpdatedDate() {
+        if (this.updatedAt == null) {
+            this.updatedAt = LocalDate.now();
+        }
+    }
+
+    public void setDefaultVisibility () {
+        if (this.visibility == null) {
+            this.visibility = Visibility.PRIVATE;
+        }
+    }
+
+    // ===== EQUALS & HASHCODE =====
 
     @Override
     public final boolean equals(Object o) {

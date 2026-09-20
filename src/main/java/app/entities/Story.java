@@ -2,6 +2,7 @@ package app.entities;
 
 
 import app.entities.generics.LinkableEntity;
+import app.enums.Visibility;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -25,9 +26,17 @@ public class Story implements LinkableEntity {
     String content;
     LocalDate startDate;
     LocalDate endDate;
+    LocalDate createdAt;
+    LocalDate updatedAt;
+    @Enumerated(EnumType.STRING)
+    private Visibility visibility;
+
+    @Override
+    public Integer getId() {
+        return storyId;
+    }
 
     // RELATIONS
-
 
     // M:1
     @ManyToOne(optional = false)
@@ -35,10 +44,37 @@ public class Story implements LinkableEntity {
     @Setter
     private AppUser appUser;
 
-    @Override
-    public Integer getId() {
-        return storyId;
+    // ===== JPA LIFECYCLE CALLBACKS =====
+    @PrePersist
+    protected void onCreate() {
+        setCreatedDate();
+        setDefaultVisibility();
     }
+
+    @PreUpdate
+    protected void onUpdate() {
+        setUpdatedDate();
+    }
+
+    public void setCreatedDate() {
+        if (this.createdAt == null) {
+            this.createdAt = LocalDate.now();
+        }
+    }
+
+    public void setUpdatedDate() {
+        if (this.updatedAt == null) {
+            this.updatedAt = LocalDate.now();
+        }
+    }
+
+    public void setDefaultVisibility() {
+        if (this.visibility == null) {
+            this.visibility = Visibility.PRIVATE;
+        }
+    }
+
+    // ===== EQUALS & HASHCODE =====
 
     @Override
     public final boolean equals(Object o) {
@@ -57,7 +93,6 @@ public class Story implements LinkableEntity {
     }
 
 
-
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer()
@@ -66,8 +101,4 @@ public class Story implements LinkableEntity {
 
 
     }
-
-
-
-
 }

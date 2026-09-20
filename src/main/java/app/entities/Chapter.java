@@ -1,6 +1,7 @@
 package app.entities;
 
 import app.entities.generics.LinkableEntity;
+import app.enums.Visibility;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -24,6 +25,15 @@ public class Chapter implements LinkableEntity {
     private String content;
     private LocalDate startDate;
     private LocalDate endDate;
+    private LocalDate createdAt;
+    private LocalDate updatedAt;
+    @Enumerated(EnumType.STRING)
+    private Visibility visibility;
+
+    @Override
+    public Integer getId() {
+        return chapterId;
+    }
 
 
     // ===== RELATIONS =====
@@ -33,11 +43,33 @@ public class Chapter implements LinkableEntity {
     @Setter
     private AppUser appUser;
 
+    // ===== JPA LIFECYCLE CALLBACKS =====
+    @PrePersist
+    protected void onCreate() {
+        setCreatedDate();
+        setDefaultVisibility();
+    }
 
+    @PreUpdate
+    protected void onUpdate() {
+        setUpdatedDate();
+    }
 
-    @Override
-    public Integer getId() {
-        return chapterId;
+    public void setDefaultVisibility (){
+        if (this.visibility == null){
+            this.visibility = Visibility.PRIVATE;
+        }
+    }
+    public void setCreatedDate() {
+        if (this.createdAt == null) {
+            this.createdAt = LocalDate.now();
+        }
+    }
+
+    public void setUpdatedDate() {
+        if (this.updatedAt == null) {
+            this.updatedAt = LocalDate.now();
+        }
     }
 
     // ===== EQUALS & HASHCODE =====

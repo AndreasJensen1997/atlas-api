@@ -2,6 +2,7 @@ package app.entities;
 
 
 import app.entities.generics.LinkableEntity;
+import app.enums.Visibility;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -25,6 +26,9 @@ public class Artifact implements LinkableEntity {
     private String subtitle;
     private String content;
     private LocalDate createdAt;
+    private LocalDate updatedAt;
+    @Enumerated(EnumType.STRING)
+    private Visibility visibility;
 
 
     // ===== RELATIONS =====
@@ -48,9 +52,31 @@ public class Artifact implements LinkableEntity {
 
     // ===== JPA LIFECYCLE CALLBACKS =====
     @PrePersist
-    public void setDefaultDate() {
+    protected void onCreate() {
+        setCreatedDate();
+        setDefaultVisibility();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        setUpdatedDate();
+    }
+
+    public void setCreatedDate() {
         if (this.createdAt == null) {
             this.createdAt = LocalDate.now();
+        }
+    }
+
+    public void setUpdatedDate() {
+        if (this.updatedAt == null) {
+            this.updatedAt = LocalDate.now();
+        }
+    }
+
+    public void setDefaultVisibility() {
+        if (this.visibility == null) {
+            this.visibility = Visibility.PRIVATE;
         }
     }
 

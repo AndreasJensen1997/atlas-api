@@ -1,5 +1,6 @@
 package app.entities;
 
+import app.enums.Visibility;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -26,14 +27,18 @@ public class EntityList {
     private LocalDate createdAt;
     private LocalDate updatedAt;
     private int itemAmount;
+    @Enumerated(EnumType.STRING)
+    private Visibility visibility;
 
-    // RELATIONS //
+    // ===== RELATIONS =====
 
+    // M:1
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @Setter
     private AppUser appUser;
 
+    // 1:M
     @OneToMany(mappedBy = "entityList", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @Builder.Default
     @ToString.Exclude
@@ -46,6 +51,7 @@ public class EntityList {
         createdAt = LocalDate.now();
         updatedAt = LocalDate.now();
         calculateEntityAmount();
+        setDefaultVisibility();
     }
 
     @PreUpdate
@@ -59,6 +65,12 @@ public class EntityList {
             this.itemAmount = 0;
         } else {
             this.itemAmount = items.size();
+        }
+    }
+
+    public void setDefaultVisibility (){
+        if (this.visibility == null){
+            this.visibility = Visibility.PRIVATE;
         }
     }
 

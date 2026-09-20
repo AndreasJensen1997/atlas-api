@@ -27,7 +27,7 @@ public class AppUser {
     private String password;
 
 
-    // RELATIONS
+    // ===== RELATIONS =====
 
     // 1:M
     @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -78,14 +78,22 @@ public class AppUser {
 
 
     // ===== JPA LIFECYCLE CALLBACKS =====
+
     @PrePersist
+    protected void onCreate() {
+        normalizeEmail();
+    }
+
     @PreUpdate
+    protected void onUpdate() {
+
+    }
+
     public void normalizeEmail() {
         if (email != null) {
             this.email = email.trim().toLowerCase();
         }
     }
-
 
 
     // ===== EQUALS & HASHCODE =====

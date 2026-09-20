@@ -1,6 +1,7 @@
 package app.entities;
 
 import app.entities.generics.LinkableEntity;
+import app.enums.Visibility;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -25,6 +26,10 @@ public class Fragment implements LinkableEntity {
     LocalDate updatedAt;
     int wordCount;
 
+    @Override
+    public Integer getId() {
+        return fragmentId;
+    }
 
     // ===== RELATIONS =====
 
@@ -35,25 +40,16 @@ public class Fragment implements LinkableEntity {
     AppUser appUser;
 
 
-    @Override
-    public Integer getId() {
-        return fragmentId;
-    }
-
     // ===== JPA LIFECYCLE CALLBACKS =====
-
     @PrePersist
     protected void onCreate() {
-        if (createdAt == null) {
-            createdAt = LocalDate.now();
-        }
-        updatedAt = LocalDate.now();
+        setCreatedDate();
         calculateWordCount();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        updatedAt = LocalDate.now();
+        setUpdatedDate();
         calculateWordCount();
     }
 
@@ -65,6 +61,17 @@ public class Fragment implements LinkableEntity {
         }
     }
 
+    public void setCreatedDate() {
+        if (this.createdAt == null) {
+            this.createdAt = LocalDate.now();
+        }
+    }
+
+    public void setUpdatedDate() {
+        if (this.updatedAt == null) {
+            this.updatedAt = LocalDate.now();
+        }
+    }
 
     // ===== EQUALS & HASHCODE =====
     @Override

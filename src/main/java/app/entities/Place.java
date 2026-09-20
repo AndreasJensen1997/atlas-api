@@ -1,6 +1,7 @@
 package app.entities;
 
 import app.entities.generics.LinkableEntity;
+import app.enums.Visibility;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -26,8 +27,18 @@ public class Place implements LinkableEntity {
     private String address;
     private String city;
     private String country;
-    private LocalDate createdAt;
+    LocalDate createdAt;
+    LocalDate updatedAt;
+    @Enumerated(EnumType.STRING)
+    private Visibility visibility;
 
+
+
+
+    @Override
+    public Integer getId() {
+        return placeId;
+    }
 
     // RELATIONS
 
@@ -37,13 +48,36 @@ public class Place implements LinkableEntity {
     @Setter
     AppUser appUser;
 
-
-
-    @Override
-    public Integer getId() {
-        return placeId;
+    // ===== JPA LIFECYCLE CALLBACKS =====
+    @PrePersist
+    protected void onCreate() {
+        setCreatedDate();
+        setDefaultVisibility();
     }
 
+    @PreUpdate
+    protected void onUpdate() {
+        setUpdatedDate();
+    }
+
+    public void setCreatedDate() {
+        if (this.createdAt == null) {
+            this.createdAt = LocalDate.now();
+        }
+    }
+
+    public void setUpdatedDate() {
+        if (this.updatedAt == null) {
+            this.updatedAt = LocalDate.now();
+        }
+    }
+
+    public void setDefaultVisibility () {
+        if (this.visibility == null) {
+            this.visibility = Visibility.PRIVATE;
+        }
+    }
+    // ===== EQUALS & HASHCODE =====
 
     @Override
     public final boolean equals(Object o) {

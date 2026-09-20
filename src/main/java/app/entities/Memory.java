@@ -2,6 +2,7 @@ package app.entities;
 
 
 import app.entities.generics.LinkableEntity;
+import app.enums.Visibility;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -26,10 +27,19 @@ public class Memory implements LinkableEntity {
     String subTitle;
     String content;
     LocalDate date;
+    LocalDate createdAt;
+    LocalDate updatedAt;
+    @Enumerated(EnumType.STRING)
+    private Visibility visibility;
 
 
-    // RELATIONS
+    @Override
+    public Integer getId() {
+        return memoryId;
+    }
 
+
+    // ===== RELATIONS =====
 
     // M:1
     @ManyToOne(optional = false)
@@ -38,11 +48,37 @@ public class Memory implements LinkableEntity {
     private AppUser appUser;
 
 
-    @Override
-    public Integer getId() {
-        return memoryId;
+    // ===== JPA LIFECYCLE CALLBACKS =====
+    @PrePersist
+    protected void onCreate() {
+        setDefaultVisibility();
+        setCreatedDate();
     }
 
+    @PreUpdate
+    protected void onUpdate() {
+        setUpdatedDate();
+    }
+
+    public void setDefaultVisibility() {
+        if (this.visibility == null) {
+            this.visibility = Visibility.PRIVATE;
+        }
+    }
+
+    public void setCreatedDate() {
+        if (this.createdAt == null) {
+            this.createdAt = LocalDate.now();
+        }
+    }
+
+    public void setUpdatedDate() {
+        if (this.updatedAt == null) {
+            this.updatedAt = LocalDate.now();
+        }
+    }
+
+    // ===== EQUALS & HASHCODE =====
 
     @Override
     public final boolean equals(Object o) {
@@ -59,7 +95,6 @@ public class Memory implements LinkableEntity {
         Memory memory = (Memory) o;
         return getMemoryId() != null && Objects.equals(getMemoryId(), memory.getMemoryId());
     }
-
 
 
     @Override

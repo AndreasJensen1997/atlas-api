@@ -1,6 +1,6 @@
 package app.config;
 
-import app.utils.Utils;
+import app.utils.General.Utils;
 import jakarta.persistence.EntityManagerFactory;
 
 import java.util.Properties;

@@ -1,4 +1,4 @@
-package app.utils;
+package app.utils.Validation;
 
 import app.dtos.UserRegistrationDTO;
 import java.util.ArrayList;

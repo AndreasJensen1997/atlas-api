@@ -3,7 +3,7 @@ package app.daos;
 import app.config.HibernateTestConfig;
 import app.daos.userOwned.ArtifactDAO;
 import app.entities.*;
-import app.exceptions.ApiException;
+import app.enums.Visibility;import app.exceptions.ApiException;
 import app.testUtils.TestPopulator;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.*;
@@ -53,6 +53,7 @@ class ArtifactDAOTest {
         assertThat(fetched.getSubtitle(), is("ben howard album"));
         assertThat(fetched.getContent(), is("my favourite album of all time"));
         assertThat(fetched.getCreatedAt(), is(LocalDate.of(2012, 1, 1)));
+        assertThat(fetched.getVisibility(), is(Visibility.PRIVATE));
         assertThat(fetched.getAppUser(), is(existingUser));
         assertThat(fetched.getArtifactType().getArtifactTypeId(), is(existingArtifactType.getArtifactTypeId()));
     }

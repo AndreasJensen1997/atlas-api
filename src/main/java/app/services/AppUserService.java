@@ -44,6 +44,9 @@ public class AppUserService {
 
         AppUser user = userDao.getUserByEmail(appUserLoginDTO.email());
 
+        System.out.println("Email from login: " + appUserLoginDTO.email());
+        System.out.println("User found: " + user);
+
         if (user == null) {
             throw new IllegalArgumentException("Invalid email or password.");
         }

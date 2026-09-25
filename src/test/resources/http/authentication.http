@@ -1,0 +1,23 @@
+POST localhost:7070/api/auth/register
+Accept: application/json
+Content-Type:application/json
+
+{
+  "name": "andreas",
+  "email": "Andreas@live.dk",
+  "password": "12345678!",
+  "passwordCheck": "12345678!"
+}
+
+###
+
+POST localhost:7070/api/auth/login
+Accept: application/json
+Content-Type:application/json
+
+{
+  "email": "andreas@live.dk",
+  "password": "12345678!"
+}
+
+

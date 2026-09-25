@@ -1,8 +1,13 @@
 package app.services;
 
-import app.dtos.GeminiResponseDTO;
+import app.daos.userOwned.GeminiPromptDAO;
+import app.dtos.GeminiPrompt.GeminiResponseDTO;
+import app.entities.AppUser;
+import app.entities.GeminiPrompt;
+import app.mappers.GeminiPromptMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -11,12 +16,16 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Map;
 
-public class GeminiAPIReader {
+public class GeminiPromptService {
 
     ObjectMapper objectMapper = new ObjectMapper();
+    private final GeminiPromptDAO geminiPromptDAO;
 
     String apiKey = System.getenv("GEMINI_API_KEY");
 
+    public GeminiPromptService(GeminiPromptDAO geminiPromptDAO) {
+        this.geminiPromptDAO = geminiPromptDAO;
+    }
 
     public String geminiRequest(String prompt) throws JsonProcessingException {
         Map<String, Object> body = Map.of(
@@ -58,10 +67,24 @@ public class GeminiAPIReader {
         try {
             GeminiResponseDTO responseDto = objectMapper.readValue(rawJson, GeminiResponseDTO.class);
 
-            return responseDto.candidates().get(0).content().parts().get(0).text();
+            GeminiPrompt tempPrompt = GeminiPromptMapper.toEntity(responseDto);
+
+            if (tempPrompt == null || tempPrompt.getContent() == null) {
+                throw new RuntimeException("Could not extract text from Gemini response.");
+            }
+            return tempPrompt.getContent();
 
         } catch (Exception e) {
             throw new RuntimeException("Failed to parse Gemini response: " + e.getMessage(), e);
         }
+    }
+
+    public GeminiPrompt savePromptText(String textContent, AppUser user) {
+        GeminiPrompt prompt = GeminiPrompt.builder()
+                .content(textContent)
+                .appUser(user)
+                .build();
+
+        return geminiPromptDAO.create(prompt);
     }
 }

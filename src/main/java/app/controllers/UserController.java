@@ -1,30 +1,31 @@
 package app.controllers;
 
-import app.dtos.UserLoginDTO;
-import app.dtos.UserRegistrationDTO;
+import app.dtos.AppUser.AppUserLoginDTO;
+import app.dtos.AppUser.AppUserRegistrationDTO;
+import app.dtos.AppUser.APPUserResponseDTO;
 import app.entities.AppUser;
-import app.services.UserService;
+import app.mappers.AppUserMapper;
+import app.services.AppUserService;
 import io.javalin.http.Context;
 import java.util.Map;
 
 public class UserController {
 
-    private final UserService userService;
+    private final AppUserService appUserService;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController(AppUserService appUserService) {
+        this.appUserService = appUserService;
     }
 
     public void register(Context ctx) {
         try {
-            UserRegistrationDTO dto = ctx.bodyAsClass(UserRegistrationDTO.class);
-            AppUser registeredUser = userService.registerUser(dto);
+            AppUserRegistrationDTO dto = ctx.bodyAsClass(AppUserRegistrationDTO.class);
+            AppUser registeredUser = appUserService.registerUser(dto);
 
-            ctx.status(201).json(Map.of(
-                    "message", "User registered successfully!",
-                    "email", registeredUser.getEmail(),
-                    "name", registeredUser.getName()
-            ));
+            APPUserResponseDTO responseDto = AppUserMapper.toResponseDto(registeredUser);
+
+            ctx.status(201).json(responseDto);
+
         } catch (IllegalArgumentException e) {
             ctx.status(400).json(Map.of("error", e.getMessage()));
         }
@@ -32,17 +33,14 @@ public class UserController {
 
     public void login(Context ctx) {
         try {
-            UserLoginDTO dto = ctx.bodyAsClass(UserLoginDTO.class);
-            AppUser loggedInUser = userService.login(dto);
+            AppUserLoginDTO dto = ctx.bodyAsClass(AppUserLoginDTO.class);
+            AppUser loggedInUser = appUserService.login(dto);
 
-            ctx.status(200).json(Map.of(
-                    "message", "Login successful!",
-                    "email", loggedInUser.getEmail(),
-                    "name", loggedInUser.getName(),
-                    "role", loggedInUser.getRole().toString()
-            ));
+            APPUserResponseDTO responseDto = AppUserMapper.toResponseDto(loggedInUser);
+
+            ctx.status(200).json(responseDto);
+
         } catch (IllegalArgumentException e) {
-            // 401 Unauthorized for bad credentials
             ctx.status(401).json(Map.of("error", e.getMessage()));
         }
     }

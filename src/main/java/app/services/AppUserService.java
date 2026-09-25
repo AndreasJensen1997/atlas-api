@@ -1,8 +1,8 @@
 package app.services;
 
 import app.daos.AppUserDAO;
-import app.dtos.UserLoginDTO;
-import app.dtos.UserRegistrationDTO;
+import app.dtos.AppUser.AppUserLoginDTO;
+import app.dtos.AppUser.AppUserRegistrationDTO;
 import app.entities.AppUser;
 import app.mappers.AppUserMapper;
 import app.utils.Validation.UserValidator;
@@ -10,15 +10,15 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.List;
 
-public class UserService {
+public class AppUserService {
 
     private final AppUserDAO userDao;
 
-    public UserService(AppUserDAO userDao) {
+    public AppUserService(AppUserDAO userDao) {
         this.userDao = userDao;
     }
 
-    public AppUser registerUser(UserRegistrationDTO dto) {
+    public AppUser registerUser(AppUserRegistrationDTO dto) {
         List<String> validationErrors = UserValidator.validateRegistration(dto);
 
         if (!validationErrors.isEmpty()) {
@@ -36,19 +36,19 @@ public class UserService {
     }
 
 
-    public AppUser login(UserLoginDTO userLoginDTO) {
+    public AppUser login(AppUserLoginDTO appUserLoginDTO) {
 
-        if (userLoginDTO.email() == null || userLoginDTO.password() == null) {
+        if (appUserLoginDTO.email() == null || appUserLoginDTO.password() == null) {
             throw new IllegalArgumentException("Email and password must be provided.");
         }
 
-        AppUser user = userDao.getUserByEmail(userLoginDTO.email());
+        AppUser user = userDao.getUserByEmail(appUserLoginDTO.email());
 
         if (user == null) {
             throw new IllegalArgumentException("Invalid email or password.");
         }
 
-        boolean isPasswordCorrect = BCrypt.checkpw(userLoginDTO.password(), user.getPassword());
+        boolean isPasswordCorrect = BCrypt.checkpw(appUserLoginDTO.password(), user.getPassword());
 
         if (!isPasswordCorrect) {
             throw new IllegalArgumentException("Invalid email or password.");

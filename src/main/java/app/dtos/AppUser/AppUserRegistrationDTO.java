@@ -1,6 +1,6 @@
-package app.dtos;
+package app.dtos.AppUser;
 
-public record UserRegistrationDTO(
+public record AppUserRegistrationDTO(
         String name,
         String email,
         String password,

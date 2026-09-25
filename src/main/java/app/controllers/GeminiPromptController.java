@@ -5,9 +5,10 @@ import app.dtos.GeminiPrompt.GeminiResponseDTO;
 import app.entities.AppUser;
 import app.entities.GeminiPrompt;
 import app.services.GeminiPromptService;
+import io.javalin.Javalin;
 import io.javalin.http.Context;
-import java.util.Map;
 
+import java.util.Map;
 
 
 public class GeminiPromptController {
@@ -57,5 +58,9 @@ public class GeminiPromptController {
         }
     }
 
+    public void registerRoutes(Javalin app) {
+        app.post("/api/generatePrompt", this::generatePrompt);
+        app.post("/api/savePrompt", this::savePrompt);
+    }
 
 }

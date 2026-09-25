@@ -1,21 +1,13 @@
 package app.controllers;
 
-import app.dtos.AppUser.AppUserLoginDTO;
-import app.dtos.AppUser.AppUserRegistrationDTO;
-import app.dtos.AppUser.APPUserResponseDTO;
-import app.entities.AppUser;
-import app.mappers.AppUserMapper;
-import app.services.AppUserService;
-import io.javalin.Javalin;
-import io.javalin.http.Context;
-import java.util.Map;
+import app.services.UserService;
 
 public class UserController {
 
-    private final AppUserService appUserService;
+    private final UserService userService;
 
-    public UserController(AppUserService appUserService) {
-        this.appUserService = appUserService;
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
 }

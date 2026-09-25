@@ -1,24 +1,24 @@
 package app.services;
 
-import app.daos.AppUserDAO;
-import app.dtos.AppUser.AppUserLoginDTO;
-import app.dtos.AppUser.AppUserRegistrationDTO;
-import app.entities.AppUser;
+import app.daos.UserDAO;
+import app.dtos.User.UserLoginDTO;
+import app.dtos.User.UserRegistrationDTO;
+import app.entities.User;
 import app.mappers.AppUserMapper;
 import app.utils.Validation.UserValidator;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.List;
 
-public class AppUserService {
+public class UserService {
 
-    private final AppUserDAO userDao;
+    private final UserDAO userDao;
 
-    public AppUserService(AppUserDAO userDao) {
+    public UserService(UserDAO userDao) {
         this.userDao = userDao;
     }
 
-    public AppUser registerUser(AppUserRegistrationDTO dto) {
+    public User registerUser(UserRegistrationDTO dto) {
         List<String> validationErrors = UserValidator.validateRegistration(dto);
 
         if (!validationErrors.isEmpty()) {
@@ -30,28 +30,28 @@ public class AppUserService {
         }
 
         String hashedPassword = BCrypt.hashpw(dto.password(), BCrypt.gensalt());
-        AppUser newUser = AppUserMapper.registrationDTOToEntity(dto,hashedPassword);
+        User newUser = AppUserMapper.registrationDTOToEntity(dto,hashedPassword);
 
          return userDao.create(newUser);
     }
 
 
-    public AppUser login(AppUserLoginDTO appUserLoginDTO) {
+    public User login(UserLoginDTO userLoginDTO) {
 
-        if (appUserLoginDTO.email() == null || appUserLoginDTO.password() == null) {
+        if (userLoginDTO.email() == null || userLoginDTO.password() == null) {
             throw new IllegalArgumentException("Email and password must be provided.");
         }
 
-        AppUser user = userDao.getUserByEmail(appUserLoginDTO.email());
+        User user = userDao.getUserByEmail(userLoginDTO.email());
 
-        System.out.println("Email from login: " + appUserLoginDTO.email());
+        System.out.println("Email from login: " + userLoginDTO.email());
         System.out.println("User found: " + user);
 
         if (user == null) {
             throw new IllegalArgumentException("Invalid email or password.");
         }
 
-        boolean isPasswordCorrect = BCrypt.checkpw(appUserLoginDTO.password(), user.getPassword());
+        boolean isPasswordCorrect = BCrypt.checkpw(userLoginDTO.password(), user.getPassword());
 
         if (!isPasswordCorrect) {
             throw new IllegalArgumentException("Invalid email or password.");

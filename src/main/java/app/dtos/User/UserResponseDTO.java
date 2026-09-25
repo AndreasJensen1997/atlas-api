@@ -1,6 +1,6 @@
-package app.dtos.AppUser;
+package app.dtos.User;
 
-public record APPUserResponseDTO(
+public record UserResponseDTO(
         Integer userId,
         String name,
         String email,

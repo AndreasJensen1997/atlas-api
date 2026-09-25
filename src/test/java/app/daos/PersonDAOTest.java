@@ -34,9 +34,9 @@ class PersonDAOTest {
 
     @Test
     void create() {
-        AppUser existingUser = seeded.user1();
+        User existingUser = seeded.user1();
 
-        Person newPerson = Person.builder().name("Test Person").relation(Relation.FRIEND).appUser(existingUser).build();
+        Person newPerson = Person.builder().name("Test Person").relation(Relation.FRIEND).user(existingUser).build();
 
         Person created = personDAO.create(newPerson);
         Person fetched = personDAO.getById(created.getPersonId());
@@ -45,7 +45,7 @@ class PersonDAOTest {
         assertThat(fetched.getName(), is("Test Person"));
         assertThat(fetched.getRelation(), is(Relation.FRIEND));
         assertThat(fetched.getVisibility(), is(Visibility.PRIVATE));
-        assertThat(fetched.getAppUser(), is(existingUser));
+        assertThat(fetched.getUser(), is(existingUser));
     }
 
     @Test
@@ -70,7 +70,7 @@ class PersonDAOTest {
 
         assertThat(all, not(empty()));
         for (Person p : all) {
-            assertThat(p.getAppUser().getUserId(), is(seeded.user1().getUserId()));
+            assertThat(p.getUser().getUserId(), is(seeded.user1().getUserId()));
         }
     }
 
@@ -88,13 +88,13 @@ class PersonDAOTest {
     @Test
     void update() {
         Person seed = seeded.person1();
-        AppUser newUser = seeded.user2();
+        User newUser = seeded.user2();
 
         Person updated = Person.builder()
                 .personId(seed.getPersonId())
                 .name("Updated Person Name")
                 .relation(Relation.MOTHER)
-                .appUser(newUser)
+                .user(newUser)
                 .build();
 
         Person result = personDAO.update(updated);
@@ -103,7 +103,7 @@ class PersonDAOTest {
         assertThat(result.getName(), is("Updated Person Name"));
         assertThat(result.getRelation(), is(Relation.MOTHER));
         assertThat(result.getUpdatedAt(), is(LocalDate.now()));
-        assertThat(result.getAppUser(), is(newUser));
+        assertThat(result.getUser(), is(newUser));
     }
 
     @Test

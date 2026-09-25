@@ -2,7 +2,7 @@ package app.services;
 
 import app.daos.userOwned.GeminiPromptDAO;
 import app.dtos.GeminiPrompt.GeminiResponseDTO;
-import app.entities.AppUser;
+import app.entities.User;
 import app.entities.GeminiPrompt;
 import app.mappers.GeminiPromptMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -79,10 +79,10 @@ public class GeminiPromptService {
         }
     }
 
-    public GeminiPrompt savePromptText(String textContent, AppUser user) {
+    public GeminiPrompt savePromptText(String textContent, User user) {
         GeminiPrompt prompt = GeminiPrompt.builder()
                 .content(textContent)
-                .appUser(user)
+                .user(user)
                 .build();
 
         return geminiPromptDAO.create(prompt);

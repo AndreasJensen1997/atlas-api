@@ -18,7 +18,7 @@ public class ArtifactDAO extends UserOwnedDAO<Artifact, Integer> {
 
     public List<Artifact> getArtifactsByType(int userId, int artifactTypeId) {
         try (EntityManager em = emf.createEntityManager()) {
-            String jpql = "SELECT a FROM Artifact a WHERE a.appUser.userId = :userId AND a.artifactType.artifactTypeId = :typeId";
+            String jpql = "SELECT a FROM Artifact a WHERE a.user.userId = :userId AND a.artifactType.artifactTypeId = :typeId";
             TypedQuery<Artifact> query = em.createQuery(jpql, Artifact.class);
             query.setParameter("userId", userId);
             query.setParameter("typeId", artifactTypeId);

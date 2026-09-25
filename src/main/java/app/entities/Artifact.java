@@ -37,7 +37,7 @@ public class Artifact implements LinkableEntity {
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @Setter
-    private AppUser appUser;
+    private User user;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "artifact_type_id", nullable = false)

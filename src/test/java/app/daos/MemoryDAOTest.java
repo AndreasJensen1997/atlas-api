@@ -31,12 +31,12 @@ class MemoryDAOTest {
 
     @Test
     void create() {
-        AppUser existingUser = seeded.user1();
+        User existingUser = seeded.user1();
 
         Memory newMemory = Memory.builder()
                 .title("Test Memory")
                 .content("Test memory content")
-                .appUser(existingUser)
+                .user(existingUser)
                 .build();
 
         Memory created = memoryDAO.create(newMemory);
@@ -46,7 +46,7 @@ class MemoryDAOTest {
         assertThat(fetched.getTitle(), is("Test Memory"));
         assertThat(fetched.getContent(), is("Test memory content"));
         assertThat(fetched.getVisibility(), is(Visibility.PRIVATE));
-        assertThat(fetched.getAppUser(), is(existingUser));
+        assertThat(fetched.getUser(), is(existingUser));
     }
 
     @Test
@@ -70,7 +70,7 @@ class MemoryDAOTest {
 
         assertThat(all, not(empty()));
         for (Memory m : all) {
-            assertThat(m.getAppUser().getUserId(), is(seeded.user1().getUserId()));
+            assertThat(m.getUser().getUserId(), is(seeded.user1().getUserId()));
         }
     }
 
@@ -90,13 +90,13 @@ class MemoryDAOTest {
     @Test
     void update() {
         Memory seed = seeded.memory1();
-        AppUser newUser = seeded.user2();
+        User newUser = seeded.user2();
 
         Memory updated = Memory.builder()
                 .memoryId(seed.getMemoryId())
                 .title("Updated memory title")
                 .content("Updated memory content")
-                .appUser(newUser)
+                .user(newUser)
                 .build();
 
         Memory result = memoryDAO.update(updated);
@@ -105,7 +105,7 @@ class MemoryDAOTest {
         assertThat(result.getTitle(), is("Updated memory title"));
         assertThat(result.getContent(), is("Updated memory content"));
         assertThat(result.getUpdatedAt(), is(LocalDate.now()));
-        assertThat(result.getAppUser(), is(newUser));
+        assertThat(result.getUser(), is(newUser));
     }
 
     @Test

@@ -15,7 +15,8 @@ import java.util.Set;
 @Getter
 @ToString
 @Builder
-public class AppUser {
+@Table(name = "users")
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,47 +31,47 @@ public class AppUser {
     // ===== RELATIONS =====
 
     // 1:M
-    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter
     @ToString.Exclude
     private Set<Chapter> chapters = new HashSet<>();
 
-    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter
     @ToString.Exclude
     private Set<Memory> memories = new HashSet<>();
 
-    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter
     @ToString.Exclude
     private Set<Story> stories = new HashSet<>();
 
-    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter
     @ToString.Exclude
     private Set<Artifact> artifacts = new HashSet<>();
 
-    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter
     @ToString.Exclude
     private Set<Person> people = new HashSet<>();
 
-    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter
     @ToString.Exclude
     private Set<Place> places = new HashSet<>();
 
-    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter
     @ToString.Exclude
     private Set<EntityList> lists = new HashSet<>();
 
-    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter
     @ToString.Exclude
     private Set<TimeCapsule> timeCapsules = new HashSet<>();
 
-    @OneToMany(mappedBy = "appUser", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @Setter
     @ToString.Exclude
     private Set<Fragment> fragments = new HashSet<>();
@@ -109,8 +110,8 @@ public class AppUser {
                 .getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass)
             return false;
-        AppUser appUser = (AppUser) o;
-        return getUserId() != null && Objects.equals(getUserId(), appUser.getUserId());
+        User user = (User) o;
+        return getUserId() != null && Objects.equals(getUserId(), user.getUserId());
     }
 
 

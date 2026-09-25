@@ -5,7 +5,6 @@ import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -33,7 +32,7 @@ public class TimeCapsule {
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @Setter
-    AppUser appUser;
+    User user;
 
 
     @Override

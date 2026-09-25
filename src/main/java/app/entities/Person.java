@@ -45,7 +45,7 @@ public class Person implements LinkableEntity {
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @Setter
-    AppUser appUser;
+    User user;
 
 
     // ===== JPA LIFECYCLE CALLBACKS =====

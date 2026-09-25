@@ -1,12 +1,14 @@
 package app;
 
+import app.config.ApplicationConfig;
 import app.config.HibernateConfig;
+import app.controllers.AuthController;
 import app.controllers.GeminiPromptController;
 import app.controllers.UserController;
-import app.daos.AppUserDAO;
+import app.daos.UserDAO;
 
 import app.daos.userOwned.GeminiPromptDAO;
-import app.services.AppUserService;
+import app.services.UserService;
 import app.services.GeminiPromptService;
 import io.javalin.Javalin;
 import jakarta.persistence.EntityManagerFactory;
@@ -22,35 +24,28 @@ public class Main {
 
         // 1. Initialize Database
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
-        AppUserDAO appUserDAO = new AppUserDAO(emf);
-        AppUserService appUserService = new AppUserService(appUserDAO);
-        UserController userController = new UserController(appUserService);
+        UserDAO userDAO = new UserDAO(emf);
+        UserService userService = new UserService(userDAO);
+        UserController userController = new UserController(userService);
+        AuthController authController = new AuthController(userService);
 
         GeminiPromptDAO geminiPromptDAO = new GeminiPromptDAO(emf);
         GeminiPromptService geminiPromptService = new GeminiPromptService(geminiPromptDAO);
         GeminiPromptController geminiPromptController = new GeminiPromptController(geminiPromptService);
-
-
+        ApplicationConfig applicationConfig = new ApplicationConfig(emf);
 
 
 
         // 2. Start Javalin Server
         Javalin app = Javalin.create(config -> {
-            config.bundledPlugins.enableCors(cors -> {
-                cors.addRule(it -> {
-                    it.anyHost();
-                });
-            });
-        }).start(7070);
-
-
+            config.router.apiBuilder(applicationConfig::addEndpoints);
+                }).start(7070);
 
 
         // 3. Define API Routes
-        app.post("/api/register", userController::register);
-        app.post("/api/login", userController::login);
-        app.post("/api/generatePrompt", geminiPromptController::generatePrompt);
-        app.post("/api/savePrompt", geminiPromptController::savePrompt);
+        //userController.registerRoutes(app);
+        geminiPromptController.registerRoutes(app);
+
         System.out.println("Atlas API is running on http://localhost:7070");
 
 

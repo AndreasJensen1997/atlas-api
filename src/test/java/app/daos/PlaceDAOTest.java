@@ -32,7 +32,7 @@ class PlaceDAOTest {
 
     @Test
     void create() {
-        AppUser existingUser = seeded.user1();
+        User existingUser = seeded.user1();
 
         Place newPlace = Place.builder()
                 .name("Test Place")
@@ -42,7 +42,7 @@ class PlaceDAOTest {
                 .address("Rådhuspladsen 1")
                 .city("Copenhagen")
                 .country("Denmark")
-                .appUser(existingUser)
+                .user(existingUser)
                 .build();
 
         Place created = placeDAO.create(newPlace);
@@ -57,7 +57,7 @@ class PlaceDAOTest {
         assertThat(fetched.getVisibility(), is(Visibility.PRIVATE));
         assertThat(fetched.getCity(), is("Copenhagen"));
         assertThat(fetched.getCountry(), is("Denmark"));
-        assertThat(fetched.getAppUser(), is(existingUser));
+        assertThat(fetched.getUser(), is(existingUser));
     }
 
     @Test
@@ -82,7 +82,7 @@ class PlaceDAOTest {
 
         assertThat(all, not(empty()));
         for (Place p : all) {
-            assertThat(p.getAppUser().getUserId(), is(seeded.user1().getUserId()));
+            assertThat(p.getUser().getUserId(), is(seeded.user1().getUserId()));
         }
     }
 
@@ -100,7 +100,7 @@ class PlaceDAOTest {
     @Test
     void update() {
         Place seed = seeded.place1();
-        AppUser newUser = seeded.user2();
+        User newUser = seeded.user2();
 
         Place updated = Place.builder()
                 .placeId(seed.getPlaceId())
@@ -111,7 +111,7 @@ class PlaceDAOTest {
                 .address("New Address")
                 .city("Aarhus")
                 .country("Denmark")
-                .appUser(newUser)
+                .user(newUser)
                 .build();
 
         Place result = placeDAO.update(updated);
@@ -121,7 +121,7 @@ class PlaceDAOTest {
         assertThat(result.getContent(), is("Updated content"));
         assertThat(result.getCity(), is("Aarhus"));
         assertThat(result.getUpdatedAt(), is(LocalDate.now()));
-        assertThat(result.getAppUser(), is(newUser));
+        assertThat(result.getUser(), is(newUser));
     }
 
     @Test

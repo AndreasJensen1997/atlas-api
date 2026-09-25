@@ -32,13 +32,13 @@ class FragmentDAOTest {
 
     @Test
     void createAutomaticallyCalculatesWordCountAndDate() {
-        AppUser existingUser = seeded.user1();
+        User existingUser = seeded.user1();
 
         Fragment newFragment = Fragment.builder()
                 .title("Test note")
                 .subtitle("Test note subtitle")
                 .content("one two three four five") // 5 words
-                .appUser(seeded.user1())
+                .user(seeded.user1())
                 .build();
 
         Fragment created = fragmentDAO.create(newFragment);
@@ -49,7 +49,7 @@ class FragmentDAOTest {
         assertThat(fetched.getSubtitle(), is("Test note subtitle"));
         assertThat(fetched.getContent(), is("one two three four five"));
         assertThat(fetched.getCreatedAt(), is(LocalDate.now()));
-        assertThat(fetched.getAppUser(), is(existingUser));
+        assertThat(fetched.getUser(), is(existingUser));
         assertThat(created.getWordCount(), is(5));
     }
 
@@ -71,13 +71,13 @@ class FragmentDAOTest {
     @Test
     void getAllChaptersByUserId(){
 
-        List<Fragment> all = fragmentDAO.getAllByUserId(seeded.fragment1().getAppUser().getUserId());
+        List<Fragment> all = fragmentDAO.getAllByUserId(seeded.fragment1().getUser().getUserId());
 
         assertThat(all, hasSize(2));
         assertThat(all, containsInAnyOrder(seeded.fragment1(), seeded.fragment2()));
         for (Fragment f : all) {
-            assertThat(f.getAppUser().getUserId(), is(seeded.fragment1().getAppUser().getUserId()));
-            System.out.println(f.getAppUser().getUserId() + "-" +  seeded.fragment1().getAppUser().getUserId());
+            assertThat(f.getUser().getUserId(), is(seeded.fragment1().getUser().getUserId()));
+            System.out.println(f.getUser().getUserId() + "-" +  seeded.fragment1().getUser().getUserId());
         }
     }
 
@@ -97,7 +97,7 @@ class FragmentDAOTest {
     @Test
     void update() {
         Fragment seed = seeded.fragment2();
-        AppUser newUser = seeded.user2();
+        User newUser = seeded.user2();
 
         Fragment updated = Fragment.builder()
                 .fragmentId(seed.getFragmentId())
@@ -105,7 +105,7 @@ class FragmentDAOTest {
                 .subtitle("updated subtitle")
                 .content("updated content")
                 .createdAt(LocalDate.of(2002,1,1))
-                .appUser(newUser)
+                .user(newUser)
 
                 .build();
 
@@ -116,7 +116,7 @@ class FragmentDAOTest {
         assertThat(result.getSubtitle(), is("updated subtitle"));
         assertThat(result.getContent(), is("updated content"));
         assertThat(result.getCreatedAt(), is(LocalDate.of(2002,1,1)));
-        assertThat(result.getAppUser(), is(newUser));
+        assertThat(result.getUser(), is(newUser));
         assertThat(result.getWordCount(), is(2));
     }
 

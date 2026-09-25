@@ -32,7 +32,7 @@ class TimeCapsuleDAOTest {
 
     @Test
     void create() {
-        AppUser existingUser = seeded.user1();
+        User existingUser = seeded.user1();
 
         TimeCapsule newCapsule = TimeCapsule.builder()
                 .title("secret message")
@@ -40,7 +40,7 @@ class TimeCapsuleDAOTest {
                 .content("Secret message for the future")
                 .unlockDate(LocalDate.of(2029,1,1))
                 .lockStatus(true)
-                .appUser(existingUser)
+                .user(existingUser)
                 .build();
 
         TimeCapsule created = timeCapsuleDAO.create(newCapsule);
@@ -51,7 +51,7 @@ class TimeCapsuleDAOTest {
         assertThat(fetched.getSubtitle(), is("my first timecapsule"));
         assertThat(fetched.getContent(), is("Secret message for the future"));
         assertThat(fetched.isLockStatus(), is(true));
-        assertThat(fetched.getAppUser(), is(existingUser));
+        assertThat(fetched.getUser(), is(existingUser));
     }
 
     @Test
@@ -75,7 +75,7 @@ class TimeCapsuleDAOTest {
 
         assertThat(all, not(empty()));
         for (TimeCapsule t : all) {
-            assertThat(t.getAppUser().getUserId(), is(seeded.user1().getUserId()));
+            assertThat(t.getUser().getUserId(), is(seeded.user1().getUserId()));
         }
     }
 
@@ -95,14 +95,14 @@ class TimeCapsuleDAOTest {
     @Test
     void update() {
         TimeCapsule seed = seeded.timeCapsule1();
-        AppUser newUser = seeded.user2();
+        User newUser = seeded.user2();
 
         TimeCapsule updated = TimeCapsule.builder()
                 .timeCapsuleId(seed.getTimeCapsuleId())
                 .content("Updated capsule content")
                 .unlockDate(seed.getUnlockDate())
                 .lockStatus(false)
-                .appUser(newUser)
+                .user(newUser)
                 .build();
 
         TimeCapsule result = timeCapsuleDAO.update(updated);
@@ -110,7 +110,7 @@ class TimeCapsuleDAOTest {
         assertThat(result.getTimeCapsuleId(), is(seed.getTimeCapsuleId()));
         assertThat(result.getContent(), is("Updated capsule content"));
         assertThat(result.isLockStatus(), is(false));
-        assertThat(result.getAppUser(), is(newUser));
+        assertThat(result.getUser(), is(newUser));
     }
 
     @Test

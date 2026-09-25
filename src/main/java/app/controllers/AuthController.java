@@ -1,32 +1,34 @@
 package app.controllers;
 
-import app.dtos.AppUser.APPUserResponseDTO;
-import app.dtos.AppUser.AppUserLoginDTO;
-import app.dtos.AppUser.AppUserRegistrationDTO;
-import app.entities.AppUser;
+import app.dtos.User.UserResponseDTO;
+import app.dtos.User.UserLoginDTO;
+import app.dtos.User.UserRegistrationDTO;
+import app.entities.User;
 import app.mappers.AppUserMapper;
-import app.services.AppUserService;
-import io.javalin.Javalin;
+import app.services.UserService;
+import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.http.Context;
+import static io.javalin.apibuilder.ApiBuilder.*;
+
 
 import java.util.Map;
 
-public class AuthController {
+public class AuthController implements EndpointGroup {
 
-    private final AppUserService appUserService;
+    private final UserService userService;
 
 
-    public AuthController(AppUserService appUserService) {
-        this.appUserService = appUserService;
+    public AuthController(UserService userService) {
+        this.userService = userService;
     }
 
     public void register(Context ctx) {
 
         try {
-            AppUserRegistrationDTO dto = ctx.bodyAsClass(AppUserRegistrationDTO.class);
-            AppUser registeredUser = appUserService.registerUser(dto);
+            UserRegistrationDTO dto = ctx.bodyAsClass(UserRegistrationDTO.class);
+            User registeredUser = userService.registerUser(dto);
 
-            APPUserResponseDTO responseDto = AppUserMapper.toResponseDto(registeredUser);
+            UserResponseDTO responseDto = AppUserMapper.toResponseDto(registeredUser);
 
             ctx.status(201).json(responseDto);
 
@@ -37,10 +39,10 @@ public class AuthController {
 
     public void login(Context ctx) {
         try {
-            AppUserLoginDTO dto = ctx.bodyAsClass(AppUserLoginDTO.class);
-            AppUser loggedInUser = appUserService.login(dto);
+            UserLoginDTO dto = ctx.bodyAsClass(UserLoginDTO.class);
+            User loggedInUser = userService.login(dto);
 
-            APPUserResponseDTO responseDto = AppUserMapper.toResponseDto(loggedInUser);
+            UserResponseDTO responseDto = AppUserMapper.toResponseDto(loggedInUser);
 
             ctx.status(200).json(responseDto);
 
@@ -49,8 +51,9 @@ public class AuthController {
         }
     }
 
-    public void registerRoutes(Javalin app) {
-        app.post("/api/auth/register", this::register);
-        app.post("/api/auth/login", this::login);
+    @Override
+    public void addEndpoints() {
+        post("/api/auth/register", this::register);
+        post("/api/auth/login", this::login);
     }
 }

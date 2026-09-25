@@ -32,7 +32,7 @@ class ArtifactDAOTest {
 
     @Test
     void create() {
-        AppUser existingUser = seeded.user1();
+        User existingUser = seeded.user1();
         ArtifactType existingArtifactType = seeded.artifact1().getArtifactType();
 
         Artifact newArtifact = Artifact.builder()
@@ -40,7 +40,7 @@ class ArtifactDAOTest {
                 .subtitle("ben howard album")
                 .content("my favourite album of all time")
                 .createdAt(LocalDate.of(2012, 1, 1))
-                .appUser(existingUser)
+                .user(existingUser)
                 .artifactType(existingArtifactType)
                 .build();
 
@@ -54,7 +54,7 @@ class ArtifactDAOTest {
         assertThat(fetched.getContent(), is("my favourite album of all time"));
         assertThat(fetched.getCreatedAt(), is(LocalDate.of(2012, 1, 1)));
         assertThat(fetched.getVisibility(), is(Visibility.PRIVATE));
-        assertThat(fetched.getAppUser(), is(existingUser));
+        assertThat(fetched.getUser(), is(existingUser));
         assertThat(fetched.getArtifactType().getArtifactTypeId(), is(existingArtifactType.getArtifactTypeId()));
     }
 
@@ -76,13 +76,13 @@ class ArtifactDAOTest {
     @Test
     void getAllChaptersByUserId(){
 
-        List<Artifact> all = artifactDAO.getAllByUserId(seeded.artifact1().getAppUser().getUserId());
+        List<Artifact> all = artifactDAO.getAllByUserId(seeded.artifact1().getUser().getUserId());
 
         assertThat(all, hasSize(1));
         assertThat(all, containsInAnyOrder(seeded.artifact1()));
         for (Artifact a : all) {
-            assertThat(a.getAppUser().getUserId(), is(seeded.artifact1().getAppUser().getUserId()));
-            System.out.println(a.getAppUser().getUserId() + "-" +  seeded.artifact1().getAppUser().getUserId());
+            assertThat(a.getUser().getUserId(), is(seeded.artifact1().getUser().getUserId()));
+            System.out.println(a.getUser().getUserId() + "-" +  seeded.artifact1().getUser().getUserId());
         }
     }
 
@@ -100,7 +100,7 @@ class ArtifactDAOTest {
     @Test
     void getArtifactsByType() {
         Artifact seed = seeded.artifact1();
-        Integer userId = seed.getAppUser().getUserId();
+        Integer userId = seed.getUser().getUserId();
         Integer typeId = seed.getArtifactType().getArtifactTypeId();
 
         List<Artifact> results = artifactDAO.getArtifactsByType(userId, typeId);
@@ -112,7 +112,7 @@ class ArtifactDAOTest {
     @Test
     void update() {
         Artifact seed = seeded.artifact2();
-        AppUser newUser = seeded.user2();
+        User newUser = seeded.user2();
 
         Artifact updated = Artifact.builder()
                 .artifactId(seed.getArtifactId())
@@ -121,7 +121,7 @@ class ArtifactDAOTest {
                 .content("updated content")
                 .createdAt(LocalDate.of(2002,1,1))
                 .artifactType(seeded.musicType())
-                .appUser(newUser)
+                .user(newUser)
 
                 .build();
 
@@ -196,7 +196,7 @@ class ArtifactDAOTest {
     @Test
     void getArtifactsByType_withNonExistentType_returnsEmptyList() {
         Artifact seed = seeded.artifact1();
-        Integer userId = seed.getAppUser().getUserId();
+        Integer userId = seed.getUser().getUserId();
 
         List<Artifact> results = artifactDAO.getArtifactsByType(userId, 999_999);
 

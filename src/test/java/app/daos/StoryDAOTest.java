@@ -33,7 +33,7 @@ class StoryDAOTest {
 
     @Test
     void create() {
-        AppUser existingUser = seeded.user1();
+        User existingUser = seeded.user1();
 
         Story newStory = Story.builder()
                 .title("Test Story")
@@ -41,7 +41,7 @@ class StoryDAOTest {
                 .content("Test story content")
                 .startDate(LocalDate.of(2026, 1, 1))
                 .endDate(LocalDate.of(2026, 1, 5))
-                .appUser(existingUser)
+                .user(existingUser)
                 .build();
 
         Story created = storyDAO.create(newStory);
@@ -70,7 +70,7 @@ class StoryDAOTest {
 
         assertThat(all, not(empty()));
         for (Story s : all) {
-            assertThat(s.getAppUser().getUserId(), is(seeded.user1().getUserId()));
+            assertThat(s.getUser().getUserId(), is(seeded.user1().getUserId()));
         }
     }
 
@@ -96,7 +96,7 @@ class StoryDAOTest {
     @Test
     void update() {
         Story seed = seeded.story1();
-        AppUser newUser = seeded.user2();
+        User newUser = seeded.user2();
 
         Story updated = Story.builder()
                 .storyId(seed.getStoryId())
@@ -105,7 +105,7 @@ class StoryDAOTest {
                 .content("Updated content")
                 .startDate(LocalDate.of(2026, 2, 1))
                 .endDate(LocalDate.of(2026, 2, 10))
-                .appUser(newUser)
+                .user(newUser)
                 .build();
 
         Story result = storyDAO.update(updated);

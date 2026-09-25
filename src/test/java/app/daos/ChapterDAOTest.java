@@ -2,7 +2,7 @@ package app.daos;
 
 import app.config.HibernateTestConfig;
 import app.daos.userOwned.ChapterDAO;
-import app.entities.AppUser;
+import app.entities.User;
 import app.entities.Chapter;
 import app.enums.Visibility;
 import app.exceptions.ApiException;
@@ -34,7 +34,7 @@ class ChapterDAOTest {
 
     @Test
     void create() {
-        AppUser existingUser = seeded.user1();
+        User existingUser = seeded.user1();
 
         Chapter newChapter = Chapter.builder()
                 .title("China")
@@ -42,7 +42,7 @@ class ChapterDAOTest {
                 .content("This will cover my years in china")
                 .startDate(LocalDate.of(2012,1,1))
                 .endDate(LocalDate.of(2014,1,1))
-                .appUser(existingUser)
+                .user(existingUser)
                 .build();
 
         Chapter created = chapterDAO.create(newChapter);
@@ -80,8 +80,8 @@ class ChapterDAOTest {
        assertThat(all, hasSize(1));
        assertThat(all, containsInAnyOrder(seeded.chapter1()));
        for (Chapter c : all) {
-           assertThat(c.getAppUser().getUserId(), is(seeded.user1().getUserId()));
-           System.out.println(c.getAppUser().getUserId() + "-" +  seeded.user1().getUserId());
+           assertThat(c.getUser().getUserId(), is(seeded.user1().getUserId()));
+           System.out.println(c.getUser().getUserId() + "-" +  seeded.user1().getUserId());
        }
    }
 
@@ -102,7 +102,7 @@ class ChapterDAOTest {
     @Test
     void update() {
         Chapter seed = seeded.chapter2();
-        AppUser newUser = seeded.user2();
+        User newUser = seeded.user2();
 
         Chapter updated = Chapter.builder()
                 .chapterId(seed.getChapterId())
@@ -111,7 +111,7 @@ class ChapterDAOTest {
                 .content("updated content")
                 .startDate(LocalDate.of(2004,1,1))
                 .endDate(LocalDate.of(2005,1,1))
-                .appUser(newUser)
+                .user(newUser)
 
                 .build();
 

@@ -1,8 +1,7 @@
 package app.controllers;
 
 import app.dtos.GeminiPrompt.GeminiPromptSaveDTO;
-import app.dtos.GeminiPrompt.GeminiResponseDTO;
-import app.entities.AppUser;
+import app.entities.User;
 import app.entities.GeminiPrompt;
 import app.services.GeminiPromptService;
 import io.javalin.Javalin;
@@ -41,7 +40,7 @@ public class GeminiPromptController {
     public void savePrompt(Context ctx) {
         try {
             GeminiPromptSaveDTO dto = ctx.bodyAsClass(GeminiPromptSaveDTO.class);
-            AppUser currentUser = ctx.attribute("currentUser");
+            User currentUser = ctx.attribute("currentUser");
 
             if (currentUser == null) {
                 ctx.status(401).json(Map.of("error", "Unauthorized"));

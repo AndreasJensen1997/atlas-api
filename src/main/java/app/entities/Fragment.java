@@ -1,7 +1,6 @@
 package app.entities;
 
 import app.entities.generics.LinkableEntity;
-import app.enums.Visibility;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -37,7 +36,7 @@ public class Fragment implements LinkableEntity {
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @Setter
-    AppUser appUser;
+    User user;
 
 
     // ===== JPA LIFECYCLE CALLBACKS =====

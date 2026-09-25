@@ -33,9 +33,9 @@ class EntityListDAOTest {
     @Test
     void createAutomaticallyCalculatesItemCountAndDate() {
 
-        AppUser existingUser = seeded.user1();
+        User existingUser = seeded.user1();
 
-        EntityList newEntityList = EntityList.builder().title("Test entityList").subtitle("Test entityList subtitle").appUser(existingUser).build();
+        EntityList newEntityList = EntityList.builder().title("Test entityList").subtitle("Test entityList subtitle").user(existingUser).build();
 
         newEntityList.addItem(EntityListItem.builder().text("Item 1").build());
         newEntityList.addItem(EntityListItem.builder().text("Item 2").build());
@@ -51,7 +51,7 @@ class EntityListDAOTest {
         assertThat(fetched.getVisibility(), is(Visibility.PRIVATE));
         assertThat(fetched.getItems().size(), is(3));
         assertThat(fetched.getCreatedAt(), is(LocalDate.now()));
-        assertThat(fetched.getAppUser(), is(existingUser));
+        assertThat(fetched.getUser(), is(existingUser));
     }
 
     @Test
@@ -72,12 +72,12 @@ class EntityListDAOTest {
     @Test
     void getAllChaptersByUserId(){
 
-        List<EntityList> all = entityListDAO.getAllByUserId(seeded.entityList1().getAppUser().getUserId());
+        List<EntityList> all = entityListDAO.getAllByUserId(seeded.entityList1().getUser().getUserId());
 
         assertThat(all, hasSize(1));
         assertThat(all, containsInAnyOrder(seeded.entityList1()));
         for (EntityList e : all) {
-            assertThat(e.getAppUser().getUserId(), is(seeded.entityList1().getAppUser().getUserId()));
+            assertThat(e.getUser().getUserId(), is(seeded.entityList1().getUser().getUserId()));
         }
     }
 
@@ -96,13 +96,13 @@ class EntityListDAOTest {
     @Test
     void update() {
         EntityList seed = seeded.entityList1();
-        AppUser newUser = seeded.user2();
+        User newUser = seeded.user2();
 
         EntityList updated = EntityList.builder()
                 .listId(seed.getListId())
                 .title("updated title")
                 .subtitle("updated subtitle")
-                .appUser(newUser)
+                .user(newUser)
                 .build();
 
         EntityList result = entityListDAO.update(updated);
@@ -111,7 +111,7 @@ class EntityListDAOTest {
         assertThat(result.getTitle(), is("updated title"));
         assertThat(result.getSubtitle(), is("updated subtitle"));
         assertThat(result.getUpdatedAt(), is(LocalDate.now()));
-        assertThat(result.getAppUser(), is(newUser));
+        assertThat(result.getUser(), is(newUser));
     }
 
     @Test

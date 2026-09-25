@@ -36,7 +36,7 @@ public class EntityList {
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @Setter
-    private AppUser appUser;
+    private User user;
 
     // 1:M
     @OneToMany(mappedBy = "entityList", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)

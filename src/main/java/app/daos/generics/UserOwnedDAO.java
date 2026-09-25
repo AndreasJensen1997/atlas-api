@@ -17,7 +17,7 @@ public class UserOwnedDAO<T,I> extends GenericDAO<T, I> {
 
     public List<T> getAllByUserId(I userId) {
         try (EntityManager em = emf.createEntityManager()) {
-            String jpql = "SELECT e FROM " + entityClass.getSimpleName() + " e WHERE e.appUser.userId = :userId";
+            String jpql = "SELECT e FROM " + entityClass.getSimpleName() + " e WHERE e.user.userId = :userId";
             TypedQuery<T> query = em.createQuery(jpql, entityClass);
             query.setParameter("userId", userId);
             return query.getResultList();

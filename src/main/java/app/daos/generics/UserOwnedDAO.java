@@ -47,28 +47,26 @@ public class UserOwnedDAO<T,I> extends GenericDAO<T, I> {
     }
 
 
-    public T findByTitle(String title) {
+
+    public T findByTitleAndUserId(String title, I userId) {
+        String className = null;
         try (EntityManager em = emf.createEntityManager()) {
             String fieldName = "title";
-            String className = entityClass.getSimpleName();
+            className = entityClass.getSimpleName();
             if (className.equals("Person") || className.equals("Place")) {
                 fieldName = "name";
             }
 
-            // Dynamically build the query using entityClass.getSimpleName()
-            String jpql = "SELECT e FROM " + className + " e WHERE e." + fieldName + " = :title";
+            String jpql = "SELECT e FROM " + className + " e WHERE e." + fieldName + " = :title AND e.user.userId = :userId";
 
             TypedQuery<T> query = em.createQuery(jpql, entityClass);
             query.setParameter("title", title);
+            query.setParameter("userId", userId);
 
             return query.getResultStream().findFirst().orElse(null);
         } catch (PersistenceException e) {
-            throw new ApiException(500, "Failed to find " + entityClass.getSimpleName() + " by title: " + e.getMessage());
+            throw new ApiException(500, "Failed to find " + className + " by title and user: " + e.getMessage());
         }
     }
-
-
-
-
 
 }

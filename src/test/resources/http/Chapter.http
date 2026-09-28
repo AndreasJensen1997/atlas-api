@@ -1,4 +1,4 @@
-POST localhost:7070/api/chapters/create
+POST localhost:7070/api/chapters
 Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTA2NzQ5MjMsInN1YiI6ImFuZHJlYXNAbGl2ZS5kayIsImlhdCI6MTc5MDU4ODUyM30.wgRmIIHKGdkbgmrMqatjtUDBDfkIb4Hwj9jUXd9wDfg
 Accept: application/json
 Content-Type:application/json
@@ -11,6 +11,13 @@ Content-Type:application/json
   "endDate": "2026-10-05",
   "visibility": "PRIVATE"
 }
+
+###
+
+GET localhost:7070/api/chapters/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTA2NzQ5MjMsInN1YiI6ImFuZHJlYXNAbGl2ZS5kayIsImlhdCI6MTc5MDU4ODUyM30.wgRmIIHKGdkbgmrMqatjtUDBDfkIb4Hwj9jUXd9wDfg
+Accept: application/json
+Content-Type:application/json
 
 ###
 

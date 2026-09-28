@@ -6,6 +6,8 @@ import app.entities.Chapter;
 import app.entities.User;
 import app.mappers.ChapterMapper;
 
+import java.util.List;
+
 
 public class ChapterService {
 
@@ -19,15 +21,31 @@ public class ChapterService {
     }
 
     public Chapter createChapter(ChapterRequestDTO dto, int userId) {
+        User owner = userService.getById(userId);
 
-        if (chapterDAO.findByTitle(dto.title()) != null) {
+
+        if (chapterDAO.findByTitleAndUserId(dto.title(), owner.getUserId()) != null) {
             throw new IllegalArgumentException("A chapter with this title already exists.");
         }
-
-        User owner = userService.getById(userId);
 
         Chapter newChapter = ChapterMapper.toEntity(dto, owner);
 
         return chapterDAO.create(newChapter);
     }
+
+
+    public Chapter getById(Integer chapterId, int userId) {
+        Chapter chapter = chapterDAO.getById(chapterId);
+
+        if (chapter == null) {
+            throw new IllegalArgumentException("Chapter not found with ID: " + chapterId);
+        }
+
+        if (!chapter.getUser().getUserId().equals(userId)) {
+            throw new IllegalArgumentException("You do not have permission to access this chapter.");
+        }
+
+        return chapter;
+    }
+
 }

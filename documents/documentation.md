@@ -6,28 +6,30 @@ All error messages follows this format:
 
 
 # Auth
-| Method | URL                | Request Body (JSON) | Response (JSON) | Status          |
+| Method | URL                | Request Body (JSON) | Response (JSON)  | Status          |
 |--------|--------------------|----------------------|------------------|-----------------|
-| post   | /api/auth/register |         AppUserRegistrationDTO             | [user, user, …] (1) | 200             |
-| POST   | /api/auth/login    |            AppUserLoginDTO          | user (1)         | 200 / 404       |
-AppUserLoginDTO
+| post   | /api/auth/register |         UserRegistrationDTO          | LoginResponseDTO | 200             |
+| POST   | /api/auth/login    |            UserLoginDTO          | LoginResponseDTO        | 200 / 404       |
+
+
+**UserRegistrationDTO**
+
 ```json
 {
-  "name": "andreas",
-  "email": "andreas.jensen@outlook.dk"
+  "name": "String", "email": "String", "password": "String", "passwordCheck": "String"
+}
+```
+**LoginRequestDTO**
+```json
+{
+  "email": "String", "password": "String"
 }
 ```
 
-AppUserRegistrationDTO
-```json
-{
-  "name": "andreas",
-  "email": "andreas.jensen@outlook.dk",
-  "password": "12345678!",
-  "passwordCheck": "12345678!"
-}
+**LoginResponseDTO**
+```json 
+{ "token": "String (JWT)" }
 ```
-
 
 
 

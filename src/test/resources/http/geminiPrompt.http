@@ -1,0 +1,21 @@
+POST localhost:7070/api/generatePrompt
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTA2NzQ5MjMsInN1YiI6ImFuZHJlYXNAbGl2ZS5kayIsImlhdCI6MTc5MDU4ODUyM30.wgRmIIHKGdkbgmrMqatjtUDBDfkIb4Hwj9jUXd9wDfg
+Accept: application/json
+Content-Type:application/json
+
+{
+  "prompt": "Give me 3 movie titles"
+}
+
+
+###
+
+POST localhost:7070/api/savePrompt
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTA2NzQ5MjMsInN1YiI6ImFuZHJlYXNAbGl2ZS5kayIsImlhdCI6MTc5MDU4ODUyM30.wgRmIIHKGdkbgmrMqatjtUDBDfkIb4Hwj9jUXd9wDfg
+Accept: application/json
+Content-Type:application/json
+
+{
+  "content": "This is the response from Gemini that I want to save to the database."
+}
+

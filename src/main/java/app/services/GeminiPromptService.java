@@ -1,5 +1,6 @@
 package app.services;
 
+import app.daos.UserDAO;
 import app.daos.userOwned.GeminiPromptDAO;
 import app.dtos.GeminiPrompt.GeminiResponseDTO;
 import app.entities.User;
@@ -20,11 +21,12 @@ public class GeminiPromptService {
 
     ObjectMapper objectMapper = new ObjectMapper();
     private final GeminiPromptDAO geminiPromptDAO;
-
+    private final UserService userService;
     String apiKey = System.getenv("GEMINI_API_KEY");
 
-    public GeminiPromptService(GeminiPromptDAO geminiPromptDAO) {
+    public GeminiPromptService(GeminiPromptDAO geminiPromptDAO, UserService userService) {
         this.geminiPromptDAO = geminiPromptDAO;
+        this.userService = userService;
     }
 
     public String geminiRequest(String prompt) throws JsonProcessingException {
@@ -55,6 +57,7 @@ public class GeminiPromptService {
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
         } catch (IOException | InterruptedException e) {
             throw new RuntimeException(e);
         }
@@ -79,7 +82,9 @@ public class GeminiPromptService {
         }
     }
 
-    public GeminiPrompt savePromptText(String textContent, User user) {
+    public GeminiPrompt savePromptText(String textContent, Integer userId) {
+        User user = userService.getById(userId);
+
         GeminiPrompt prompt = GeminiPrompt.builder()
                 .content(textContent)
                 .user(user)

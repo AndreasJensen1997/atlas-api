@@ -1,13 +1,13 @@
 package app.utils.Validation;
 
-import app.dtos.User.UserRegistrationDTO;
+import app.dtos.User.RegisterRequestDTO;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserValidator {
 
 
-    public static List<String> validateRegistration(UserRegistrationDTO dto) {
+    public static List<String> validateRegistration(RegisterRequestDTO dto) {
 
         List<String> errors = new ArrayList<>();
 

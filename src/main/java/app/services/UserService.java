@@ -1,8 +1,8 @@
 package app.services;
 
 import app.daos.UserDAO;
-import app.dtos.User.UserLoginDTO;
-import app.dtos.User.UserRegistrationDTO;
+import app.dtos.User.LoginRequestDTO;
+import app.dtos.User.RegisterRequestDTO;
 import app.entities.User;
 import app.mappers.AppUserMapper;
 import app.utils.Validation.UserValidator;
@@ -18,7 +18,7 @@ public class UserService {
         this.userDao = userDao;
     }
 
-    public User registerUser(UserRegistrationDTO dto) {
+    public User registerUser(RegisterRequestDTO dto) {
         List<String> validationErrors = UserValidator.validateRegistration(dto);
 
         if (!validationErrors.isEmpty()) {
@@ -30,34 +30,63 @@ public class UserService {
         }
 
         String hashedPassword = BCrypt.hashpw(dto.password(), BCrypt.gensalt());
-        User newUser = AppUserMapper.registrationDTOToEntity(dto,hashedPassword);
+        User newUser = AppUserMapper.registrationDTOToEntity(dto, hashedPassword);
 
-         return userDao.create(newUser);
+        return userDao.create(newUser);
     }
 
 
-    public User login(UserLoginDTO userLoginDTO) {
+    public User login(LoginRequestDTO loginRequestDTO) {
 
-        if (userLoginDTO.email() == null || userLoginDTO.password() == null) {
+        if (loginRequestDTO.email() == null || loginRequestDTO.password() == null) {
             throw new IllegalArgumentException("Email and password must be provided.");
         }
 
-        User user = userDao.getUserByEmail(userLoginDTO.email());
-
-        System.out.println("Email from login: " + userLoginDTO.email());
-        System.out.println("User found: " + user);
+        User user = userDao.getUserByEmail(loginRequestDTO.email());
 
         if (user == null) {
             throw new IllegalArgumentException("Invalid email or password.");
         }
 
-        boolean isPasswordCorrect = BCrypt.checkpw(userLoginDTO.password(), user.getPassword());
+        boolean isPasswordCorrect = BCrypt.checkpw(loginRequestDTO.password(), user.getPassword());
 
         if (!isPasswordCorrect) {
             throw new IllegalArgumentException("Invalid email or password.");
         }
 
-        System.out.println("login succesfull");
+        System.out.println("login success");
+
+        return user;
+    }
+
+    public User getByEmail(String email) {
+        if (email == null) {
+            throw new IllegalArgumentException("Email must be provided.");
+        }
+
+        User user = userDao.getUserByEmail(email);
+
+        if (user == null) {
+            throw new IllegalArgumentException("No user was found attached to this email");
+        }
+
+        System.out.println("user successfully found :" + user.getName() + ": " + user.getEmail());
+
+        return user;
+    }
+
+    public User getById(Integer id) {
+        if (id == null) {
+            throw new IllegalArgumentException("Email must be provided.");
+        }
+
+        User user = userDao.getById(id);
+
+        if (user == null) {
+            throw new IllegalArgumentException("No user was found attached to this email");
+        }
+
+        System.out.println("user successfully found :" + user.getName() + ": " + user.getUserId());
 
         return user;
     }

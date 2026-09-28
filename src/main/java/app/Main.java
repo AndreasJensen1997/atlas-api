@@ -10,6 +10,7 @@ import app.daos.UserDAO;
 import app.daos.userOwned.GeminiPromptDAO;
 import app.services.UserService;
 import app.services.GeminiPromptService;
+import app.utils.security.SecurityFilter;
 import io.javalin.Javalin;
 import jakarta.persistence.EntityManagerFactory;
 import org.slf4j.Logger;
@@ -30,24 +31,20 @@ public class Main {
         AuthController authController = new AuthController(userService);
 
         GeminiPromptDAO geminiPromptDAO = new GeminiPromptDAO(emf);
-        GeminiPromptService geminiPromptService = new GeminiPromptService(geminiPromptDAO);
+        GeminiPromptService geminiPromptService = new GeminiPromptService(geminiPromptDAO, userService);
         GeminiPromptController geminiPromptController = new GeminiPromptController(geminiPromptService);
         ApplicationConfig applicationConfig = new ApplicationConfig(emf);
 
 
-
         // 2. Start Javalin Server
+        // 3. Define API Routes
         Javalin app = Javalin.create(config -> {
             config.router.apiBuilder(applicationConfig::addEndpoints);
-                }).start(7070);
+        }).start(7070);
 
-
-        // 3. Define API Routes
-        //userController.registerRoutes(app);
-        geminiPromptController.registerRoutes(app);
+        app.before(ctx -> SecurityFilter.verifyToken(ctx, userService));
 
         System.out.println("Atlas API is running on http://localhost:7070");
-
 
     }
 

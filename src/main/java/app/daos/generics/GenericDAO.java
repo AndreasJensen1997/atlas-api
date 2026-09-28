@@ -35,7 +35,7 @@ public abstract class GenericDAO<T,I> implements IDAO<T,I> {
                 if (em.getTransaction().isActive()) {
                     em.getTransaction().rollback();
                 }
-                throw new ApiException(500, "Failed to create " + entityName + ": " + e.getMessage());
+                throw new ApiException(500, "Failed to create " + entityName, e);
             } catch (RuntimeException e) {
                 if (em.getTransaction().isActive()) {
                     em.getTransaction().rollback();

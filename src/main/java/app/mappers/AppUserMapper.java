@@ -1,6 +1,6 @@
 package app.mappers;
 
-import app.dtos.User.UserRegistrationDTO;
+import app.dtos.User.RegisterRequestDTO;
 import app.dtos.User.UserResponseDTO;
 import app.entities.User;
 import app.enums.Role;
@@ -9,7 +9,7 @@ public class AppUserMapper {
 
 
     // 1. Maps incoming Registration DTO -> New Entity
-    public static User registrationDTOToEntity(UserRegistrationDTO dto, String hashedPassword) {
+    public static User registrationDTOToEntity(RegisterRequestDTO dto, String hashedPassword) {
         return User.builder()
                 .name(dto.name())
                 .email(dto.email())

@@ -5,7 +5,7 @@ import app.dtos.User.UserResponseDTO;
 import app.dtos.User.LoginRequestDTO;
 import app.dtos.User.RegisterRequestDTO;
 import app.entities.User;
-import app.mappers.AppUserMapper;
+import app.mappers.UserMapper;
 import app.services.UserService;
 import app.utils.security.JWTToken;
 import io.javalin.apibuilder.EndpointGroup;
@@ -32,7 +32,7 @@ public class AuthController implements EndpointGroup {
             RegisterRequestDTO dto = ctx.bodyAsClass(RegisterRequestDTO.class);
             User registeredUser = userService.registerUser(dto);
 
-            UserResponseDTO responseDto = AppUserMapper.toResponseDto(registeredUser);
+            UserResponseDTO responseDto = UserMapper.toResponseDto(registeredUser);
 
             ctx.status(201).json(responseDto);
 

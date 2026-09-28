@@ -5,7 +5,7 @@ import app.dtos.User.UserResponseDTO;
 import app.entities.User;
 import app.enums.Role;
 
-public class AppUserMapper {
+public class UserMapper {
 
 
     // 1. Maps incoming Registration DTO -> New Entity

@@ -1,10 +1,10 @@
 package app.services;
 
-import app.daos.UserDAO;
+import app.daos.user.UserDAO;
 import app.dtos.User.LoginRequestDTO;
 import app.dtos.User.RegisterRequestDTO;
 import app.entities.User;
-import app.mappers.AppUserMapper;
+import app.mappers.UserMapper;
 import app.utils.Validation.UserValidator;
 import org.mindrot.jbcrypt.BCrypt;
 
@@ -30,7 +30,7 @@ public class UserService {
         }
 
         String hashedPassword = BCrypt.hashpw(dto.password(), BCrypt.gensalt());
-        User newUser = AppUserMapper.registrationDTOToEntity(dto, hashedPassword);
+        User newUser = UserMapper.registrationDTOToEntity(dto, hashedPassword);
 
         return userDao.create(newUser);
     }

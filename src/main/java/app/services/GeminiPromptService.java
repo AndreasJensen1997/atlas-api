@@ -1,6 +1,5 @@
 package app.services;
 
-import app.daos.UserDAO;
 import app.daos.userOwned.GeminiPromptDAO;
 import app.dtos.GeminiPrompt.GeminiResponseDTO;
 import app.entities.User;

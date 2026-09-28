@@ -1,4 +1,4 @@
-package app.daos;
+package app.daos.user;
 
 import app.daos.generics.GenericDAO;
 import app.entities.User;

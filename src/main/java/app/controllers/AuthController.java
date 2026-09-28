@@ -1,13 +1,17 @@
 package app.controllers;
 
+import app.dtos.User.LoginResponseDTO;
 import app.dtos.User.UserResponseDTO;
-import app.dtos.User.UserLoginDTO;
-import app.dtos.User.UserRegistrationDTO;
+import app.dtos.User.LoginRequestDTO;
+import app.dtos.User.RegisterRequestDTO;
 import app.entities.User;
 import app.mappers.AppUserMapper;
 import app.services.UserService;
+import app.utils.security.JWTToken;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.http.Context;
+import io.javalin.http.HttpStatus;
+//
 import static io.javalin.apibuilder.ApiBuilder.*;
 
 
@@ -25,7 +29,7 @@ public class AuthController implements EndpointGroup {
     public void register(Context ctx) {
 
         try {
-            UserRegistrationDTO dto = ctx.bodyAsClass(UserRegistrationDTO.class);
+            RegisterRequestDTO dto = ctx.bodyAsClass(RegisterRequestDTO.class);
             User registeredUser = userService.registerUser(dto);
 
             UserResponseDTO responseDto = AppUserMapper.toResponseDto(registeredUser);
@@ -39,12 +43,12 @@ public class AuthController implements EndpointGroup {
 
     public void login(Context ctx) {
         try {
-            UserLoginDTO dto = ctx.bodyAsClass(UserLoginDTO.class);
+            LoginRequestDTO dto = ctx.bodyAsClass(LoginRequestDTO.class);
             User loggedInUser = userService.login(dto);
 
-            UserResponseDTO responseDto = AppUserMapper.toResponseDto(loggedInUser);
-
-            ctx.status(200).json(responseDto);
+            String token = JWTToken.generateToken(loggedInUser.getEmail());
+            LoginResponseDTO responseDto = new LoginResponseDTO(token);
+            ctx.status(HttpStatus.OK).json(responseDto);
 
         } catch (IllegalArgumentException e) {
             ctx.status(401).json(Map.of("error", e.getMessage()));

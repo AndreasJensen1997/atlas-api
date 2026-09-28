@@ -48,6 +48,7 @@ public class Chapter implements LinkableEntity {
     protected void onCreate() {
         setCreatedDate();
         setDefaultVisibility();
+        setUpdatedDate();
     }
 
     @PreUpdate

@@ -1,0 +1,16 @@
+POST localhost:7070/api/chapters/create
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTA2NzQ5MjMsInN1YiI6ImFuZHJlYXNAbGl2ZS5kayIsImlhdCI6MTc5MDU4ODUyM30.wgRmIIHKGdkbgmrMqatjtUDBDfkIb4Hwj9jUXd9wDfg
+Accept: application/json
+Content-Type:application/json
+
+{
+  "title": "The Beginning of the Journey",
+  "subtitle": "Setting out into the unknown",
+  "content": "This is the main body text of the chapter detailing the adventures and milestones.",
+  "startDate": "2026-09-28",
+  "endDate": "2026-10-05",
+  "visibility": "PRIVATE"
+}
+
+###
+

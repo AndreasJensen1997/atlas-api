@@ -1,9 +1,12 @@
 package app.config;
 
 import app.controllers.AuthController;
+import app.controllers.ChapterController;
 import app.controllers.GeminiPromptController;
-import app.daos.UserDAO;
+import app.daos.user.UserDAO;
+import app.daos.userOwned.ChapterDAO;
 import app.daos.userOwned.GeminiPromptDAO;
+import app.services.ChapterService;
 import app.services.GeminiPromptService;
 import app.services.UserService;
 import io.javalin.apibuilder.EndpointGroup;
@@ -14,18 +17,26 @@ public class ApplicationConfig implements EndpointGroup {
 
     AuthController authController;
     GeminiPromptController geminiPromptController;
+    ChapterController chapterController;
 
     public ApplicationConfig(EntityManagerFactory emf) {
 
+
+        // USER
         UserDAO userDAO = new UserDAO(emf);
-        GeminiPromptDAO geminiPromptDAO = new GeminiPromptDAO(emf);
-
-
         UserService userService = new UserService(userDAO);
-        GeminiPromptService geminiPromptService = new GeminiPromptService(geminiPromptDAO,userService);
         authController = new AuthController(userService);
+
+
+        // GEMINI PROMPT
+        GeminiPromptDAO geminiPromptDAO = new GeminiPromptDAO(emf);
+        GeminiPromptService geminiPromptService = new GeminiPromptService(geminiPromptDAO,userService);
         geminiPromptController = new GeminiPromptController(geminiPromptService);
 
+        // CHAPTER
+        ChapterDAO chapterDAO = new ChapterDAO(emf);
+        ChapterService chapterService = new ChapterService(chapterDAO,userService);
+        chapterController = new ChapterController(chapterService);
 
     }
 
@@ -34,5 +45,6 @@ public class ApplicationConfig implements EndpointGroup {
     public void addEndpoints() {
         authController.addEndpoints();
         geminiPromptController.addEndpoints();
+        chapterController.addEndpoints();
     }
 }

@@ -3,12 +3,16 @@ package app.config;
 import app.controllers.AuthController;
 import app.controllers.ChapterController;
 import app.controllers.GeminiPromptController;
+import app.controllers.MemoryController;
 import app.daos.user.UserDAO;
 import app.daos.userOwned.ChapterDAO;
 import app.daos.userOwned.GeminiPromptDAO;
+import app.daos.userOwned.MemoryDAO;
 import app.mappers.ChapterMapper;
+import app.mappers.MemoryMapper;
 import app.services.ChapterService;
 import app.services.GeminiPromptService;
+import app.services.MemoryService;
 import app.services.UserService;
 import io.javalin.apibuilder.EndpointGroup;
 import jakarta.persistence.EntityManagerFactory;
@@ -19,6 +23,7 @@ public class ApplicationConfig implements EndpointGroup {
     AuthController authController;
     GeminiPromptController geminiPromptController;
     ChapterController chapterController;
+    MemoryController memoryController;
 
     public ApplicationConfig(EntityManagerFactory emf) {
 
@@ -40,6 +45,12 @@ public class ApplicationConfig implements EndpointGroup {
         ChapterService chapterService = new ChapterService(chapterDAO,userService, chapterMapper);
         chapterController = new ChapterController(chapterService, chapterMapper);
 
+        // MEMORY
+        MemoryDAO memoryDAO = new MemoryDAO(emf);
+        MemoryMapper memoryMapper = new MemoryMapper();
+        MemoryService memoryService = new MemoryService(memoryDAO, userService, memoryMapper);
+        memoryController = new MemoryController(memoryService,memoryMapper);
+
     }
 
 
@@ -48,5 +59,6 @@ public class ApplicationConfig implements EndpointGroup {
         authController.addEndpoints();
         geminiPromptController.addEndpoints();
         chapterController.addEndpoints();
+        memoryController.addEndpoints();
     }
 }

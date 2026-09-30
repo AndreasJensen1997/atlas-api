@@ -15,7 +15,7 @@ public class MemoryMapper implements IMapper<MemoryRequestDTO, MemoryResponseDTO
                 .title(dto.title())
                 .subtitle(dto.subtitle())
                 .content(dto.content())
-                .date(dto.startDate())
+                .date(dto.date())
                 .visibility(dto.visibility())
                 .user(user)
                 .build();

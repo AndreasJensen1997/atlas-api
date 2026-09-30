@@ -23,12 +23,17 @@ public class Memory implements LinkableEntity {
     @Id
     @GeneratedValue
     Integer memoryId;
+    @Setter
     String title;
+    @Setter
     String subtitle;
+    @Setter
     String content;
+    @Setter
     LocalDate date;
     LocalDate createdAt;
     LocalDate updatedAt;
+    @Setter
     @Enumerated(EnumType.STRING)
     private Visibility visibility;
 
@@ -53,6 +58,7 @@ public class Memory implements LinkableEntity {
     protected void onCreate() {
         setDefaultVisibility();
         setCreatedDate();
+        setUpdatedDate();
     }
 
     @PreUpdate

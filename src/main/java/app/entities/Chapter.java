@@ -26,7 +26,9 @@ public class Chapter implements LinkableEntity {
     private String subtitle;
     @Setter
     private String content;
+    @Setter
     private LocalDate startDate;
+    @Setter
     private LocalDate endDate;
     private LocalDate createdAt;
     private LocalDate updatedAt;

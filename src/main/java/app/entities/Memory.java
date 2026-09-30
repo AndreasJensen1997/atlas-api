@@ -24,7 +24,7 @@ public class Memory implements LinkableEntity {
     @GeneratedValue
     Integer memoryId;
     String title;
-    String subTitle;
+    String subtitle;
     String content;
     LocalDate date;
     LocalDate createdAt;

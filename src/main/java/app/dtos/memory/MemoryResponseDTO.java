@@ -9,7 +9,8 @@ public record MemoryResponseDTO(
         String title,
         String subtitle,
         String content,
-        LocalDate startDate,
-        LocalDate endDate,
+        LocalDate date,
+        LocalDate createdAt,
+        LocalDate updatedAt,
         Visibility visibility) {
 }

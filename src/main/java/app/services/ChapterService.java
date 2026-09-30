@@ -77,6 +77,8 @@ public class ChapterService {
         chapter.setTitle(dto.title());
         chapter.setSubtitle(dto.subtitle());
         chapter.setContent(dto.content());
+        chapter.setStartDate(dto.startDate());
+        chapter.setEndDate(dto.endDate());
         chapter.setVisibility(dto.visibility());
 
 

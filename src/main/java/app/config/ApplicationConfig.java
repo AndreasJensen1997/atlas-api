@@ -6,6 +6,7 @@ import app.controllers.GeminiPromptController;
 import app.daos.user.UserDAO;
 import app.daos.userOwned.ChapterDAO;
 import app.daos.userOwned.GeminiPromptDAO;
+import app.mappers.ChapterMapper;
 import app.services.ChapterService;
 import app.services.GeminiPromptService;
 import app.services.UserService;
@@ -35,8 +36,9 @@ public class ApplicationConfig implements EndpointGroup {
 
         // CHAPTER
         ChapterDAO chapterDAO = new ChapterDAO(emf);
-        ChapterService chapterService = new ChapterService(chapterDAO,userService);
-        chapterController = new ChapterController(chapterService);
+        ChapterMapper chapterMapper = new ChapterMapper();
+        ChapterService chapterService = new ChapterService(chapterDAO,userService, chapterMapper);
+        chapterController = new ChapterController(chapterService, chapterMapper);
 
     }
 

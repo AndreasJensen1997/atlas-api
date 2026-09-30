@@ -5,6 +5,7 @@ import app.dtos.chapter.ChapterRequestDTO;
 import app.entities.Chapter;
 import app.entities.User;
 import app.mappers.ChapterMapper;
+import app.mappers.UserMapper;
 
 import java.util.List;
 
@@ -14,10 +15,12 @@ public class ChapterService {
 
     private final ChapterDAO chapterDAO;
     private final UserService userService;
+    private final ChapterMapper chapterMapper;
 
-    public ChapterService(ChapterDAO chapterDAO, UserService userService) {
+    public ChapterService(ChapterDAO chapterDAO, UserService userService, ChapterMapper chapterMapper) {
         this.chapterDAO = chapterDAO;
         this.userService = userService;
+        this.chapterMapper = chapterMapper;
     }
 
     public Chapter createChapter(ChapterRequestDTO dto, int userId) {
@@ -28,7 +31,7 @@ public class ChapterService {
             throw new IllegalArgumentException("A chapter with this title already exists.");
         }
 
-        Chapter newChapter = ChapterMapper.toEntity(dto, owner);
+        Chapter newChapter = chapterMapper.toEntity(dto, owner);
 
         return chapterDAO.create(newChapter);
     }

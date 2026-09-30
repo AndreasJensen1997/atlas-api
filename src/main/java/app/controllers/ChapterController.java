@@ -19,9 +19,11 @@ import static io.javalin.apibuilder.ApiBuilder.put;
 public class ChapterController extends AbstractController<ChapterRequestDTO, ChapterResponseDTO, Chapter, Integer> implements EndpointGroup {
 
     private final ChapterService chapterService;
+    private final ChapterMapper chapterMapper;
 
-    public ChapterController(ChapterService chapterService) {
+    public ChapterController(ChapterService chapterService, ChapterMapper chapterMapper) {
         this.chapterService = chapterService;
+        this.chapterMapper = chapterMapper;
     }
 
     // Creates requestDTO from context
@@ -67,7 +69,7 @@ public class ChapterController extends AbstractController<ChapterRequestDTO, Cha
     // Maps entity to responseDTO
     @Override
     protected ChapterResponseDTO mapToResponse(Chapter entity) {
-        return ChapterMapper.toResponseDTO(entity);
+        return chapterMapper.toResponse(entity);
     }
 
     // Adds endpoints

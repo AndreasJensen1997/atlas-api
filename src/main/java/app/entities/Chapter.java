@@ -20,14 +20,18 @@ public class Chapter implements LinkableEntity {
     @Id
     @GeneratedValue
     private Integer chapterId;
+    @Setter
     private String title;
+    @Setter
     private String subtitle;
+    @Setter
     private String content;
     private LocalDate startDate;
     private LocalDate endDate;
     private LocalDate createdAt;
     private LocalDate updatedAt;
     @Enumerated(EnumType.STRING)
+    @Setter
     private Visibility visibility;
 
     @Override

@@ -154,7 +154,6 @@ public abstract class GenericDAO<T,I> implements IDAO<T,I> {
                             .setParameter("type", type)
                             .executeUpdate();
                 } catch (IllegalArgumentException e) {
-                    // Skips cleanup if an entity type doesn't have a matching TargetType enum
                 }
 
                 em.remove(entityToRemove);

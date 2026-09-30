@@ -44,8 +44,46 @@ public class ChapterService {
         if (!chapter.getUser().getUserId().equals(userId)) {
             throw new IllegalArgumentException("You do not have permission to access this chapter.");
         }
-
         return chapter;
     }
+
+    public List<Chapter> getAllById(int userId) {
+
+        return chapterDAO.getAllByUserId(userId);
+    }
+
+
+    public void delete(Integer chapterId, int userId){
+        Chapter chapter = getById(chapterId, userId);
+
+        chapterDAO.delete(chapter.getId());
+    }
+
+
+    public Chapter update(Integer chapterId, ChapterRequestDTO dto, int userId) {
+        Chapter chapter = chapterDAO.getById(chapterId);
+
+        if (chapter == null) {
+            throw new IllegalArgumentException("Chapter not found with ID: " + chapterId);
+        }
+
+        if (!chapter.getUser().getUserId().equals(userId)) {
+            throw new IllegalArgumentException("You do not have permission to access this chapter.");
+        }
+
+        chapter.setTitle(dto.title());
+        chapter.setSubtitle(dto.subtitle());
+        chapter.setContent(dto.content());
+        chapter.setVisibility(dto.visibility());
+
+
+        return chapterDAO.update(chapter);
+    }
+
+
+
+
+
+
 
 }

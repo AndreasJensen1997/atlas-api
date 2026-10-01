@@ -21,14 +21,20 @@ public class Story implements LinkableEntity {
     @Id
     @GeneratedValue
     Integer storyId;
+    @Setter
     String title;
-    String subTitle;
+    @Setter
+    String subtitle;
+    @Setter
     String content;
+    @Setter
     LocalDate startDate;
+    @Setter
     LocalDate endDate;
     LocalDate createdAt;
     LocalDate updatedAt;
     @Enumerated(EnumType.STRING)
+    @Setter
     private Visibility visibility;
 
     @Override
@@ -49,6 +55,7 @@ public class Story implements LinkableEntity {
     protected void onCreate() {
         setCreatedDate();
         setDefaultVisibility();
+        setUpdatedDate();
     }
 
     @PreUpdate

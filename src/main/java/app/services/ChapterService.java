@@ -12,7 +12,6 @@ import java.util.List;
 
 public class ChapterService {
 
-
     private final ChapterDAO chapterDAO;
     private final UserService userService;
     private final ChapterMapper chapterMapper;
@@ -84,11 +83,4 @@ public class ChapterService {
 
         return chapterDAO.update(chapter);
     }
-
-
-
-
-
-
-
 }

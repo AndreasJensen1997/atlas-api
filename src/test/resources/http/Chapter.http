@@ -1,5 +1,5 @@
-POST localhost:7070/api/chapters
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTA4NjI0MTAsInN1YiI6ImFuZHJlYXNAbGl2ZS5kayIsImlhdCI6MTc5MDc3NjAxMH0.jhl0hCyMxce3mHKBrMxSFO_B6t4wk75VEG2I8qjy7LU
+POST {{url}}/chapters
+Authorization: {{JWT}}
 Accept: application/json
 Content-Type:application/json
 
@@ -13,8 +13,8 @@ Content-Type:application/json
 }
 
 ###
-POST localhost:7070/api/chapters
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTA4NjI0MTAsInN1YiI6ImFuZHJlYXNAbGl2ZS5kayIsImlhdCI6MTc5MDc3NjAxMH0.jhl0hCyMxce3mHKBrMxSFO_B6t4wk75VEG2I8qjy7LU
+POST {{url}}/chapters
+Authorization: {{JWT}}
 Accept: application/json
 Content-Type:application/json
 
@@ -29,29 +29,29 @@ Content-Type:application/json
 
 ###
 
-GET localhost:7070/api/chapters/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTA4NjI0MTAsInN1YiI6ImFuZHJlYXNAbGl2ZS5kayIsImlhdCI6MTc5MDc3NjAxMH0.jhl0hCyMxce3mHKBrMxSFO_B6t4wk75VEG2I8qjy7LU
+GET {{url}}/chapters/1
+Authorization:{{JWT}}
 Accept: application/json
 Content-Type:application/json
 
 ###
 
-GET localhost:7070/api/chapters
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTA4NjI0MTAsInN1YiI6ImFuZHJlYXNAbGl2ZS5kayIsImlhdCI6MTc5MDc3NjAxMH0.jhl0hCyMxce3mHKBrMxSFO_B6t4wk75VEG2I8qjy7LU
+GET {{url}}/chapters
+Authorization:{{JWT}}
 Accept: application/json
 Content-Type:application/json
 
 ###
 
 DELETE localhost:7070/api/chapters/2
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTA4NjI0MTAsInN1YiI6ImFuZHJlYXNAbGl2ZS5kayIsImlhdCI6MTc5MDc3NjAxMH0.jhl0hCyMxce3mHKBrMxSFO_B6t4wk75VEG2I8qjy7LU
+Authorization:{{JWT}}
 Accept: application/json
 Content-Type:application/json
 
 ###
 
 PUT localhost:7070/api/chapters/2
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTA4NjI0MTAsInN1YiI6ImFuZHJlYXNAbGl2ZS5kayIsImlhdCI6MTc5MDc3NjAxMH0.jhl0hCyMxce3mHKBrMxSFO_B6t4wk75VEG2I8qjy7LU
+Authorization:{{JWT}}
 Accept: application/json
 Content-Type:application/json
 

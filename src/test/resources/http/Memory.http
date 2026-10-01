@@ -1,6 +1,6 @@
 ### Create First Memory
-POST localhost:7070/api/memories
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTA4NjI0MTAsInN1YiI6ImFuZHJlYXNAbGl2ZS5kayIsImlhdCI6MTc5MDc3NjAxMH0.jhl0hCyMxce3mHKBrMxSFO_B6t4wk75VEG2I8qjy7LU
+POST {{url}}/memories
+Authorization: {{JWT}}
 Accept: application/json
 Content-Type: application/json
 
@@ -15,8 +15,8 @@ Content-Type: application/json
 ###
 
 ### Create Second Memory
-POST localhost:7070/api/memories
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTA4NjI0MTAsInN1YiI6ImFuZHJlYXNAbGl2ZS5kayIsImlhdCI6MTc5MDc3NjAxMH0.jhl0hCyMxce3mHKBrMxSFO_B6t4wk75VEG2I8qjy7LU
+POST {{url}}/memories
+Authorization:{{JWT}}
 Accept: application/json
 Content-Type: application/json
 
@@ -31,29 +31,29 @@ Content-Type: application/json
 ###
 
 ### Get Memory By ID (ID: 1)
-GET localhost:7070/api/memories/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTA4NjI0MTAsInN1YiI6ImFuZHJlYXNAbGl2ZS5kayIsImlhdCI6MTc5MDc3NjAxMH0.jhl0hCyMxce3mHKBrMxSFO_B6t4wk75VEG2I8qjy7LU
+GET {{url}}/memories/1
+Authorization: {{JWT}}
 Accept: application/json
 
 ###
 
 ### Get All Memories for User
-GET localhost:7070/api/memories
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTA4NjI0MTAsInN1YiI6ImFuZHJlYXNAbGl2ZS5kayIsImlhdCI6MTc5MDc3NjAxMH0.jhl0hCyMxce3mHKBrMxSFO_B6t4wk75VEG2I8qjy7LU
+GET {{url}}/memories
+Authorization:{{JWT}}
 Accept: application/json
 
 ###
 
 ### Delete Memory (ID: 2)
-DELETE localhost:7070/api/memories/2
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTA4NjI0MTAsInN1YiI6ImFuZHJlYXNAbGl2ZS5kayIsImlhdCI6MTc5MDc3NjAxMH0.jhl0hCyMxce3mHKBrMxSFO_B6t4wk75VEG2I8qjy7LU
+DELETE {{url}}/memories/2
+Authorization: {{JWT}}
 Accept: application/json
 
 ###
 
 ### Update Memory (ID: 1)
-PUT localhost:7070/api/memories/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJleHAiOjE3OTA4NjI0MTAsInN1YiI6ImFuZHJlYXNAbGl2ZS5kayIsImlhdCI6MTc5MDc3NjAxMH0.jhl0hCyMxce3mHKBrMxSFO_B6t4wk75VEG2I8qjy7LU
+PUT {{url}}/memories/1
+Authorization:{{JWT}}
 Accept: application/json
 Content-Type: application/json
 

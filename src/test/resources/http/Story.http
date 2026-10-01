@@ -1,0 +1,69 @@
+### Create First Story
+POST {{url}}/stories
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "College",
+  "subtitle": "An epic tale of discovery",
+  "content": "This chapter covers the 3 years of my life in college",
+  "startDate": "2023-09-01",
+  "endDate": "2026-09-15",
+  "visibility": "PRIVATE"
+}
+
+###
+
+### Create Second Story
+POST {{url}}/stories
+Authorization:{{JWT}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "Years in China",
+  "subtitle": "A cultural awakening",
+  "content": "Living abroad transformed my perspective on life, community, and the art of storytelling through everyday connections.",
+  "startDate": "2026-03-10",
+  "endDate": "2026-08-20",
+  "visibility": "PUBLIC"
+}
+
+###
+
+### Get Story By ID (ID: 1)
+GET {{url}}/stories/1
+Authorization: {{JWT}}
+Accept: application/json
+
+###
+
+### Get All Stories for User
+GET {{url}}/stories
+Authorization:{{JWT}}
+Accept: application/json
+
+###
+
+### Delete Story (ID: 2)
+DELETE {{url}}/stories/2
+Authorization:{{JWT}}
+Accept: application/json
+
+###
+
+### Update Story (ID: 1)
+PUT {{url}}/stories/1
+Authorization:{{JWT}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "The Chronicles of the West (Expanded Edition)",
+  "subtitle": "An updated epic tale of discovery",
+  "content": "This is the newly revised body text of the story detailing expanded adventures, key milestones, and reflections.",
+  "startDate": "2026-09-01",
+  "endDate": "2026-09-20",
+  "visibility": "PUBLIC"
+}

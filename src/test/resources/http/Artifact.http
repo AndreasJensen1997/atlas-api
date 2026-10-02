@@ -1,0 +1,79 @@
+POST {{url}}/artifacts
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type:application/json
+
+{
+  "title": "Excalibur",
+  "subtitle": "The legendary sword",
+  "content": "A powerful weapon pulled from the stone.",
+  "visibility": "PUBLIC",
+  "artifactType": {
+    "artifactTypeId": 1,
+    "name": "Weapon"
+  }
+}
+
+###
+
+POST {{url}}/artifacts
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type:application/json
+
+{
+  "title": "Ancient Jade Amulet",
+  "subtitle": "Found in the eastern province",
+  "content": "A smooth green stone radiating a faint, protective energy.",
+  "visibility": "PRIVATE",
+  "artifactType": {
+    "artifactTypeId": 2,
+    "name": "Relic"
+  }
+}
+
+###
+
+GET {{url}}/artifacts/1
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type:application/json
+
+###
+
+GET {{url}}/artifacts
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type:application/json
+
+###
+
+DELETE {{url}}/artifacts/2
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type:application/json
+
+###
+
+PUT {{url}}/artifacts/1
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type:application/json
+
+{
+  "title": "Excalibur (Upgraded)",
+  "subtitle": "The glowing legendary sword",
+  "content": "Infused with elemental magic.",
+  "visibility": "PUBLIC",
+  "artifactType": {
+    "artifactTypeId": 1,
+    "name": "Weapon"
+  }
+}
+
+###
+
+GET {{url}}/artifacts/random
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type:application/json

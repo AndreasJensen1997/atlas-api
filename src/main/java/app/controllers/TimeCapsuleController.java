@@ -16,17 +16,35 @@ import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class TimeCapsuleController extends AbstractController<TimeCapsuleRequestDTO, TimeCapsuleResponseDTO, TimeCapsule, Integer> implements EndpointGroup {
 
+    // ===== Dependencies =====
+
     private final TimeCapsuleService timeCapsuleService;
     private final TimeCapsuleMapper timeCapsuleMapper;
+
+    // ===== Constructor =====
 
     public TimeCapsuleController(TimeCapsuleService timeCapsuleService, TimeCapsuleMapper timeCapsuleMapper) {
         this.timeCapsuleService = timeCapsuleService;
         this.timeCapsuleMapper = timeCapsuleMapper;
     }
 
+    // ===== Request Handling =====
+
     @Override
     protected TimeCapsuleRequestDTO parseBody(Context ctx) {
         return ctx.bodyAsClass(TimeCapsuleRequestDTO.class);
+    }
+
+    @Override
+    protected Integer parseId(String idStr) {
+        return Integer.parseInt(idStr);
+    }
+
+    // ===== Entity Operations =====
+
+    @Override
+    protected TimeCapsule createEntity(TimeCapsuleRequestDTO dto, Integer userId) {
+        return timeCapsuleService.createTimeCapsule(dto, userId);
     }
 
     @Override
@@ -40,18 +58,8 @@ public class TimeCapsuleController extends AbstractController<TimeCapsuleRequest
     }
 
     @Override
-    protected TimeCapsule getRandom(Integer userId) {
-        throw new ApiException(405, "Time capsules does not support random feature.");
-    }
-
-    @Override
-    protected Integer parseId(String idStr) {
-        return Integer.parseInt(idStr);
-    }
-
-    @Override
-    protected TimeCapsule createEntity(TimeCapsuleRequestDTO dto, Integer userId) {
-        return timeCapsuleService.createTimeCapsule(dto, userId);
+    protected TimeCapsule updateEntity(Integer entityId, TimeCapsuleRequestDTO dto, Integer userId) {
+        throw new ApiException(405, "Time capsules cannot be updated.");
     }
 
     @Override
@@ -60,14 +68,18 @@ public class TimeCapsuleController extends AbstractController<TimeCapsuleRequest
     }
 
     @Override
-    protected TimeCapsule updateEntity(Integer entityId, TimeCapsuleRequestDTO dto, Integer userId) {
-        throw new ApiException(405, "Time capsules cannot be updated.");
+    protected TimeCapsule getRandom(Integer userId) {
+        throw new ApiException(405, "Time capsules does not support random feature.");
     }
+
+    // ===== Response Mapping =====
 
     @Override
     protected TimeCapsuleResponseDTO mapToResponse(TimeCapsule entity) {
         return timeCapsuleMapper.toResponse(entity);
     }
+
+    // ===== Endpoints =====
 
     @Override
     public void addEndpoints() {

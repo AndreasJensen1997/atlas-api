@@ -1,8 +1,8 @@
 package app.controllers;
 
 import app.controllers.generics.AbstractController;
-import app.dtos.Person.PersonRequestDTO;
-import app.dtos.Person.PersonResponseDTO;
+import app.dtos.person.PersonRequestDTO;
+import app.dtos.person.PersonResponseDTO;
 import app.entities.Person;
 import app.mappers.PersonMapper;
 import app.services.PersonService;
@@ -15,17 +15,35 @@ import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class PersonController extends AbstractController<PersonRequestDTO, PersonResponseDTO, Person, Integer> implements EndpointGroup {
 
+    // ===== Dependencies =====
+
     private final PersonService personService;
     private final PersonMapper personMapper;
+
+    // ===== Constructor =====
 
     public PersonController(PersonService personService, PersonMapper personMapper) {
         this.personService = personService;
         this.personMapper = personMapper;
     }
 
+    // ===== Request Handling =====
+
     @Override
     protected PersonRequestDTO parseBody(Context ctx) {
         return ctx.bodyAsClass(PersonRequestDTO.class);
+    }
+
+    @Override
+    protected Integer parseId(String idStr) {
+        return Integer.parseInt(idStr);
+    }
+
+    // ===== Entity Operations =====
+
+    @Override
+    protected Person createEntity(PersonRequestDTO dto, Integer userId) {
+        return personService.createPerson(dto, userId);
     }
 
     @Override
@@ -39,18 +57,8 @@ public class PersonController extends AbstractController<PersonRequestDTO, Perso
     }
 
     @Override
-    protected Person getRandom(Integer userId) {
-        return personService.getRandom(userId);
-    }
-
-    @Override
-    protected Integer parseId(String idStr) {
-        return Integer.parseInt(idStr);
-    }
-
-    @Override
-    protected Person createEntity(PersonRequestDTO dto, Integer userId) {
-        return personService.createPerson(dto, userId);
+    protected Person updateEntity(Integer entityId, PersonRequestDTO personRequestDTO, Integer userId) {
+        return personService.update(entityId, personRequestDTO, userId);
     }
 
     @Override
@@ -59,14 +67,18 @@ public class PersonController extends AbstractController<PersonRequestDTO, Perso
     }
 
     @Override
-    protected Person updateEntity(Integer entityId, PersonRequestDTO personRequestDTO, Integer userId) {
-        return personService.update(entityId, personRequestDTO, userId);
+    protected Person getRandom(Integer userId) {
+        return personService.getRandom(userId);
     }
+
+    // ===== Response Mapping =====
 
     @Override
     protected PersonResponseDTO mapToResponse(Person entity) {
         return personMapper.toResponse(entity);
     }
+
+    // ===== Endpoints =====
 
     @Override
     public void addEndpoints() {
@@ -74,7 +86,7 @@ public class PersonController extends AbstractController<PersonRequestDTO, Perso
         get("/api/people/random", this::randomByUserId);
         get("/api/people/{id}", this::getById);
         get("/api/people", this::getAllById);
-        delete("/api/people/{id}", this::deleteById);
         put("/api/people/{id}", this::updateById);
+        delete("/api/people/{id}", this::deleteById);
     }
 }

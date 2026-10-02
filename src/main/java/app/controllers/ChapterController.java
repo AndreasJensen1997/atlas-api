@@ -18,52 +18,45 @@ import static io.javalin.apibuilder.ApiBuilder.put;
 
 public class ChapterController extends AbstractController<ChapterRequestDTO, ChapterResponseDTO, Chapter, Integer> implements EndpointGroup {
 
+    // ===== Dependencies =====
+
     private final ChapterService chapterService;
     private final ChapterMapper chapterMapper;
+
+    // ===== Constructor =====
 
     public ChapterController(ChapterService chapterService, ChapterMapper chapterMapper) {
         this.chapterService = chapterService;
         this.chapterMapper = chapterMapper;
     }
 
-    // Creates requestDTO from context
+    // ===== Request Handling =====
+
     @Override
     protected ChapterRequestDTO parseBody(Context ctx) {
         return ctx.bodyAsClass(ChapterRequestDTO.class);
     }
 
-    // Fetches chapter from id
-    @Override
-    protected Chapter fetchEntityById(Integer chapterId, Integer userId) {
-        return chapterService.getById(chapterId, userId);
-    }
-
-    // Fetches all chapters from user id
-    @Override
-    protected List<Chapter> fetchAllByUserId(Integer userId) {
-        return chapterService.getAllById(userId);
-    }
-
-    @Override
-    protected Chapter getRandom(Integer userId){
-        return chapterService.getRandom(userId);
-    }
-
-    // Parses id from string to int from url
     @Override
     protected Integer parseId(String idStr) {
-        return Integer.parseInt(idStr); // Converts the URL string to an Integer
+        return Integer.parseInt(idStr);
     }
 
-    // Persists entity to DB
+    // ===== Entity Operations =====
+
     @Override
     protected Chapter createEntity(ChapterRequestDTO dto, Integer userId) {
         return chapterService.createChapter(dto, userId);
     }
 
     @Override
-    protected void deleteEntity(Integer entityId, Integer userId) {
-      chapterService.delete(entityId,userId);
+    protected Chapter fetchEntityById(Integer chapterId, Integer userId) {
+        return chapterService.getById(chapterId, userId);
+    }
+
+    @Override
+    protected List<Chapter> fetchAllByUserId(Integer userId) {
+        return chapterService.getAllById(userId);
     }
 
     @Override
@@ -71,20 +64,32 @@ public class ChapterController extends AbstractController<ChapterRequestDTO, Cha
         return chapterService.update(entityId, chapterRequestDTO, userId);
     }
 
-    // Maps entity to responseDTO
+    @Override
+    protected void deleteEntity(Integer entityId, Integer userId) {
+        chapterService.delete(entityId, userId);
+    }
+
+    @Override
+    protected Chapter getRandom(Integer userId) {
+        return chapterService.getRandom(userId);
+    }
+
+    // ===== Response Mapping =====
+
     @Override
     protected ChapterResponseDTO mapToResponse(Chapter entity) {
         return chapterMapper.toResponse(entity);
     }
 
-    // Adds endpoints
+    // ===== Endpoints =====
+
     @Override
     public void addEndpoints() {
         post("/api/chapters", this::create);
         get("/api/chapters/random", this::randomByUserId);
         get("/api/chapters/{id}", this::getById);
         get("/api/chapters", this::getAllById);
-        delete("/api/chapters/{id}", this::deleteById);
         put("/api/chapters/{id}", this::updateById);
-}
+        delete("/api/chapters/{id}", this::deleteById);
+    }
 }

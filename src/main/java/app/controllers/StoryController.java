@@ -19,48 +19,49 @@ import static io.javalin.apibuilder.ApiBuilder.put;
 
 public class StoryController extends AbstractController<StoryRequestDTO, StoryResponseDTO, Story, Integer> implements EndpointGroup {
 
+    // ===== Dependencies =====
+
     private final StoryService storyService;
     private final StoryMapper storyMapper;
+
+    // ===== Constructor =====
 
     public StoryController(StoryService storyService, StoryMapper storyMapper) {
         this.storyService = storyService;
         this.storyMapper = storyMapper;
     }
+    // ===== Request Handling =====
 
-    // Creates requestDTO from context
     @Override
     protected StoryRequestDTO parseBody(Context ctx) {
         return ctx.bodyAsClass(StoryRequestDTO.class);
     }
 
-    // Fetches story from id
-    @Override
-    protected Story fetchEntityById(Integer storyId, Integer userId) {
-        return storyService.getById(storyId, userId);
-    }
-
-    // Fetches random
-    @Override
-    protected Story getRandom(Integer userId){
-        return storyService.getRandom(userId);
-    }
-
-    // Fetches all stories from user id
-    @Override
-    protected List<Story> fetchAllByUserId(Integer userId) {
-        return storyService.getAllById(userId);
-    }
-
-    // Parses id from string to int from url
     @Override
     protected Integer parseId(String idStr) {
         return Integer.parseInt(idStr);
     }
 
-    // Persists entity to DB
+    // ===== Entity Operations =====
+
     @Override
     protected Story createEntity(StoryRequestDTO dto, Integer userId) {
         return storyService.createStory(dto, userId);
+    }
+
+    @Override
+    protected Story fetchEntityById(Integer storyId, Integer userId) {
+        return storyService.getById(storyId, userId);
+    }
+
+    @Override
+    protected List<Story> fetchAllByUserId(Integer userId) {
+        return storyService.getAllById(userId);
+    }
+
+    @Override
+    protected Story updateEntity(Integer entityId, StoryRequestDTO storyRequestDTO, Integer userId) {
+        return storyService.update(entityId, storyRequestDTO, userId);
     }
 
     @Override
@@ -69,24 +70,26 @@ public class StoryController extends AbstractController<StoryRequestDTO, StoryRe
     }
 
     @Override
-    protected Story updateEntity(Integer entityId, StoryRequestDTO storyRequestDTO, Integer userId) {
-        return storyService.update(entityId, storyRequestDTO, userId);
+    protected Story getRandom(Integer userId){
+        return storyService.getRandom(userId);
     }
 
-    // Maps entity to responseDTO
+    // ===== Response Mapping =====
+
     @Override
     protected StoryResponseDTO mapToResponse(Story entity) {
         return storyMapper.toResponse(entity);
     }
 
-    // Adds endpoints
+    // ===== Endpoints =====
+
     @Override
     public void addEndpoints() {
         post("/api/stories", this::create);
         get("/api/stories", this::getAllById);
         get("/api/stories/random", this::randomByUserId);
         get("/api/stories/{id}", this::getById);
-        delete("/api/stories/{id}", this::deleteById);
         put("/api/stories/{id}", this::updateById);
+        delete("/api/stories/{id}", this::deleteById);
     }
 }

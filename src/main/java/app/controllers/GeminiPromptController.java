@@ -1,25 +1,31 @@
 package app.controllers;
 
-import app.dtos.GeminiPrompt.GeminiPromptResponseDTO;
-import app.dtos.GeminiPrompt.GeminiPromptSaveDTO;
+import app.dtos.geminiPrompt.GeminiPromptResponseDTO;
+import app.dtos.geminiPrompt.GeminiPromptSaveDTO;
 import app.entities.GeminiPrompt;
 import app.services.GeminiPromptService;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.http.Context;
+
 import java.util.Map;
+
 import static io.javalin.apibuilder.ApiBuilder.*;
 
 
 public class GeminiPromptController implements EndpointGroup {
 
+    // ===== Dependencies =====
 
     private GeminiPromptService geminiPromptService;
 
+    // ===== Constructor =====
 
-    public GeminiPromptController (GeminiPromptService geminiPromptService) {
+    public GeminiPromptController(GeminiPromptService geminiPromptService) {
         this.geminiPromptService = geminiPromptService;
 
     }
+
+    // ===== Entity Operations =====
 
     public void generatePrompt(Context ctx) {
         try {
@@ -57,6 +63,8 @@ public class GeminiPromptController implements EndpointGroup {
             ctx.status(400).json(Map.of("error", e.getMessage()));
         }
     }
+
+    // ===== Endpoints =====
 
     @Override
     public void addEndpoints() {

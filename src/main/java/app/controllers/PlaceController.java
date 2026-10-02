@@ -1,8 +1,8 @@
 package app.controllers;
 
 import app.controllers.generics.AbstractController;
-import app.dtos.Place.PlaceRequestDTO;
-import app.dtos.Place.PlaceResponseDTO;
+import app.dtos.place.PlaceRequestDTO;
+import app.dtos.place.PlaceResponseDTO;
 import app.entities.Place;
 import app.mappers.PlaceMapper;
 import app.services.PlaceService;
@@ -15,19 +15,36 @@ import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class PlaceController extends AbstractController<PlaceRequestDTO, PlaceResponseDTO, Place, Integer> implements EndpointGroup {
 
+    // ===== Dependencies =====
+
     private final PlaceService placeService;
     private final PlaceMapper placeMapper;
+
+    // ===== Constructor =====
 
     public PlaceController(PlaceService placeService, PlaceMapper placeMapper) {
         this.placeService = placeService;
         this.placeMapper = placeMapper;
     }
 
+    // ===== Request Handling =====
+
     @Override
     protected PlaceRequestDTO parseBody(Context ctx) {
         return ctx.bodyAsClass(PlaceRequestDTO.class);
     }
 
+    @Override
+    protected Integer parseId(String idStr) {
+        return Integer.parseInt(idStr);
+    }
+
+    // ===== Entity Operations =====
+
+    @Override
+    protected Place createEntity(PlaceRequestDTO dto, Integer userId) {
+        return placeService.createPlace(dto, userId);
+    }
     @Override
     protected Place fetchEntityById(Integer placeId, Integer userId) {
         return placeService.getById(placeId, userId);
@@ -39,18 +56,8 @@ public class PlaceController extends AbstractController<PlaceRequestDTO, PlaceRe
     }
 
     @Override
-    protected Place getRandom(Integer userId) {
-        return placeService.getRandom(userId);
-    }
-
-    @Override
-    protected Integer parseId(String idStr) {
-        return Integer.parseInt(idStr);
-    }
-
-    @Override
-    protected Place createEntity(PlaceRequestDTO dto, Integer userId) {
-        return placeService.createPlace(dto, userId);
+    protected Place updateEntity(Integer entityId, PlaceRequestDTO placeRequestDTO, Integer userId) {
+        return placeService.update(entityId, placeRequestDTO, userId);
     }
 
     @Override
@@ -59,14 +66,18 @@ public class PlaceController extends AbstractController<PlaceRequestDTO, PlaceRe
     }
 
     @Override
-    protected Place updateEntity(Integer entityId, PlaceRequestDTO placeRequestDTO, Integer userId) {
-        return placeService.update(entityId, placeRequestDTO, userId);
+    protected Place getRandom(Integer userId) {
+        return placeService.getRandom(userId);
     }
+
+    // ===== Response Mapping =====
 
     @Override
     protected PlaceResponseDTO mapToResponse(Place entity) {
         return placeMapper.toResponse(entity);
     }
+
+    // ===== Endpoints =====
 
     @Override
     public void addEndpoints() {
@@ -74,7 +85,7 @@ public class PlaceController extends AbstractController<PlaceRequestDTO, PlaceRe
         get("/api/places/random", this::randomByUserId);
         get("/api/places/{id}", this::getById);
         get("/api/places", this::getAllById);
-        delete("/api/places/{id}", this::deleteById);
         put("/api/places/{id}", this::updateById);
+        delete("/api/places/{id}", this::deleteById);
     }
 }

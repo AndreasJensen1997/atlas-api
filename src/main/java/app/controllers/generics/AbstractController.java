@@ -60,6 +60,7 @@ public abstract class AbstractController<Req, Res, T, ID> {
                 return;
             }
 
+            // Parses id from string to int from url
             String idParam = ctx.pathParam("id");
             ID entityId = parseId(idParam);
 

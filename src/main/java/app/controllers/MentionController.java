@@ -13,16 +13,23 @@ import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class MentionController implements EndpointGroup {
 
+    // ===== Dependencies =====
+
     private final MentionService mentionService;
+
+    // ===== Constructor =====
 
     public MentionController(MentionService mentionService) {
         this.mentionService = mentionService;
     }
 
-    public void create(Context ctx) {
-        MentionRequestDTO dto = ctx.bodyAsClass(MentionRequestDTO.class);
-        MentionResponseDTO created = mentionService.createMention(dto);
-        ctx.status(201).json(created);
+    // ===== Entity Operations =====
+
+    public void getIncoming(Context ctx) {
+        TargetType targetType = TargetType.valueOf(ctx.pathParam("targetType").toUpperCase());
+        int targetId = Integer.parseInt(ctx.pathParam("targetId"));
+        List<MentionResponseDTO> mentions = mentionService.getIncomingMentions(targetType, targetId);
+        ctx.json(mentions);
     }
 
     public void getOutgoing(Context ctx) {
@@ -32,11 +39,10 @@ public class MentionController implements EndpointGroup {
         ctx.json(mentions);
     }
 
-    public void getIncoming(Context ctx) {
-        TargetType targetType = TargetType.valueOf(ctx.pathParam("targetType").toUpperCase());
-        int targetId = Integer.parseInt(ctx.pathParam("targetId"));
-        List<MentionResponseDTO> mentions = mentionService.getIncomingMentions(targetType, targetId);
-        ctx.json(mentions);
+    public void create(Context ctx) {
+        MentionRequestDTO dto = ctx.bodyAsClass(MentionRequestDTO.class);
+        MentionResponseDTO created = mentionService.createMention(dto);
+        ctx.status(201).json(created);
     }
 
     public void deleteEntity(Context ctx) {
@@ -44,6 +50,8 @@ public class MentionController implements EndpointGroup {
         mentionService.deleteMention(mentionId);
         ctx.status(204);
     }
+
+    // ===== Endpoints =====
 
     @Override
     public void addEndpoints() {

@@ -1,8 +1,8 @@
 package app.controllers;
 
 import app.controllers.generics.AbstractController;
-import app.dtos.Artifact.ArtifactRequestDTO;
-import app.dtos.Artifact.ArtifactResponseDTO;
+import app.dtos.artifact.ArtifactRequestDTO;
+import app.dtos.artifact.ArtifactResponseDTO;
 import app.entities.Artifact;
 import app.mappers.ArtifactMapper;
 import app.services.ArtifactService;
@@ -18,47 +18,50 @@ import static io.javalin.apibuilder.ApiBuilder.put;
 
 public class ArtifactController extends AbstractController<ArtifactRequestDTO, ArtifactResponseDTO, Artifact, Integer> implements EndpointGroup {
 
+    // ===== Dependencies =====
+
     private final ArtifactService artifactService;
     private final ArtifactMapper artifactMapper;
+
+    // ===== Constructor =====
 
     public ArtifactController(ArtifactService artifactService, ArtifactMapper artifactMapper) {
         this.artifactService = artifactService;
         this.artifactMapper = artifactMapper;
     }
 
-    // Creates requestDTO from context
+    // ===== Request Handling =====
+
     @Override
     protected ArtifactRequestDTO parseBody(Context ctx) {
         return ctx.bodyAsClass(ArtifactRequestDTO.class);
     }
 
-    // Fetches artifact from id
+    @Override
+    protected Integer parseId(String idStr) {
+        return Integer.parseInt(idStr);
+    }
+
+    // ===== Entity Operations =====
+
+    @Override
+    protected Artifact createEntity(ArtifactRequestDTO dto, Integer userId) {
+        return artifactService.createArtifact(dto, userId);
+    }
+
     @Override
     protected Artifact fetchEntityById(Integer artifactId, Integer userId) {
         return artifactService.getById(artifactId, userId);
     }
 
-    // Fetches all artifacts from user id
     @Override
     protected List<Artifact> fetchAllByUserId(Integer userId) {
         return artifactService.getAllById(userId);
     }
 
     @Override
-    protected Artifact getRandom(Integer userId) {
-        return artifactService.getRandom(userId);
-    }
-
-    // Parses id from string to int from url
-    @Override
-    protected Integer parseId(String idStr) {
-        return Integer.parseInt(idStr);
-    }
-
-    // Persists entity to DB
-    @Override
-    protected Artifact createEntity(ArtifactRequestDTO dto, Integer userId) {
-        return artifactService.createArtifact(dto, userId);
+    protected Artifact updateEntity(Integer entityId, ArtifactRequestDTO artifactRequestDTO, Integer userId) {
+        return artifactService.update(entityId, artifactRequestDTO, userId);
     }
 
     @Override
@@ -67,24 +70,26 @@ public class ArtifactController extends AbstractController<ArtifactRequestDTO, A
     }
 
     @Override
-    protected Artifact updateEntity(Integer entityId, ArtifactRequestDTO artifactRequestDTO, Integer userId) {
-        return artifactService.update(entityId, artifactRequestDTO, userId);
+    protected Artifact getRandom(Integer userId) {
+        return artifactService.getRandom(userId);
     }
 
-    // Maps entity to responseDTO
+    // ===== Response Mapping =====
+
     @Override
     protected ArtifactResponseDTO mapToResponse(Artifact entity) {
         return artifactMapper.toResponse(entity);
     }
 
-    // Adds endpoints
+    // ===== Endpoints =====
+
     @Override
     public void addEndpoints() {
         post("/api/artifacts", this::create);
         get("/api/artifacts/random", this::randomByUserId);
         get("/api/artifacts/{id}", this::getById);
         get("/api/artifacts", this::getAllById);
-        delete("/api/artifacts/{id}", this::deleteById);
         put("/api/artifacts/{id}", this::updateById);
+        delete("/api/artifacts/{id}", this::deleteById);
     }
 }

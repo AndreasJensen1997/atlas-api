@@ -24,17 +24,35 @@ import static io.javalin.apibuilder.ApiBuilder.*;
 
 public class FragmentController extends AbstractController<FragmentRequestDTO, FragmentResponseDTO, Fragment, Integer> implements EndpointGroup {
 
+    // ===== Dependencies =====
+
     private final FragmentService fragmentService;
     private final FragmentMapper fragmentMapper;
+
+    // ===== Constructor =====
 
     public FragmentController(FragmentService fragmentService, FragmentMapper fragmentMapper) {
         this.fragmentService = fragmentService;
         this.fragmentMapper = fragmentMapper;
     }
 
+    // ===== Request Handling =====
+
     @Override
     protected FragmentRequestDTO parseBody(Context ctx) {
         return ctx.bodyAsClass(FragmentRequestDTO.class);
+    }
+
+    @Override
+    protected Integer parseId(String idStr) {
+        return Integer.parseInt(idStr);
+    }
+
+    // ===== Entity Operations =====
+
+    @Override
+    protected Fragment createEntity(FragmentRequestDTO dto, Integer userId) {
+        return fragmentService.createFragment(dto, userId);
     }
 
     @Override
@@ -48,18 +66,8 @@ public class FragmentController extends AbstractController<FragmentRequestDTO, F
     }
 
     @Override
-    protected Fragment getRandom(Integer userId) {
-        throw new ApiException(405, "Get random feature not supported for fragments");
-    }
-
-    @Override
-    protected Integer parseId(String idStr) {
-        return Integer.parseInt(idStr);
-    }
-
-    @Override
-    protected Fragment createEntity(FragmentRequestDTO dto, Integer userId) {
-        return fragmentService.createFragment(dto, userId);
+    protected Fragment updateEntity(Integer entityId, FragmentRequestDTO fragmentRequestDTO, Integer userId) {
+        return fragmentService.update(entityId, fragmentRequestDTO, userId);
     }
 
     @Override
@@ -68,23 +76,25 @@ public class FragmentController extends AbstractController<FragmentRequestDTO, F
     }
 
     @Override
-    protected Fragment updateEntity(Integer entityId, FragmentRequestDTO fragmentRequestDTO, Integer userId) {
-        return fragmentService.update(entityId, fragmentRequestDTO, userId);
+    protected Fragment getRandom(Integer userId) {
+        throw new ApiException(405, "Get random feature not supported for fragments");
     }
 
-    // Maps entity to responseDTO
+    // ===== Response Mapping =====
+
     @Override
     protected FragmentResponseDTO mapToResponse(Fragment entity) {
         return fragmentMapper.toResponse(entity);
     }
+
+    // ===== Endpoints =====
 
     @Override
     public void addEndpoints() {
         post("/api/fragments", this::create);
         get("/api/fragments/{id}", this::getById);
         get("/api/fragments", this::getAllById);
-        delete("/api/fragments/{id}", this::deleteById);
         put("/api/fragments/{id}", this::updateById);
-
+        delete("/api/fragments/{id}", this::deleteById);
     }
 }

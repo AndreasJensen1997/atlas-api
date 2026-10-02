@@ -19,9 +19,10 @@ public class ApplicationConfig implements EndpointGroup {
     ArtifactController artifactController;
     PersonController personController;
     PlaceController placeController;
+    TimeCapsuleController timeCapsuleController;
+    FragmentController fragmentController;
 
     public ApplicationConfig(EntityManagerFactory emf) {
-
 
         // USER
         UserDAO userDAO = new UserDAO(emf);
@@ -72,6 +73,20 @@ public class ApplicationConfig implements EndpointGroup {
         PlaceMapper placeMapper = new PlaceMapper();
         PlaceService placeService = new PlaceService(placeDAO,userService,placeMapper);
         placeController = new PlaceController(placeService,placeMapper);
+
+        // TIME CAPSULE
+        TimeCapsuleDAO timeCapsuleDAO = new TimeCapsuleDAO(emf);
+        TimeCapsuleMapper timeCapsuleMapper = new TimeCapsuleMapper();
+        TimeCapsuleService timeCapsuleService = new TimeCapsuleService(timeCapsuleDAO,userService,timeCapsuleMapper);
+        timeCapsuleController = new TimeCapsuleController(timeCapsuleService,timeCapsuleMapper);
+
+        // FRAGMENT
+        FragmentDAO fragmentDAO = new FragmentDAO(emf);
+        FragmentMapper fragmentMapper = new FragmentMapper();
+        FragmentService fragmentService = new FragmentService(fragmentDAO,userService,fragmentMapper);
+        fragmentController = new FragmentController(fragmentService,fragmentMapper);
+
+
     }
 
 
@@ -85,5 +100,7 @@ public class ApplicationConfig implements EndpointGroup {
         artifactController.addEndpoints();
         personController.addEndpoints();
         placeController.addEndpoints();
+        timeCapsuleController.addEndpoints();
+        fragmentController.addEndpoints();
     }
 }

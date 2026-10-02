@@ -18,8 +18,11 @@ public class Fragment implements LinkableEntity {
     @Id
     @GeneratedValue
     Integer fragmentId;
+    @Setter
     private String title;
+    @Setter
     private String subtitle;
+    @Setter
     String content;
     LocalDate createdAt;
     LocalDate updatedAt;

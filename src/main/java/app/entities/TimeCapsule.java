@@ -18,9 +18,13 @@ public class TimeCapsule {
     @Id
     @GeneratedValue
     Integer timeCapsuleId;
+    @Setter
     String title;
+    @Setter
     String subtitle;
+    @Setter
     String content;
+    @Setter
     LocalDate unlockDate;
     LocalDate dateOpened;
     boolean lockStatus;

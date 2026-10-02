@@ -6,8 +6,9 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.PersistenceException;
 import jakarta.persistence.TypedQuery;
-
 import java.util.List;
+import java.util.Random;
+
 
 public abstract class GenericDAO<T,I> implements IDAO<T,I> {
 
@@ -171,6 +172,29 @@ public abstract class GenericDAO<T,I> implements IDAO<T,I> {
                 }
                 throw e;
             }
+        }
+    }
+
+    public T getRandomByUserId(I userId) {
+        String entityName = entityClass.getSimpleName();
+
+        try (EntityManager em = emf.createEntityManager()) {
+
+            String jpql = "SELECT e FROM " + entityName + " e WHERE e.user.userId = :userId";
+            TypedQuery<T> query = em.createQuery(jpql, entityClass);
+            query.setParameter("userId", userId);
+
+            List<T> entities = query.getResultList();
+
+            if (entities.isEmpty()) {
+                return null;
+            }
+
+            int randomIndex = new Random().nextInt(entities.size());
+            return entities.get(randomIndex);
+
+        } catch (PersistenceException e) {
+            throw new ApiException(500, "Failed to get random " + entityName + ": " + e.getMessage());
         }
     }
 

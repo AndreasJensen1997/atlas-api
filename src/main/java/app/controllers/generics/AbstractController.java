@@ -21,6 +21,8 @@ public abstract class AbstractController<Req, Res, T, ID> {
 
     protected abstract List<T> fetchAllByUserId(ID userId);
 
+    protected abstract T getRandom(ID userId);
+
     protected abstract ID parseId(String idStr);
 
     protected abstract Res mapToResponse(T entity);
@@ -143,6 +145,26 @@ public abstract class AbstractController<Req, Res, T, ID> {
         } catch (Exception e) {
             ctx.status(500).json(Map.of("error", e.getMessage()));
         }
+    }
+
+    public void randomByUserId(Context ctx) {
+        try {
+            ID userId = ctx.attribute("currentUserId");
+            if (userId == null) {
+                ctx.status(401).json(Map.of("error", "Unauthorized"));
+                return;
+            }
+            T randomEntity = getRandom(userId);
+            Res responseDTO = mapToResponse(randomEntity);
+            ctx.status(200).json(responseDTO);
+
+        } catch (IllegalArgumentException e) {
+            ctx.status(404).json(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            ctx.status(500).json(Map.of("error", e.getMessage()));
+        }
+
+
     }
 
 

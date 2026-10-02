@@ -44,6 +44,11 @@ public class ChapterController extends AbstractController<ChapterRequestDTO, Cha
         return chapterService.getAllById(userId);
     }
 
+    @Override
+    protected Chapter getRandom(Integer userId){
+        return chapterService.getRandom(userId);
+    }
+
     // Parses id from string to int from url
     @Override
     protected Integer parseId(String idStr) {
@@ -76,6 +81,7 @@ public class ChapterController extends AbstractController<ChapterRequestDTO, Cha
     @Override
     public void addEndpoints() {
         post("/api/chapters", this::create);
+        get("/api/chapters/random", this::randomByUserId);
         get("/api/chapters/{id}", this::getById);
         get("/api/chapters", this::getAllById);
         delete("/api/chapters/{id}", this::deleteById);

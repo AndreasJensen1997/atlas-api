@@ -8,6 +8,7 @@ import app.mappers.ChapterMapper;
 import app.mappers.UserMapper;
 
 import java.util.List;
+import java.util.Random;
 
 
 public class ChapterService {
@@ -24,7 +25,6 @@ public class ChapterService {
 
     public Chapter createChapter(ChapterRequestDTO dto, int userId) {
         User owner = userService.getById(userId);
-
 
         if (chapterDAO.findByTitleAndUserId(dto.title(), owner.getUserId()) != null) {
             throw new IllegalArgumentException("A chapter with this title already exists.");
@@ -55,7 +55,7 @@ public class ChapterService {
     }
 
 
-    public void delete(Integer chapterId, int userId){
+    public void delete(Integer chapterId, int userId) {
         Chapter chapter = getById(chapterId, userId);
 
         chapterDAO.delete(chapter.getId());
@@ -80,7 +80,21 @@ public class ChapterService {
         chapter.setEndDate(dto.endDate());
         chapter.setVisibility(dto.visibility());
 
-
         return chapterDAO.update(chapter);
+    }
+
+    public Chapter getRandom(Integer userId) {
+
+        Chapter randomChapter = chapterDAO.getRandomByUserId(userId);
+
+        if (randomChapter == null) {
+            throw new IllegalArgumentException("No chapters were found");
+        }
+
+        if (!randomChapter.getUser().getUserId().equals(userId)) {
+            throw new IllegalArgumentException("You do not have permission to access this chapter.");
+        }
+
+        return randomChapter;
     }
 }

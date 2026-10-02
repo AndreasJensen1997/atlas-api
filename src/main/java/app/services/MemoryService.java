@@ -2,6 +2,7 @@ package app.services;
 
 import app.daos.userOwned.MemoryDAO;
 import app.dtos.memory.MemoryRequestDTO;
+import app.entities.Chapter;
 import app.entities.Memory;
 import app.entities.User;
 import app.mappers.MemoryMapper;
@@ -64,5 +65,20 @@ public class MemoryService {
         memory.setVisibility(dto.visibility());
 
         return memoryDAO.update(memory);
+    }
+
+    public Memory getRandom(Integer userId) {
+
+        Memory randomMemory = memoryDAO.getRandomByUserId(userId);
+
+        if (randomMemory == null) {
+            throw new IllegalArgumentException("No memories were found");
+        }
+
+        if (!randomMemory.getUser().getUserId().equals(userId)) {
+            throw new IllegalArgumentException("You do not have permission to access this memory.");
+        }
+
+        return randomMemory;
     }
 }

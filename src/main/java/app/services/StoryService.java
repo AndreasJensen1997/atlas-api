@@ -2,6 +2,7 @@ package app.services;
 
 import app.daos.userOwned.StoryDAO;
 import app.dtos.story.StoryRequestDTO;
+import app.entities.Chapter;
 import app.entities.Story;
 import app.entities.User;
 import app.mappers.StoryMapper;
@@ -66,5 +67,20 @@ public class StoryService {
         story.setVisibility(dto.visibility());
 
         return storyDAO.update(story);
+    }
+
+    public Story getRandom(Integer userId) {
+
+        Story randomStory = storyDAO.getRandomByUserId(userId);
+
+        if (randomStory == null) {
+            throw new IllegalArgumentException("No stories were found");
+        }
+
+        if (!randomStory.getUser().getUserId().equals(userId)) {
+            throw new IllegalArgumentException("You do not have permission to access this story.");
+        }
+
+        return randomStory;
     }
 }

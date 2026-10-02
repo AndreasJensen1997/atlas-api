@@ -3,6 +3,7 @@ package app.controllers;
 import app.controllers.generics.AbstractController;
 import app.dtos.memory.MemoryRequestDTO;
 import app.dtos.memory.MemoryResponseDTO;
+import app.entities.Chapter;
 import app.entities.Memory;
 import app.mappers.MemoryMapper;
 import app.services.MemoryService;
@@ -44,6 +45,12 @@ public class MemoryController extends AbstractController<MemoryRequestDTO, Memor
         return memoryService.getAllById(userId);
     }
 
+    // Fetches random
+    @Override
+    protected Memory getRandom(Integer userId){
+        return memoryService.getRandom(userId);
+    }
+
     // Parses id from string to int from url
     @Override
     protected Integer parseId(String idStr) {
@@ -76,8 +83,9 @@ public class MemoryController extends AbstractController<MemoryRequestDTO, Memor
     @Override
     public void addEndpoints() {
         post("/api/memories", this::create);
-        get("/api/memories/{id}", this::getById);
         get("/api/memories", this::getAllById);
+        get("/api/memories/random", this::randomByUserId);
+        get("/api/memories/{id}", this::getById);
         delete("/api/memories/{id}", this::deleteById);
         put("/api/memories/{id}", this::updateById);
     }

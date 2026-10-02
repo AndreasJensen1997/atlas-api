@@ -25,20 +25,18 @@ public class UserOwnedDAO<T,I> extends GenericDAO<T, I> {
         }
     }
 
-    public List<T> searchByTitle(String keyword) {
+    public List<T> searchByTitle(String keyword, I userId) {
         try (EntityManager em = emf.createEntityManager()) {
             String fieldName = "title";
             String className = entityClass.getSimpleName();
             if (className.equals("Person") || className.equals("Place")) {
                 fieldName = "name";
             }
-
-
-            String jpql = "SELECT e FROM " + className + " e WHERE LOWER(e." + fieldName + ") LIKE LOWER(:keyword)";
+            String jpql = "SELECT e FROM " + className + " e WHERE LOWER(e." + fieldName + ") LIKE LOWER(:keyword) AND e.user.userId = :userId";
 
             TypedQuery<T> query = em.createQuery(jpql, entityClass);
             query.setParameter("keyword", "%" + keyword + "%");
-
+            query.setParameter("userId", userId); // Pass the user ID here
 
             return query.getResultList();
         } catch (PersistenceException e) {

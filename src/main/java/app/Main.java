@@ -30,15 +30,14 @@ public class Main {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
 
-
         // 2. Start Javalin Server
-        // 3. Define API Routes
         Javalin app = Javalin.create(config -> {
 
             config.jsonMapper(new JavalinJackson().updateMapper(mapper -> {
                 mapper.registerModule(new JavaTimeModule());
             }));
 
+            // 3. Define API Routes
             config.router.apiBuilder(applicationConfig::addEndpoints);
         }).start(7070);
 

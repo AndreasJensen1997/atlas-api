@@ -3,6 +3,7 @@ package app.controllers;
 import app.controllers.generics.AbstractController;
 import app.dtos.story.StoryRequestDTO;
 import app.dtos.story.StoryResponseDTO;
+import app.entities.Memory;
 import app.entities.Story;
 import app.mappers.StoryMapper;
 import app.services.StoryService;
@@ -36,6 +37,12 @@ public class StoryController extends AbstractController<StoryRequestDTO, StoryRe
     @Override
     protected Story fetchEntityById(Integer storyId, Integer userId) {
         return storyService.getById(storyId, userId);
+    }
+
+    // Fetches random
+    @Override
+    protected Story getRandom(Integer userId){
+        return storyService.getRandom(userId);
     }
 
     // Fetches all stories from user id
@@ -76,8 +83,9 @@ public class StoryController extends AbstractController<StoryRequestDTO, StoryRe
     @Override
     public void addEndpoints() {
         post("/api/stories", this::create);
-        get("/api/stories/{id}", this::getById);
         get("/api/stories", this::getAllById);
+        get("/api/stories/random", this::randomByUserId);
+        get("/api/stories/{id}", this::getById);
         delete("/api/stories/{id}", this::deleteById);
         put("/api/stories/{id}", this::updateById);
     }

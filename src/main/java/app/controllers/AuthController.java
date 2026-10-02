@@ -1,9 +1,9 @@
 package app.controllers;
 
-import app.dtos.User.LoginResponseDTO;
-import app.dtos.User.UserResponseDTO;
-import app.dtos.User.LoginRequestDTO;
-import app.dtos.User.RegisterRequestDTO;
+import app.dtos.user.LoginResponseDTO;
+import app.dtos.user.UserResponseDTO;
+import app.dtos.user.LoginRequestDTO;
+import app.dtos.user.RegisterRequestDTO;
 import app.entities.User;
 import app.mappers.UserMapper;
 import app.services.UserService;
@@ -19,12 +19,17 @@ import java.util.Map;
 
 public class AuthController implements EndpointGroup {
 
+    // ===== Dependencies =====
+
     private final UserService userService;
 
+    // ===== Constructor =====
 
     public AuthController(UserService userService) {
         this.userService = userService;
     }
+
+    // ===== Entity Operations =====
 
     public void register(Context ctx) {
 
@@ -32,7 +37,7 @@ public class AuthController implements EndpointGroup {
             RegisterRequestDTO dto = ctx.bodyAsClass(RegisterRequestDTO.class);
             User registeredUser = userService.registerUser(dto);
 
-            UserResponseDTO responseDto = UserMapper.toResponseDto(registeredUser);
+            UserResponseDTO responseDto = UserMapper.toResponse(registeredUser);
 
             ctx.status(201).json(responseDto);
 
@@ -54,6 +59,8 @@ public class AuthController implements EndpointGroup {
             ctx.status(401).json(Map.of("error", e.getMessage()));
         }
     }
+
+    // ===== Endpoints =====
 
     @Override
     public void addEndpoints() {

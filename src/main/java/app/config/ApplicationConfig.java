@@ -52,11 +52,15 @@ public class ApplicationConfig implements EndpointGroup {
         MemoryService memoryService = new MemoryService(memoryDAO, userService, memoryMapper);
         memoryController = new MemoryController(memoryService, memoryMapper);
 
+        // ARTIFACT TYPE
+        ArtifactTypeDAO artifactTypeDAO = new ArtifactTypeDAO(emf);
+        ArtifactTypeService artifactTypeService = new ArtifactTypeService(artifactTypeDAO);
+
         // ARTIFACT
         ArtifactDAO artifactDAO = new ArtifactDAO(emf);
         ArtifactMapper artifactMapper = new ArtifactMapper();
-        ArtifactService artifactService = new ArtifactService(artifactDAO,userService,artifactMapper);
-        artifactController = new ArtifactController(artifactService,artifactMapper);
+        ArtifactService artifactService = new ArtifactService(artifactDAO, userService, artifactTypeService, artifactMapper);
+        artifactController = new ArtifactController(artifactService, artifactMapper);
 
     }
 

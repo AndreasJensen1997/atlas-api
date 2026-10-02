@@ -1,0 +1,21 @@
+package app.dtos.Place;
+
+import app.enums.Visibility;
+
+import java.time.LocalDate;
+
+public record PlaceResponseDTO(
+        Integer placeId,
+        String name,
+        String content,
+        Double latitude,
+        Double longitude,
+        String address,
+        String city,
+        String country,
+        LocalDate createdAt,
+        LocalDate updatedAt,
+        Visibility visibility
+
+) {
+}

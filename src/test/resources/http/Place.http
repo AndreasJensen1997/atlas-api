@@ -1,0 +1,80 @@
+### 1. Create a Place
+POST {{url}}/places
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Central Park",
+  "content": "A large public park in New York City.",
+  "latitude": 40.7851,
+  "longitude": -73.9683,
+  "address": "5th Ave to 8th Ave",
+  "city": "New York",
+  "country": "United States",
+  "visibility": "PRIVATE"
+}
+
+### 1. Create second Place
+POST {{url}}/places
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Tokyo",
+  "content": "Biggest city in the world",
+  "latitude": 30.7851,
+  "longitude": -13.9683,
+  "address": "chidori lane",
+  "city": "Tokyo",
+  "country": "Japan",
+  "visibility": "PUBLIC"
+}
+
+###
+
+### 2. Get All Places
+GET {{url}}/places
+Authorization: {{JWT}}
+Accept: application/json
+
+###
+
+### 3. Get Place by ID
+GET {{url}}/places/1
+Authorization: {{JWT}}
+Accept: application/json
+
+###
+
+### 4. Get Random Place
+GET {{url}}/places/random
+Authorization: {{JWT}}
+Accept: application/json
+
+###
+
+### 5. Update a Place
+PUT {{url}}/places/1
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Central Park Updated",
+  "content": "Updated description for the park.",
+  "latitude": 40.7851,
+  "longitude": -73.9683,
+  "address": "5th Ave to 8th Ave",
+  "city": "New York",
+  "country": "United States",
+  "visibility": "PUBLIC"
+}
+
+###
+
+### 6. Delete a Place
+DELETE {{url}}/places/1
+Authorization: {{JWT}}
+Accept: application/json

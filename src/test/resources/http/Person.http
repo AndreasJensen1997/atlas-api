@@ -1,0 +1,68 @@
+### 1. Create a Person
+POST {{url}}/people
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Jane Doe",
+  "content": "A close friend and companion.",
+  "relation": "FRIEND",
+  "visibility": "PRIVATE"
+}
+
+### 1. Create second Person
+POST {{url}}/people
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "John smith",
+  "content": "family member.",
+  "relation": "BROTHER",
+  "visibility": "PUBLIC"
+}
+
+###
+
+### 2. Get All People
+GET {{url}}/people
+Authorization: {{JWT}}
+Accept: application/json
+
+###
+
+### 3. Get Person by ID
+GET {{url}}/people/1
+Authorization: {{JWT}}
+Accept: application/json
+
+###
+
+### 4. Get Random Person
+GET {{url}}/people/random
+Authorization: {{JWT}}
+Accept: application/json
+
+###
+
+### 5. Update a Person
+PUT {{url}}/people/1
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Jane Smith",
+  "content": "Updated notes about Jane.",
+  "relation": "MOTHER",
+  "visibility": "PUBLIC"
+}
+
+###
+
+### 6. Delete a Person
+DELETE {{url}}/people/1
+Authorization: {{JWT}}
+Accept: application/json

@@ -24,12 +24,16 @@ public class Person implements LinkableEntity {
     @Id
     @GeneratedValue
     Integer personId;
+    @Setter
     String name;
+    @Setter
     String content;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @Setter
     Relation relation;
     @Enumerated(EnumType.STRING)
+    @Setter
     private Visibility visibility;
     LocalDate createdAt;
     LocalDate updatedAt;

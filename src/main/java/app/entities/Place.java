@@ -20,16 +20,24 @@ public class Place implements LinkableEntity {
     @Id
     @GeneratedValue
     Integer placeId;
+    @Setter
     private String name;
+    @Setter
     String content;
+    @Setter
     private Double latitude;
+    @Setter
     private Double longitude;
+    @Setter
     private String address;
+    @Setter
     private String city;
+    @Setter
     private String country;
     LocalDate createdAt;
     LocalDate updatedAt;
     @Enumerated(EnumType.STRING)
+    @Setter
     private Visibility visibility;
 
 

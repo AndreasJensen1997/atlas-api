@@ -9,12 +9,15 @@ import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 
-public class UserOwnedDAO<T,I> extends GenericDAO<T, I> {
+public class UserOwnedDAO<T, I> extends GenericDAO<T, I> {
 
+    // ===== Constructor =====
 
     protected UserOwnedDAO(EntityManagerFactory emf, Class<T> entityClass) {
         super(emf, entityClass);
     }
+
+    // ===== User Owned Operations =====
 
     public List<T> getAllByUserId(I userId) {
         try (EntityManager em = emf.createEntityManager()) {
@@ -44,8 +47,6 @@ public class UserOwnedDAO<T,I> extends GenericDAO<T, I> {
         }
     }
 
-
-
     public T findByTitleAndUserId(String title, I userId) {
         String className = null;
         try (EntityManager em = emf.createEntityManager()) {
@@ -66,5 +67,4 @@ public class UserOwnedDAO<T,I> extends GenericDAO<T, I> {
             throw new ApiException(500, "Failed to find " + className + " by title and user: " + e.getMessage());
         }
     }
-
 }

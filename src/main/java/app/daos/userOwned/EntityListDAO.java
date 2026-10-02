@@ -6,11 +6,9 @@ import jakarta.persistence.EntityManagerFactory;
 
 public class EntityListDAO extends UserOwnedDAO<EntityList, Integer> {
 
+    // ===== Constructor =====
 
     public EntityListDAO(EntityManagerFactory emf) {
         super(emf, EntityList.class);
     }
-
-
-
 }

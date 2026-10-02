@@ -11,11 +11,13 @@ import java.util.List;
 
 public class MentionDAO extends GenericDAO<Mention, Integer> {
 
+    // ===== Constructor =====
 
     public MentionDAO(EntityManagerFactory emf) {
         super(emf, Mention.class);
     }
 
+    // ===== Custom Operations =====
 
     public List<Mention> getIncomingMentions(TargetType targetType, int targetId) {
         try (EntityManager em = emf.createEntityManager()) {
@@ -36,12 +38,4 @@ public class MentionDAO extends GenericDAO<Mention, Integer> {
             return query.getResultList();
         }
     }
-
-
-
-
-
-
-
-
 }

@@ -8,10 +8,13 @@ import jakarta.persistence.TypedQuery;
 
 public class UserDAO extends GenericDAO<User, Integer> {
 
+    // ===== Constructor =====
+
     public UserDAO(EntityManagerFactory emf) {
         super(emf, User.class); // Passes both the factory and the entity class up
     }
 
+    // ===== Custom Operations =====
 
     public User getUserByEmail(String email) {
         try (EntityManager em = emf.createEntityManager()) {
@@ -21,5 +24,4 @@ public class UserDAO extends GenericDAO<User, Integer> {
             return query.getResultStream().findFirst().orElse(null);
         }
     }
-
 }

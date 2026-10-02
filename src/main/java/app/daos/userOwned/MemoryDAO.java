@@ -6,11 +6,9 @@ import jakarta.persistence.EntityManagerFactory;
 
 public class MemoryDAO extends UserOwnedDAO<Memory, Integer> {
 
+    // ===== Constructor =====
+
     public MemoryDAO(EntityManagerFactory emf) {
         super(emf, Memory.class);
     }
-
-
-
-
 }

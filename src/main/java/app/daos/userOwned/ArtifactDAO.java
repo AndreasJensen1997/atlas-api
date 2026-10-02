@@ -10,11 +10,13 @@ import java.util.List;
 
 public class ArtifactDAO extends UserOwnedDAO<Artifact, Integer> {
 
+    // ===== Constructor =====
 
     public ArtifactDAO(EntityManagerFactory emf) {
         super(emf, Artifact.class);
     }
 
+    // ===== Custom Operations =====
 
     public List<Artifact> getArtifactsByType(int userId, int artifactTypeId) {
         try (EntityManager em = emf.createEntityManager()) {
@@ -25,11 +27,4 @@ public class ArtifactDAO extends UserOwnedDAO<Artifact, Integer> {
             return query.getResultList();
         }
     }
-
-
-
-
-
-
-
 }

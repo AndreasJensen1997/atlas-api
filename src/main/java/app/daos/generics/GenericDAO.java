@@ -12,14 +12,19 @@ import java.util.Random;
 
 public abstract class GenericDAO<T,I> implements IDAO<T,I> {
 
+    // ===== Dependencies =====
+
     protected EntityManagerFactory emf;
     protected Class<T> entityClass;
 
+    // ===== Constructor =====
 
     public GenericDAO(EntityManagerFactory emf, Class<T> entityClass) {
         this.emf = emf;
         this.entityClass = entityClass;
     }
+
+    // ===== Crud Operations =====
 
     @Override
     public T create(T t) {
@@ -69,7 +74,6 @@ public abstract class GenericDAO<T,I> implements IDAO<T,I> {
         }
     }
 
-
     @Override
     public List<T> getAll() {
         String entityName = entityClass.getSimpleName();
@@ -85,7 +89,6 @@ public abstract class GenericDAO<T,I> implements IDAO<T,I> {
             throw new ApiException(500, "Failed to retrieve " + entityName + " list: " + e.getMessage());
         }
     }
-
 
     @Override
     public T update(T t) {
@@ -127,7 +130,6 @@ public abstract class GenericDAO<T,I> implements IDAO<T,I> {
             }
         }
     }
-
 
     @Override
     public boolean delete(I id) {
@@ -197,5 +199,4 @@ public abstract class GenericDAO<T,I> implements IDAO<T,I> {
             throw new ApiException(500, "Failed to get random " + entityName + ": " + e.getMessage());
         }
     }
-
 }

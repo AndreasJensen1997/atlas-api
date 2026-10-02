@@ -6,6 +6,8 @@ import jakarta.persistence.EntityManagerFactory;
 
 public class TimeCapsuleDAO extends UserOwnedDAO<TimeCapsule, Integer> {
 
+    // ===== Constructor =====
+
     public TimeCapsuleDAO(EntityManagerFactory emf) {
         super(emf, TimeCapsule.class);
     }

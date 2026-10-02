@@ -10,8 +10,9 @@ import jakarta.persistence.TypedQuery;
 
 public class ArtifactTypeDAO extends UserOwnedDAO<ArtifactType, Integer> {
 
+    // ===== Constructor =====
+
     public ArtifactTypeDAO(EntityManagerFactory emf) {
         super(emf,ArtifactType.class);
     }
-
 }

@@ -17,6 +17,7 @@ public class TimeCapsuleMapper implements IMapper<TimeCapsuleRequestDTO, TimeCap
                 .title(dto.title())
                 .subtitle(dto.subtitle())
                 .content(dto.content())
+                .unlockDate(dto.unlockDate())
                 .user(user)
                 .build();
     }

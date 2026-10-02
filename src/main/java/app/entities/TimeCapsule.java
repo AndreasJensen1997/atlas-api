@@ -38,6 +38,25 @@ public class TimeCapsule {
     @Setter
     User user;
 
+    // ===== JPA LIFECYCLE CALLBACKS =====
+    @PrePersist
+    protected void onCreate() {
+        isLockStatus();
+
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        isLockStatus();
+
+    }
+
+    public boolean isLockStatus() {
+        if (this.unlockDate == null) {
+            return false;
+        }
+        return LocalDate.now().isBefore(this.unlockDate);
+    }
 
     @Override
     public final boolean equals(Object o) {

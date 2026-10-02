@@ -22,11 +22,15 @@ public class Artifact implements LinkableEntity {
     @Id
     @GeneratedValue
     private Integer artifactId;
+    @Setter
     private String title;
+    @Setter
     private String subtitle;
+    @Setter
     private String content;
     private LocalDate createdAt;
     private LocalDate updatedAt;
+    @Setter
     @Enumerated(EnumType.STRING)
     private Visibility visibility;
 
@@ -41,6 +45,7 @@ public class Artifact implements LinkableEntity {
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "artifact_type_id", nullable = false)
+    @Setter
     private ArtifactType artifactType;
 
 

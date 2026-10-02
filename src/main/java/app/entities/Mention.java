@@ -41,10 +41,6 @@ public class Mention {
     @Column(nullable = false)
     private TargetType targetType; // e.g., TRIP, MEMORY, PERSON
 
-
-
-
-
     // ===== EQUALS & HASHCODE =====
     @Override
     public final boolean equals(Object o) {

@@ -1,0 +1,124 @@
+### ==========================================
+### 1. CREATE MENTIONS (BUILDING THE GRAPH)
+### ==========================================
+
+### Mention 1: Chapter #1 mentions Person #3 ("Jane Doe")
+POST {{url}}/mentions
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "ownerId": 1,
+  "ownerType": "CHAPTER",
+  "startIndex": 15,
+  "endIndex": 23,
+  "selectedText": "Jane Doe",
+  "targetId": 3,
+  "targetType": "PERSON"
+}
+
+###
+
+### Mention 2: Chapter #1 ALSO mentions Place #2 ("Central Park")
+POST {{url}}/mentions
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "ownerId": 1,
+  "ownerType": "CHAPTER",
+  "startIndex": 45,
+  "endIndex": 57,
+  "selectedText": "Central Park",
+  "targetId": 2,
+  "targetType": "PLACE"
+}
+
+###
+
+### Mention 3: TimeCapsule #1 ALSO mentions Person #3 ("Jane Doe")
+POST {{url}}/mentions
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "ownerId": 1,
+  "ownerType": "STORY",
+  "startIndex": 10,
+  "endIndex": 18,
+  "selectedText": "Jane Doe",
+  "targetId": 3,
+  "targetType": "PERSON"
+}
+
+###
+
+### Mention 4: Person #3 ("Jane Doe")'s page mentions Place #2 ("Central Park")
+POST {{url}}/mentions
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "ownerId": 3,
+  "ownerType": "PERSON",
+  "startIndex": 0,
+  "endIndex": 12,
+  "selectedText": "Central Park",
+  "targetId": 2,
+  "targetType": "PLACE"
+}
+
+###
+
+### ==========================================
+### 2. TEST OUTGOING MENTIONS (Links on a Page)
+### ==========================================
+
+### Get Outgoing Mentions for Chapter #1
+# Expected Result: Returns 2 mentions (pointing to Person #3 and Place #2)
+GET {{url}}/mentions/owner/CHAPTER/1
+Authorization: {{JWT}}
+Accept: application/json
+
+###
+
+### Get Outgoing Mentions for TimeCapsule #1
+# Expected Result: Returns 1 mention (pointing to Person #3)
+GET {{url}}/mentions/owner/STORY/1
+Authorization: {{JWT}}
+Accept: application/json
+
+###
+
+### ==========================================
+### 3. TEST INCOMING MENTIONS (Backlinks)
+### ==========================================
+
+### Get Incoming Mentions for Person #3 ("Jane Doe")
+# Expected Result: Returns 2 backlinks (referenced by Chapter #1 and TimeCapsule #1)
+GET {{url}}/mentions/target/PERSON/3
+Authorization: {{JWT}}
+Accept: application/json
+
+###
+
+### Get Incoming Mentions for Place #2 ("Central Park")
+# Expected Result: Returns 2 backlinks (referenced by Chapter #1 and Person #3)
+GET {{url}}/mentions/target/PLACE/2
+Authorization: {{JWT}}
+Accept: application/json
+
+###
+
+### ==========================================
+### 4. CLEANUP / DELETE
+### ==========================================
+
+### Delete Mention #1
+DELETE {{url}}/mentions/1
+Authorization: {{JWT}}
+Accept: application/json

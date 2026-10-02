@@ -1,0 +1,58 @@
+POST {{url}}/fragments
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type:application/json
+
+{
+  "title": "personal note #1",
+  "subtitle": "personal note subtitle #1",
+  "content": "The contents of my second note #1 "
+
+}
+
+###
+POST {{url}}/fragments
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type:application/json
+
+{
+  "title": "personal note #2",
+  "subtitle": "personal note subtitle #2",
+  "content": "The contents of my second note #2 "
+
+}
+
+###
+
+GET {{url}}/fragments/1
+Authorization:{{JWT}}
+Accept: application/json
+Content-Type:application/json
+
+###
+
+GET {{url}}/fragments
+Authorization:{{JWT}}
+Accept: application/json
+Content-Type:application/json
+
+###
+
+DELETE {{url}}/fragments/2
+Authorization:{{JWT}}
+Accept: application/json
+Content-Type:application/json
+
+###
+
+PUT {{url}}/fragments/1
+Authorization:{{JWT}}
+Accept: application/json
+Content-Type:application/json
+
+{
+  "title": "Updated Title",
+  "subtitle": "Updated subtitle",
+  "content": "Updated content"
+}

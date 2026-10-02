@@ -1,0 +1,47 @@
+POST {{url}}/timecapsules
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type:application/json
+
+{
+  "title": "My will",
+  "subtitle": "my will i leave my children",
+  "content": "In this document i will go over my will",
+  "unlockDate": "2010-07-14"
+}
+
+###
+POST {{url}}/timecapsules
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type:application/json
+
+{
+  "title": "Message to future self",
+  "subtitle": "a message about life",
+  "content": "How are you doing future self?",
+  "unlockDate": "2031-07-14"
+}
+
+###
+
+GET {{url}}/timecapsules/1
+Authorization:{{JWT}}
+Accept: application/json
+Content-Type:application/json
+
+###
+
+GET {{url}}/timecapsules
+Authorization:{{JWT}}
+Accept: application/json
+Content-Type:application/json
+
+###
+
+DELETE {{url}}/timecapsules/2
+Authorization:{{JWT}}
+Accept: application/json
+Content-Type:application/json
+
+###

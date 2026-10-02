@@ -64,3 +64,10 @@ Content-Type: application/json
   "date": "2026-07-15",
   "visibility": "PUBLIC"
 }
+
+###
+
+GET {{url}}/memories/random
+Authorization:{{JWT}}
+Accept: application/json
+Content-Type:a

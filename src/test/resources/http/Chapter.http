@@ -43,14 +43,14 @@ Content-Type:application/json
 
 ###
 
-DELETE localhost:7070/api/chapters/2
+DELETE {{url}}/chapters/2
 Authorization:{{JWT}}
 Accept: application/json
 Content-Type:application/json
 
 ###
 
-PUT localhost:7070/api/chapters/2
+PUT {{url}}/chapters/1
 Authorization:{{JWT}}
 Accept: application/json
 Content-Type:application/json
@@ -61,3 +61,10 @@ Content-Type:application/json
   "content": "Updated content",
   "visibility": "PUBLIC"
 }
+
+###
+
+GET {{url}}/chapters/random
+Authorization:{{JWT}}
+Accept: application/json
+Content-Type:application/json

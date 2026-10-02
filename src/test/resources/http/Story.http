@@ -67,3 +67,10 @@ Content-Type: application/json
   "endDate": "2026-09-20",
   "visibility": "PUBLIC"
 }
+
+###
+
+GET {{url}}/stories/random
+Authorization:{{JWT}}
+Accept: application/json
+Content-Type:a

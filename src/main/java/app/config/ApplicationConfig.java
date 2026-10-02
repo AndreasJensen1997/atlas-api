@@ -3,10 +3,7 @@ package app.config;
 import app.controllers.*;
 import app.daos.user.UserDAO;
 import app.daos.userOwned.*;
-import app.mappers.ArtifactMapper;
-import app.mappers.ChapterMapper;
-import app.mappers.MemoryMapper;
-import app.mappers.StoryMapper;
+import app.mappers.*;
 import app.services.*;
 import io.javalin.apibuilder.EndpointGroup;
 import jakarta.persistence.EntityManagerFactory;
@@ -20,6 +17,8 @@ public class ApplicationConfig implements EndpointGroup {
     MemoryController memoryController;
     StoryController storyController;
     ArtifactController artifactController;
+    PersonController personController;
+    PlaceController placeController;
 
     public ApplicationConfig(EntityManagerFactory emf) {
 
@@ -62,6 +61,17 @@ public class ApplicationConfig implements EndpointGroup {
         ArtifactService artifactService = new ArtifactService(artifactDAO, userService, artifactTypeService, artifactMapper);
         artifactController = new ArtifactController(artifactService, artifactMapper);
 
+        // PERSON
+        PersonDAO personDAO = new PersonDAO(emf);
+        PersonMapper personMapper = new PersonMapper();
+        PersonService personService = new PersonService(personDAO,userService,personMapper);
+        personController = new PersonController(personService,personMapper);
+
+        // PLACE
+        PlaceDAO placeDAO = new PlaceDAO(emf);
+        PlaceMapper placeMapper = new PlaceMapper();
+        PlaceService placeService = new PlaceService(placeDAO,userService,placeMapper);
+        placeController = new PlaceController(placeService,placeMapper);
     }
 
 
@@ -73,5 +83,7 @@ public class ApplicationConfig implements EndpointGroup {
         memoryController.addEndpoints();
         storyController.addEndpoints();
         artifactController.addEndpoints();
+        personController.addEndpoints();
+        placeController.addEndpoints();
     }
 }

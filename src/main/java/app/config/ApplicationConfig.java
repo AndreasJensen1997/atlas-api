@@ -21,6 +21,7 @@ public class ApplicationConfig implements EndpointGroup {
     PlaceController placeController;
     TimeCapsuleController timeCapsuleController;
     FragmentController fragmentController;
+    MentionController mentionController;
 
     public ApplicationConfig(EntityManagerFactory emf) {
 
@@ -86,6 +87,13 @@ public class ApplicationConfig implements EndpointGroup {
         FragmentService fragmentService = new FragmentService(fragmentDAO,userService,fragmentMapper);
         fragmentController = new FragmentController(fragmentService,fragmentMapper);
 
+        // MENTION
+        MentionDAO mentionDAO = new MentionDAO(emf);
+        MentionMapper mentionMapper = new MentionMapper();
+        MentionService mentionService = new MentionService(mentionDAO,mentionMapper);
+        mentionController = new MentionController(mentionService);
+
+
 
     }
 
@@ -102,5 +110,6 @@ public class ApplicationConfig implements EndpointGroup {
         placeController.addEndpoints();
         timeCapsuleController.addEndpoints();
         fragmentController.addEndpoints();
+        mentionController.addEndpoints();
     }
 }

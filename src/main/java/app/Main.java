@@ -21,7 +21,8 @@ public class Main {
 
         logger.info("Application is running successfully");
 
-        // 1. Initialize Database
+        // ===== Initialize Database =====
+
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
         UserDAO userDAO = new UserDAO(emf);
         UserService userService = new UserService(userDAO);
@@ -30,14 +31,16 @@ public class Main {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
 
-        // 2. Start Javalin Server
+        // ===== Start Javalin Server =====
+
         Javalin app = Javalin.create(config -> {
 
             config.jsonMapper(new JavalinJackson().updateMapper(mapper -> {
                 mapper.registerModule(new JavaTimeModule());
             }));
 
-            // 3. Define API Routes
+            // ===== Define API Routes =====
+
             config.router.apiBuilder(applicationConfig::addEndpoints);
         }).start(7070);
 
@@ -46,6 +49,4 @@ public class Main {
         System.out.println("Atlas API is running on http://localhost:7070");
 
     }
-
-
 }

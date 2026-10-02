@@ -4,7 +4,6 @@ import java.util.List;
 
 public interface IDAO<T, I> {
 
-
     T create(T t);
 
     T getById(I i);

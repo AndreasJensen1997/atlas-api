@@ -25,76 +25,85 @@ public class ApplicationConfig implements EndpointGroup {
 
     public ApplicationConfig(EntityManagerFactory emf) {
 
-        // USER
+        // ===== User =====
+
         UserDAO userDAO = new UserDAO(emf);
         UserService userService = new UserService(userDAO);
         authController = new AuthController(userService);
 
-        // GEMINI PROMPT
+        // ===== Gemini prompt =====
+
         GeminiPromptDAO geminiPromptDAO = new GeminiPromptDAO(emf);
         GeminiPromptService geminiPromptService = new GeminiPromptService(geminiPromptDAO, userService);
         geminiPromptController = new GeminiPromptController(geminiPromptService);
 
-        // CHAPTER
+        // ===== Chapter =====
+
         ChapterDAO chapterDAO = new ChapterDAO(emf);
         ChapterMapper chapterMapper = new ChapterMapper();
         ChapterService chapterService = new ChapterService(chapterDAO, userService, chapterMapper);
         chapterController = new ChapterController(chapterService, chapterMapper);
 
-        // STORY
+        // ===== Story =====
+
         StoryDAO storyDAO = new StoryDAO(emf);
         StoryMapper storyMapper = new StoryMapper();
         StoryService storyService = new StoryService(storyDAO, userService, storyMapper);
         storyController = new StoryController(storyService, storyMapper);
 
-        // MEMORY
+        // ===== Memory =====
+
         MemoryDAO memoryDAO = new MemoryDAO(emf);
         MemoryMapper memoryMapper = new MemoryMapper();
         MemoryService memoryService = new MemoryService(memoryDAO, userService, memoryMapper);
         memoryController = new MemoryController(memoryService, memoryMapper);
 
-        // ARTIFACT TYPE
+        // ===== Artifact type =====
+
         ArtifactTypeDAO artifactTypeDAO = new ArtifactTypeDAO(emf);
         ArtifactTypeService artifactTypeService = new ArtifactTypeService(artifactTypeDAO);
 
-        // ARTIFACT
+        // ===== Artifact =====
+
         ArtifactDAO artifactDAO = new ArtifactDAO(emf);
         ArtifactMapper artifactMapper = new ArtifactMapper();
         ArtifactService artifactService = new ArtifactService(artifactDAO, userService, artifactTypeService, artifactMapper);
         artifactController = new ArtifactController(artifactService, artifactMapper);
 
-        // PERSON
+        // ===== Person =====
+
         PersonDAO personDAO = new PersonDAO(emf);
         PersonMapper personMapper = new PersonMapper();
-        PersonService personService = new PersonService(personDAO,userService,personMapper);
-        personController = new PersonController(personService,personMapper);
+        PersonService personService = new PersonService(personDAO, userService, personMapper);
+        personController = new PersonController(personService, personMapper);
 
-        // PLACE
+        // ===== Place =====
+
         PlaceDAO placeDAO = new PlaceDAO(emf);
         PlaceMapper placeMapper = new PlaceMapper();
-        PlaceService placeService = new PlaceService(placeDAO,userService,placeMapper);
-        placeController = new PlaceController(placeService,placeMapper);
+        PlaceService placeService = new PlaceService(placeDAO, userService, placeMapper);
+        placeController = new PlaceController(placeService, placeMapper);
 
-        // TIME CAPSULE
+        // ===== Time capsule =====
+
         TimeCapsuleDAO timeCapsuleDAO = new TimeCapsuleDAO(emf);
         TimeCapsuleMapper timeCapsuleMapper = new TimeCapsuleMapper();
-        TimeCapsuleService timeCapsuleService = new TimeCapsuleService(timeCapsuleDAO,userService,timeCapsuleMapper);
-        timeCapsuleController = new TimeCapsuleController(timeCapsuleService,timeCapsuleMapper);
+        TimeCapsuleService timeCapsuleService = new TimeCapsuleService(timeCapsuleDAO, userService, timeCapsuleMapper);
+        timeCapsuleController = new TimeCapsuleController(timeCapsuleService, timeCapsuleMapper);
 
-        // FRAGMENT
+        // ===== Fragment =====
+
         FragmentDAO fragmentDAO = new FragmentDAO(emf);
         FragmentMapper fragmentMapper = new FragmentMapper();
-        FragmentService fragmentService = new FragmentService(fragmentDAO,userService,fragmentMapper);
-        fragmentController = new FragmentController(fragmentService,fragmentMapper);
+        FragmentService fragmentService = new FragmentService(fragmentDAO, userService, fragmentMapper);
+        fragmentController = new FragmentController(fragmentService, fragmentMapper);
 
-        // MENTION
+        // ===== Mention =====
+
         MentionDAO mentionDAO = new MentionDAO(emf);
         MentionMapper mentionMapper = new MentionMapper();
-        MentionService mentionService = new MentionService(mentionDAO,mentionMapper);
+        MentionService mentionService = new MentionService(mentionDAO, mentionMapper);
         mentionController = new MentionController(mentionService);
-
-
-
     }
 
 

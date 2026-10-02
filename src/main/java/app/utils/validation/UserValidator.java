@@ -1,6 +1,6 @@
-package app.utils.Validation;
+package app.utils.validation;
 
-import app.dtos.User.RegisterRequestDTO;
+import app.dtos.user.RegisterRequestDTO;
 import java.util.ArrayList;
 import java.util.List;
 

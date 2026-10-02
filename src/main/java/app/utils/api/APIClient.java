@@ -1,4 +1,4 @@
-package app.utils.APIs;
+package app.utils.api;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;import java.io.IOException;

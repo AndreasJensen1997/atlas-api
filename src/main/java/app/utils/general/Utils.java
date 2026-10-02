@@ -1,4 +1,4 @@
-package app.utils.General;
+package app.utils.general;
 
 import app.exceptions.ApiException;
 

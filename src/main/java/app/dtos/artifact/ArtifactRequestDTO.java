@@ -1,4 +1,4 @@
-package app.dtos.Artifact;
+package app.dtos.artifact;
 
 import app.entities.ArtifactType;
 import app.enums.Visibility;
@@ -10,5 +10,4 @@ public record ArtifactRequestDTO(
         Visibility visibility,
         ArtifactType artifactType
 ) {
-
 }

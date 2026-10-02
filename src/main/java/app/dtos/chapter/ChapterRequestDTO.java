@@ -4,7 +4,6 @@ import app.enums.Visibility;
 
 import java.time.LocalDate;
 
-
 public record ChapterRequestDTO(
         String title,
         String subtitle,

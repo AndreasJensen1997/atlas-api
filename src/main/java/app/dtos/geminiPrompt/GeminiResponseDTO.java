@@ -1,4 +1,4 @@
-package app.dtos.GeminiPrompt;
+package app.dtos.geminiPrompt;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;

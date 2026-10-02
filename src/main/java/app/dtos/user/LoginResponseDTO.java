@@ -1,4 +1,4 @@
-package app.dtos.User;
+package app.dtos.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

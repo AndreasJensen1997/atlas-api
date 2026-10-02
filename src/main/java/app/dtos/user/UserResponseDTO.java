@@ -1,4 +1,4 @@
-package app.dtos.User;
+package app.dtos.user;
 
 public record UserResponseDTO(
         Integer userId,

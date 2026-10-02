@@ -1,4 +1,4 @@
-package app.dtos.Place;
+package app.dtos.place;
 
 import app.enums.Visibility;
 

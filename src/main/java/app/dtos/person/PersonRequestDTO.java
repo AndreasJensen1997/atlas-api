@@ -1,4 +1,4 @@
-package app.dtos.Person;
+package app.dtos.person;
 
 import app.enums.Relation;
 import app.enums.Visibility;

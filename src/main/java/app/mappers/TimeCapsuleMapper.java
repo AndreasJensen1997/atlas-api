@@ -1,9 +1,7 @@
 package app.mappers;
 
-import app.dtos.chapter.ChapterResponseDTO;
 import app.dtos.timeCapsule.TimeCapsuleRequestDTO;
 import app.dtos.timeCapsule.TimeCapsuleResponseDTO;
-import app.entities.Chapter;
 import app.entities.TimeCapsule;
 import app.entities.User;
 import app.mappers.generics.IMapper;

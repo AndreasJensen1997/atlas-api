@@ -1,7 +1,7 @@
 package app.mappers;
 
-import app.dtos.Person.PersonRequestDTO;
-import app.dtos.Person.PersonResponseDTO;
+import app.dtos.person.PersonRequestDTO;
+import app.dtos.person.PersonResponseDTO;
 import app.entities.Person;
 import app.entities.User;
 import app.mappers.generics.IMapper;
@@ -34,5 +34,4 @@ public class PersonMapper implements IMapper<PersonRequestDTO, PersonResponseDTO
                 person.getCreatedAt(),
                 person.getUpdatedAt());
     }
-
 }

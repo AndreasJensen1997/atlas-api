@@ -1,7 +1,7 @@
 package app.mappers;
 
-import app.dtos.Artifact.ArtifactRequestDTO;
-import app.dtos.Artifact.ArtifactResponseDTO;
+import app.dtos.artifact.ArtifactRequestDTO;
+import app.dtos.artifact.ArtifactResponseDTO;
 import app.entities.Artifact;
 import app.entities.User;
 import app.mappers.generics.IMapper;

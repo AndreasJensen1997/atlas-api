@@ -25,7 +25,5 @@ final class EntityRegistry {
         configuration.addAnnotatedClass(Story.class);
         configuration.addAnnotatedClass(TimeCapsule.class);
         configuration.addAnnotatedClass(GeminiPrompt.class);
-
-
     }
 }

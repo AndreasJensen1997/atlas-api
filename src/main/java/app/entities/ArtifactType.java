@@ -16,6 +16,8 @@ import java.util.Objects;
 @Builder
 public class ArtifactType {
 
+    // ===== Fields =====
+
     @Id
     @GeneratedValue
     private Integer artifactTypeId;
@@ -29,8 +31,8 @@ public class ArtifactType {
     private User user;
 
 
+    // ===== Equals & HashCode =====
 
-    // ===== EQUALS & HASHCODE =====
     @Override
     public final boolean equals(Object o) {
         if (this == o)
@@ -47,8 +49,6 @@ public class ArtifactType {
         return getArtifactTypeId() != null && Objects.equals(getArtifactTypeId(), artifactType.getArtifactTypeId());
     }
 
-
-
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer()
@@ -57,6 +57,4 @@ public class ArtifactType {
 
 
     }
-
-
 }

@@ -1,10 +1,7 @@
 package app.mappers;
 
-import app.dtos.Place.PlaceRequestDTO;
-import app.dtos.Place.PlaceResponseDTO;
-import app.dtos.memory.MemoryRequestDTO;
-import app.dtos.memory.MemoryResponseDTO;
-import app.entities.Memory;
+import app.dtos.place.PlaceRequestDTO;
+import app.dtos.place.PlaceResponseDTO;
 import app.entities.Place;
 import app.entities.User;
 import app.mappers.generics.IMapper;

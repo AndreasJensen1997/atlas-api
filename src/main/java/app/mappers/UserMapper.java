@@ -1,15 +1,13 @@
 package app.mappers;
 
-import app.dtos.User.RegisterRequestDTO;
-import app.dtos.User.UserResponseDTO;
+import app.dtos.user.RegisterRequestDTO;
+import app.dtos.user.UserResponseDTO;
 import app.entities.User;
 import app.enums.Role;
 
 public class UserMapper {
 
-
-    // 1. Maps incoming Registration DTO -> New Entity
-    public static User registrationDTOToEntity(RegisterRequestDTO dto, String hashedPassword) {
+    public static User toEntity(RegisterRequestDTO dto, String hashedPassword) {
         return User.builder()
                 .name(dto.name())
                 .email(dto.email())
@@ -18,8 +16,7 @@ public class UserMapper {
                 .build();
     }
 
-    // 2. Maps database Entity -> Safe Response DTO (outgoing)
-    public static UserResponseDTO toResponseDto(User user) {
+    public static UserResponseDTO toResponse(User user) {
         if (user == null) return null;
 
         return new UserResponseDTO(

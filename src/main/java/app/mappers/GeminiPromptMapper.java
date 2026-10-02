@@ -1,6 +1,6 @@
 package app.mappers;
 
-import app.dtos.GeminiPrompt.GeminiResponseDTO;
+import app.dtos.geminiPrompt.GeminiResponseDTO;
 import app.entities.GeminiPrompt;
 
 public class GeminiPromptMapper {
@@ -21,8 +21,6 @@ public class GeminiPromptMapper {
                 .content(generatedText)
                 .build();
     }
-
-
 }
 
 

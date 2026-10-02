@@ -1,9 +1,7 @@
 package app.mappers;
 
-import app.dtos.chapter.ChapterResponseDTO;
 import app.dtos.fragment.FragmentRequestDTO;
 import app.dtos.fragment.FragmentResponseDTO;
-import app.entities.Chapter;
 import app.entities.Fragment;
 import app.entities.User;
 import app.mappers.generics.IMapper;

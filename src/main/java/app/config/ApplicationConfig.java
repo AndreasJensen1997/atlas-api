@@ -2,10 +2,8 @@ package app.config;
 
 import app.controllers.*;
 import app.daos.user.UserDAO;
-import app.daos.userOwned.ChapterDAO;
-import app.daos.userOwned.GeminiPromptDAO;
-import app.daos.userOwned.MemoryDAO;
-import app.daos.userOwned.StoryDAO;
+import app.daos.userOwned.*;
+import app.mappers.ArtifactMapper;
 import app.mappers.ChapterMapper;
 import app.mappers.MemoryMapper;
 import app.mappers.StoryMapper;
@@ -21,6 +19,7 @@ public class ApplicationConfig implements EndpointGroup {
     ChapterController chapterController;
     MemoryController memoryController;
     StoryController storyController;
+    ArtifactController artifactController;
 
     public ApplicationConfig(EntityManagerFactory emf) {
 
@@ -53,6 +52,11 @@ public class ApplicationConfig implements EndpointGroup {
         MemoryService memoryService = new MemoryService(memoryDAO, userService, memoryMapper);
         memoryController = new MemoryController(memoryService, memoryMapper);
 
+        // ARTIFACT
+        ArtifactDAO artifactDAO = new ArtifactDAO(emf);
+        ArtifactMapper artifactMapper = new ArtifactMapper();
+        ArtifactService artifactService = new ArtifactService(artifactDAO,userService,artifactMapper);
+        artifactController = new ArtifactController(artifactService,artifactMapper);
 
     }
 
@@ -64,5 +68,6 @@ public class ApplicationConfig implements EndpointGroup {
         chapterController.addEndpoints();
         memoryController.addEndpoints();
         storyController.addEndpoints();
+        artifactController.addEndpoints();
     }
 }

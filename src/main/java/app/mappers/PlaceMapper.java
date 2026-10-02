@@ -2,12 +2,19 @@ package app.mappers;
 
 import app.dtos.Place.PlaceRequestDTO;
 import app.dtos.Place.PlaceResponseDTO;
+import app.dtos.memory.MemoryRequestDTO;
+import app.dtos.memory.MemoryResponseDTO;
+import app.entities.Memory;
 import app.entities.Place;
 import app.entities.User;
+import app.mappers.generics.IMapper;
 
-public class PlaceMapper {
+public class PlaceMapper implements IMapper<PlaceRequestDTO, PlaceResponseDTO, Place, User> {
 
+    @Override
     public Place toEntity(PlaceRequestDTO dto, User user) {
+        if (dto == null) return null;
+
         return Place.builder()
                 .name(dto.name())
                 .content(dto.content())
@@ -21,7 +28,10 @@ public class PlaceMapper {
                 .build();
     }
 
-    public PlaceResponseDTO toResponseDTO(Place place) {
+    @Override
+    public PlaceResponseDTO toResponse(Place place) {
+        if (place == null) return null;
+
         return new PlaceResponseDTO(
                 place.getId(),
                 place.getName(),

@@ -4,9 +4,14 @@ import app.dtos.Person.PersonRequestDTO;
 import app.dtos.Person.PersonResponseDTO;
 import app.entities.Person;
 import app.entities.User;
+import app.mappers.generics.IMapper;
 
-public class PersonMapper {
+public class PersonMapper implements IMapper<PersonRequestDTO, PersonResponseDTO, Person, User> {
+
+    @Override
     public Person toEntity(PersonRequestDTO dto, User user) {
+        if (dto == null) return null;
+
         return Person.builder()
                 .name(dto.name())
                 .content(dto.content())
@@ -16,7 +21,10 @@ public class PersonMapper {
                 .build();
     }
 
-    public PersonResponseDTO toResponseDTO(Person person) {
+    @Override
+    public PersonResponseDTO toResponse(Person person) {
+        if (person == null) return null;
+
         return new PersonResponseDTO(
                 person.getId(),
                 person.getName(),

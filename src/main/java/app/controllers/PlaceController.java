@@ -65,7 +65,7 @@ public class PlaceController extends AbstractController<PlaceRequestDTO, PlaceRe
 
     @Override
     protected PlaceResponseDTO mapToResponse(Place entity) {
-        return placeMapper.toResponseDTO(entity);
+        return placeMapper.toResponse(entity);
     }
 
     @Override

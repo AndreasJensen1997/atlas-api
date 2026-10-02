@@ -65,7 +65,7 @@ public class PersonController extends AbstractController<PersonRequestDTO, Perso
 
     @Override
     protected PersonResponseDTO mapToResponse(Person entity) {
-        return personMapper.toResponseDTO(entity);
+        return personMapper.toResponse(entity);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package app.services;
 
 import app.daos.userOwned.ArtifactDAO;
-import app.dtos.Artifact.ArtifactRequestDTO;
+import app.dtos.artifact.ArtifactRequestDTO;
 import app.entities.Artifact;
 import app.entities.ArtifactType;
 import app.entities.User;
@@ -11,10 +11,14 @@ import java.util.List;
 
 public class ArtifactService {
 
+    // ===== Dependencies =====
+
     private final ArtifactDAO artifactDAO;
     private final UserService userService;
     private final ArtifactTypeService artifactTypeService;
     private final ArtifactMapper artifactMapper;
+
+    // ===== Constructor =====
 
     public ArtifactService(ArtifactDAO artifactDAO, UserService userService,ArtifactTypeService artifactTypeService, ArtifactMapper artifactMapper) {
         this.artifactDAO = artifactDAO;
@@ -22,6 +26,8 @@ public class ArtifactService {
         this.artifactTypeService = artifactTypeService;
         this.artifactMapper = artifactMapper;
     }
+
+    // ===== Create =====
 
     public Artifact createArtifact(ArtifactRequestDTO dto, int userId) {
         User owner = userService.getById(userId);
@@ -37,6 +43,8 @@ public class ArtifactService {
 
         return artifactDAO.create(newArtifact);
     }
+
+    // ===== Read =====
 
     public Artifact getById(Integer artifactId, int userId) {
         Artifact artifact = artifactDAO.getById(artifactId);
@@ -55,11 +63,21 @@ public class ArtifactService {
         return artifactDAO.getAllByUserId(userId);
     }
 
-    public void delete(Integer artifactId, int userId) {
-        Artifact artifact = getById(artifactId, userId);
+    public Artifact getRandom(Integer userId) {
+        Artifact randomArtifact = artifactDAO.getRandomByUserId(userId);
 
-        artifactDAO.delete(artifact.getId());
+        if (randomArtifact == null) {
+            throw new IllegalArgumentException("No artifacts were found.");
+        }
+
+        if (!randomArtifact.getUser().getUserId().equals(userId)) {
+            throw new IllegalArgumentException("You do not have permission to access this artifact.");
+        }
+
+        return randomArtifact;
     }
+
+    // ===== Update =====
 
     public Artifact update(Integer artifactId, ArtifactRequestDTO dto, int userId) {
         Artifact artifact = artifactDAO.getById(artifactId);
@@ -85,19 +103,11 @@ public class ArtifactService {
         return artifactDAO.update(artifact);
     }
 
-    public Artifact getRandom(Integer userId) {
-        Artifact randomArtifact = artifactDAO.getRandomByUserId(userId);
+    // ===== Delete =====
 
-        if (randomArtifact == null) {
-            throw new IllegalArgumentException("No artifacts were found.");
-        }
+    public void delete(Integer artifactId, int userId) {
+        Artifact artifact = getById(artifactId, userId);
 
-        if (!randomArtifact.getUser().getUserId().equals(userId)) {
-            throw new IllegalArgumentException("You do not have permission to access this artifact.");
-        }
-
-        return randomArtifact;
+        artifactDAO.delete(artifact.getId());
     }
-
-
 }

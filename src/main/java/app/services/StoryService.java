@@ -2,7 +2,6 @@ package app.services;
 
 import app.daos.userOwned.StoryDAO;
 import app.dtos.story.StoryRequestDTO;
-import app.entities.Chapter;
 import app.entities.Story;
 import app.entities.User;
 import app.mappers.StoryMapper;
@@ -11,15 +10,21 @@ import java.util.List;
 
 public class StoryService {
 
+    // ===== Dependencies =====
+
     private final StoryDAO storyDAO;
     private final UserService userService;
     private final StoryMapper storyMapper;
+
+    // ===== Constructor =====
 
     public StoryService(StoryDAO storyDAO, UserService userService, StoryMapper storyMapper) {
         this.storyDAO = storyDAO;
         this.userService = userService;
         this.storyMapper = storyMapper;
     }
+
+    // ===== Create =====
 
     public Story createStory(StoryRequestDTO dto, int userId) {
         User owner = userService.getById(userId);
@@ -32,6 +37,8 @@ public class StoryService {
 
         return storyDAO.create(newStory);
     }
+
+    // ===== Read =====
 
     public Story getById(Integer storyId, int userId) {
         Story story = storyDAO.getById(storyId);
@@ -50,10 +57,22 @@ public class StoryService {
         return storyDAO.getAllByUserId(userId);
     }
 
-    public void delete(Integer storyId, int userId) {
-        Story story = getById(storyId, userId);
-        storyDAO.delete(story.getId());
+    public Story getRandom(Integer userId) {
+
+        Story randomStory = storyDAO.getRandomByUserId(userId);
+
+        if (randomStory == null) {
+            throw new IllegalArgumentException("No stories were found");
+        }
+
+        if (!randomStory.getUser().getUserId().equals(userId)) {
+            throw new IllegalArgumentException("You do not have permission to access this story.");
+        }
+
+        return randomStory;
     }
+
+    // ===== Update =====
 
     public Story update(Integer storyId, StoryRequestDTO dto, int userId) {
         // Reuse getById to handle null checks and user permissions in one go
@@ -69,18 +88,10 @@ public class StoryService {
         return storyDAO.update(story);
     }
 
-    public Story getRandom(Integer userId) {
+    // ===== Delete =====
 
-        Story randomStory = storyDAO.getRandomByUserId(userId);
-
-        if (randomStory == null) {
-            throw new IllegalArgumentException("No stories were found");
-        }
-
-        if (!randomStory.getUser().getUserId().equals(userId)) {
-            throw new IllegalArgumentException("You do not have permission to access this story.");
-        }
-
-        return randomStory;
+    public void delete(Integer storyId, int userId) {
+        Story story = getById(storyId, userId);
+        storyDAO.delete(story.getId());
     }
 }

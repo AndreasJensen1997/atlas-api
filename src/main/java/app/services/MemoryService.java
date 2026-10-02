@@ -11,15 +11,21 @@ import java.util.List;
 
 public class MemoryService {
 
+    // ===== Dependencies =====
+
     private final MemoryDAO memoryDAO;
     private final UserService userService;
     private final MemoryMapper memoryMapper;
+
+    // ===== Constructor =====
 
     public MemoryService(MemoryDAO memoryDAO, UserService userService, MemoryMapper memoryMapper) {
         this.memoryDAO = memoryDAO;
         this.userService = userService;
         this.memoryMapper = memoryMapper;
     }
+
+    // ===== Create =====
 
     public Memory createMemory(MemoryRequestDTO dto, int userId) {
         User owner = userService.getById(userId);
@@ -32,6 +38,8 @@ public class MemoryService {
 
         return memoryDAO.create(newMemory);
     }
+
+    // ===== Read =====
 
     public Memory getById(Integer memoryId, int userId) {
         Memory memory = memoryDAO.getById(memoryId);
@@ -50,23 +58,6 @@ public class MemoryService {
         return memoryDAO.getAllByUserId(userId);
     }
 
-    public void delete(Integer memoryId, int userId) {
-        Memory memory = getById(memoryId, userId);
-        memoryDAO.delete(memory.getId());
-    }
-
-    public Memory update(Integer memoryId, MemoryRequestDTO dto, int userId) {
-        Memory memory = getById(memoryId, userId);
-
-        memory.setTitle(dto.title());
-        memory.setSubtitle(dto.subtitle());
-        memory.setContent(dto.content());
-        memory.setDate(dto.date());
-        memory.setVisibility(dto.visibility());
-
-        return memoryDAO.update(memory);
-    }
-
     public Memory getRandom(Integer userId) {
 
         Memory randomMemory = memoryDAO.getRandomByUserId(userId);
@@ -80,5 +71,26 @@ public class MemoryService {
         }
 
         return randomMemory;
+    }
+
+    // ===== Update =====
+
+    public Memory update(Integer memoryId, MemoryRequestDTO dto, int userId) {
+        Memory memory = getById(memoryId, userId);
+
+        memory.setTitle(dto.title());
+        memory.setSubtitle(dto.subtitle());
+        memory.setContent(dto.content());
+        memory.setDate(dto.date());
+        memory.setVisibility(dto.visibility());
+
+        return memoryDAO.update(memory);
+    }
+
+    // ===== Delete =====
+
+    public void delete(Integer memoryId, int userId) {
+        Memory memory = getById(memoryId, userId);
+        memoryDAO.delete(memory.getId());
     }
 }

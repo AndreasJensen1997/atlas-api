@@ -1,22 +1,28 @@
 package app.services;
 
 import app.daos.user.UserDAO;
-import app.dtos.User.LoginRequestDTO;
-import app.dtos.User.RegisterRequestDTO;
+import app.dtos.user.LoginRequestDTO;
+import app.dtos.user.RegisterRequestDTO;
 import app.entities.User;
 import app.mappers.UserMapper;
-import app.utils.Validation.UserValidator;
+import app.utils.validation.UserValidator;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.util.List;
 
 public class UserService {
 
+    // ===== Dependencies =====
+
     private final UserDAO userDao;
+
+    // ===== Constructor =====
 
     public UserService(UserDAO userDao) {
         this.userDao = userDao;
     }
+
+    // ===== Register =====
 
     public User registerUser(RegisterRequestDTO dto) {
         List<String> validationErrors = UserValidator.validateRegistration(dto);
@@ -30,11 +36,12 @@ public class UserService {
         }
 
         String hashedPassword = BCrypt.hashpw(dto.password(), BCrypt.gensalt());
-        User newUser = UserMapper.registrationDTOToEntity(dto, hashedPassword);
+        User newUser = UserMapper.toEntity(dto, hashedPassword);
 
         return userDao.create(newUser);
     }
 
+    // ===== Login =====
 
     public User login(LoginRequestDTO loginRequestDTO) {
 
@@ -74,6 +81,8 @@ public class UserService {
 
         return user;
     }
+
+    // ===== Read =====
 
     public User getById(Integer id) {
         if (id == null) {

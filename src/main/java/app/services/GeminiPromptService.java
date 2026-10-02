@@ -1,7 +1,7 @@
 package app.services;
 
 import app.daos.userOwned.GeminiPromptDAO;
-import app.dtos.GeminiPrompt.GeminiResponseDTO;
+import app.dtos.geminiPrompt.GeminiResponseDTO;
 import app.entities.User;
 import app.entities.GeminiPrompt;
 import app.mappers.GeminiPromptMapper;
@@ -18,15 +18,21 @@ import java.util.Map;
 
 public class GeminiPromptService {
 
+    // ===== Dependencies =====
+
     ObjectMapper objectMapper = new ObjectMapper();
     private final GeminiPromptDAO geminiPromptDAO;
     private final UserService userService;
     String apiKey = System.getenv("GEMINI_API_KEY");
 
+    // ===== Constructor =====
+
     public GeminiPromptService(GeminiPromptDAO geminiPromptDAO, UserService userService) {
         this.geminiPromptDAO = geminiPromptDAO;
         this.userService = userService;
     }
+
+    // ===== Gemini API =====
 
     public String geminiRequest(String prompt) throws JsonProcessingException {
         Map<String, Object> body = Map.of(
@@ -63,6 +69,8 @@ public class GeminiPromptService {
         return response.body();
     }
 
+    // ===== Response Processing =====
+
     public String askGemini(String userInput) throws JsonProcessingException {
         String rawJson = geminiRequest(userInput);
 
@@ -80,6 +88,8 @@ public class GeminiPromptService {
             throw new RuntimeException("Failed to parse Gemini response: " + e.getMessage(), e);
         }
     }
+
+    // ===== Persistence =====
 
     public GeminiPrompt savePromptText(String textContent, Integer userId) {
         User user = userService.getById(userId);

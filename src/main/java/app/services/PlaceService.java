@@ -1,7 +1,7 @@
 package app.services;
 
 import app.daos.userOwned.PlaceDAO;
-import app.dtos.Place.PlaceRequestDTO;
+import app.dtos.place.PlaceRequestDTO;
 import app.entities.Place;
 import app.entities.User;
 import app.mappers.PlaceMapper;
@@ -10,15 +10,21 @@ import java.util.List;
 
 public class PlaceService {
 
+    // ===== Dependencies =====
+
     private final PlaceDAO placeDAO;
     private final UserService userService;
     private final PlaceMapper placeMapper;
+
+    // ===== Constructor =====
 
     public PlaceService(PlaceDAO placeDAO, UserService userService, PlaceMapper placeMapper) {
         this.placeDAO = placeDAO;
         this.userService = userService;
         this.placeMapper = placeMapper;
     }
+
+    // ===== Create =====
 
     public Place createPlace(PlaceRequestDTO dto, int userId) {
         User owner = userService.getById(userId);
@@ -31,6 +37,8 @@ public class PlaceService {
         Place newPlace = placeMapper.toEntity(dto, owner);
         return placeDAO.create(newPlace);
     }
+
+    // ===== Read =====
 
     public Place getById(Integer placeId, int userId) {
         Place place = placeDAO.getById(placeId);
@@ -49,10 +57,21 @@ public class PlaceService {
         return placeDAO.getAllByUserId(userId);
     }
 
-    public void delete(Integer placeId, int userId) {
-        Place place = getById(placeId, userId);
-        placeDAO.delete(place.getId());
+    public Place getRandom(Integer userId) {
+        Place randomPlace = placeDAO.getRandomByUserId(userId);
+
+        if (randomPlace == null) {
+            throw new IllegalArgumentException("No places were found");
+        }
+
+        if (!randomPlace.getUser().getUserId().equals(userId)) {
+            throw new IllegalArgumentException("You do not have permission to access this place.");
+        }
+
+        return randomPlace;
     }
+
+    // ===== Update =====
 
     public Place update(Integer placeId, PlaceRequestDTO dto, int userId) {
         Place place = placeDAO.getById(placeId);
@@ -76,18 +95,10 @@ public class PlaceService {
 
         return placeDAO.update(place);
     }
+    // ===== Delete =====
 
-    public Place getRandom(Integer userId) {
-        Place randomPlace = placeDAO.getRandomByUserId(userId);
-
-        if (randomPlace == null) {
-            throw new IllegalArgumentException("No places were found");
-        }
-
-        if (!randomPlace.getUser().getUserId().equals(userId)) {
-            throw new IllegalArgumentException("You do not have permission to access this place.");
-        }
-
-        return randomPlace;
+    public void delete(Integer placeId, int userId) {
+        Place place = getById(placeId, userId);
+        placeDAO.delete(place.getId());
     }
 }

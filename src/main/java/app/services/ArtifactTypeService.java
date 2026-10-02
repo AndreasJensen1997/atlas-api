@@ -7,12 +7,17 @@ import app.entities.User;
 
 public class ArtifactTypeService {
 
+    // ===== Dependencies =====
 
     private final ArtifactTypeDAO artifactTypeDAO;
+
+    // ===== Constructor =====
 
     public ArtifactTypeService(ArtifactTypeDAO artifactTypeDAO) {
         this.artifactTypeDAO = artifactTypeDAO;
     }
+
+    // ===== Artifact Type Resolution =====
 
     public ArtifactType resolveArtifactType(ArtifactType requestedType, User owner) {
         if (requestedType == null || requestedType.getName() == null) {

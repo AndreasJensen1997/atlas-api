@@ -15,22 +15,28 @@ import java.util.Objects;
 @Builder
 public class TimeCapsule {
 
+    // ===== Fields =====
+
     @Id
     @GeneratedValue
     Integer timeCapsuleId;
+
     @Setter
     String title;
+
     @Setter
     String subtitle;
+
     @Setter
     String content;
+
     @Setter
     LocalDate unlockDate;
+
     LocalDate dateOpened;
     boolean lockStatus;
 
-
-    // RELATIONS
+    // ===== Relations =====
 
     // M:1
     @ManyToOne(optional = false)
@@ -38,7 +44,8 @@ public class TimeCapsule {
     @Setter
     User user;
 
-    // ===== JPA LIFECYCLE CALLBACKS =====
+    // ===== JPA Lifecycle Callbacks =====
+
     @PrePersist
     protected void onCreate() {
         isLockStatus();
@@ -58,6 +65,8 @@ public class TimeCapsule {
         return LocalDate.now().isBefore(this.unlockDate);
     }
 
+    // ===== Equals & HashCode =====
+
     @Override
     public final boolean equals(Object o) {
         if (this == o)
@@ -74,8 +83,6 @@ public class TimeCapsule {
         return getTimeCapsuleId() != null && Objects.equals(getTimeCapsuleId(), timeCapsule.getTimeCapsuleId());
     }
 
-
-
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer()
@@ -84,5 +91,4 @@ public class TimeCapsule {
 
 
     }
-
 }

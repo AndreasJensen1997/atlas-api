@@ -10,15 +10,21 @@ import java.util.List;
 
 public class TimeCapsuleService {
 
+    // ===== Dependencies =====
+
     private final TimeCapsuleDAO timeCapsuleDAO;
     private final UserService userService;
     private final TimeCapsuleMapper timeCapsuleMapper;
+
+    // ===== Constructor =====
 
     public TimeCapsuleService(TimeCapsuleDAO timeCapsuleDAO, UserService userService, TimeCapsuleMapper timeCapsuleMapper) {
         this.timeCapsuleDAO = timeCapsuleDAO;
         this.userService = userService;
         this.timeCapsuleMapper = timeCapsuleMapper;
     }
+
+    // ===== Create =====
 
     public TimeCapsule createTimeCapsule(TimeCapsuleRequestDTO dto, int userId) {
         User owner = userService.getById(userId);
@@ -30,6 +36,8 @@ public class TimeCapsuleService {
         TimeCapsule newTimeCapsule = timeCapsuleMapper.toEntity(dto, owner);
         return timeCapsuleDAO.create(newTimeCapsule);
     }
+
+    // ===== Read =====
 
     public TimeCapsule getById(Integer timeCapsuleId, int userId) {
         TimeCapsule timeCapsule = timeCapsuleDAO.getById(timeCapsuleId);
@@ -48,9 +56,10 @@ public class TimeCapsuleService {
         return timeCapsuleDAO.getAllByUserId(userId);
     }
 
+    // ===== Delete =====
+
     public void delete(Integer timeCapsuleId, int userId) {
         TimeCapsule timeCapsule = getById(timeCapsuleId, userId);
         timeCapsuleDAO.delete(timeCapsule.getTimeCapsuleId());
     }
-
 }

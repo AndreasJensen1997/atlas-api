@@ -12,19 +12,27 @@ import java.util.stream.Collectors;
 
 public class MentionService {
 
+    // ===== Dependencies =====
+
     private final MentionDAO mentionDAO;
     private final MentionMapper mentionMapper;
+
+    // ===== Constructor =====
 
     public MentionService(MentionDAO mentionDAO, MentionMapper mentionMapper) {
         this.mentionDAO = mentionDAO;
         this.mentionMapper = mentionMapper;
     }
 
+    // ===== Create =====
+
     public MentionResponseDTO createMention(MentionRequestDTO dto) {
         Mention mention = mentionMapper.toEntity(dto);
         Mention created = mentionDAO.create(mention);
         return mentionMapper.toResponse(created);
     }
+
+    // ===== Read =====
 
     public MentionResponseDTO getById(Integer mentionId) {
         Mention mention = mentionDAO.getById(mentionId);
@@ -47,6 +55,8 @@ public class MentionService {
                 .map(mentionMapper::toResponse)
                 .collect(Collectors.toList());
     }
+
+    // ===== Delete =====
 
     public void deleteMention(Integer mentionId) {
         Mention mention = mentionDAO.getById(mentionId);

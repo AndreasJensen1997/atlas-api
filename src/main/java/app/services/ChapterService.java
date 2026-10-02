@@ -13,15 +13,21 @@ import java.util.Random;
 
 public class ChapterService {
 
+    // ===== Dependencies =====
+
     private final ChapterDAO chapterDAO;
     private final UserService userService;
     private final ChapterMapper chapterMapper;
+
+    // ===== Constructor =====
 
     public ChapterService(ChapterDAO chapterDAO, UserService userService, ChapterMapper chapterMapper) {
         this.chapterDAO = chapterDAO;
         this.userService = userService;
         this.chapterMapper = chapterMapper;
     }
+
+    // ===== Create =====
 
     public Chapter createChapter(ChapterRequestDTO dto, int userId) {
         User owner = userService.getById(userId);
@@ -35,6 +41,7 @@ public class ChapterService {
         return chapterDAO.create(newChapter);
     }
 
+    // ===== Read =====
 
     public Chapter getById(Integer chapterId, int userId) {
         Chapter chapter = chapterDAO.getById(chapterId);
@@ -54,13 +61,22 @@ public class ChapterService {
         return chapterDAO.getAllByUserId(userId);
     }
 
+    public Chapter getRandom(Integer userId) {
 
-    public void delete(Integer chapterId, int userId) {
-        Chapter chapter = getById(chapterId, userId);
+        Chapter randomChapter = chapterDAO.getRandomByUserId(userId);
 
-        chapterDAO.delete(chapter.getId());
+        if (randomChapter == null) {
+            throw new IllegalArgumentException("No chapters were found");
+        }
+
+        if (!randomChapter.getUser().getUserId().equals(userId)) {
+            throw new IllegalArgumentException("You do not have permission to access this chapter.");
+        }
+
+        return randomChapter;
     }
 
+    // ===== Update =====
 
     public Chapter update(Integer chapterId, ChapterRequestDTO dto, int userId) {
         Chapter chapter = chapterDAO.getById(chapterId);
@@ -83,18 +99,11 @@ public class ChapterService {
         return chapterDAO.update(chapter);
     }
 
-    public Chapter getRandom(Integer userId) {
+    // ===== Delete =====
 
-        Chapter randomChapter = chapterDAO.getRandomByUserId(userId);
+    public void delete(Integer chapterId, int userId) {
+        Chapter chapter = getById(chapterId, userId);
 
-        if (randomChapter == null) {
-            throw new IllegalArgumentException("No chapters were found");
-        }
-
-        if (!randomChapter.getUser().getUserId().equals(userId)) {
-            throw new IllegalArgumentException("You do not have permission to access this chapter.");
-        }
-
-        return randomChapter;
+        chapterDAO.delete(chapter.getId());
     }
 }

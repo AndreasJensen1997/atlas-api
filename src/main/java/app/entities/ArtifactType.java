@@ -1,9 +1,7 @@
 package app.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
@@ -23,7 +21,12 @@ public class ArtifactType {
     private Integer artifactTypeId;
 
     @Column(nullable = false, unique = true)
-    private String typeName; // e.g., "Song", "Movie", "Physical Object"
+    private String name; // e.g., "Song", "Movie", "Physical Object"
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
+    private User user;
 
 
 

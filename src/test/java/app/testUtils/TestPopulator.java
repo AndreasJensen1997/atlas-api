@@ -60,9 +60,9 @@ public final class TestPopulator {
             em.persist(chapter3);
 
             // Create and persist Artifact Types first (since Artifacts depend on them)
-            ArtifactType musicType = ArtifactType.builder().typeName("Music").build();
-            ArtifactType objectType = ArtifactType.builder().typeName("Physical Object").build();
-            ArtifactType vehicleType = ArtifactType.builder().typeName("Vehicle").build();
+            ArtifactType musicType = ArtifactType.builder().name("Music").build();
+            ArtifactType objectType = ArtifactType.builder().name("Physical Object").build();
+            ArtifactType vehicleType = ArtifactType.builder().name("Vehicle").build();
 
             em.persist(musicType);
             em.persist(objectType);
@@ -97,9 +97,9 @@ public final class TestPopulator {
 
             // MEMORIES
 
-            Memory memory1 = Memory.builder().title("wedding night").subTitle("best moments from wedding night").content("The night was magic").user(user1).build();
-            Memory memory2 = Memory.builder().title("graduation day").subTitle("The night we finised").content("The night was magic").user(user2).build();
-            Memory memory3 = Memory.builder().title("surgery").subTitle("hip surgery").content("the day we fixed my issue").user(user3).build();
+            Memory memory1 = Memory.builder().title("wedding night").subtitle("best moments from wedding night").content("The night was magic").user(user1).build();
+            Memory memory2 = Memory.builder().title("graduation day").subtitle("The night we finised").content("The night was magic").user(user2).build();
+            Memory memory3 = Memory.builder().title("surgery").subtitle("hip surgery").content("the day we fixed my issue").user(user3).build();
 
             em.persist(memory1);
             em.persist(memory2);
@@ -124,9 +124,9 @@ public final class TestPopulator {
             em.persist(place2);
             em.persist(place3);
 
-            Story story1 = Story.builder().title("First Story").subTitle("Beginning").content("Content of the first story...").startDate(LocalDate.of(2026, 1, 1)).endDate(LocalDate.of(2026, 1, 3)).user(user1).build();
-            Story story2 = Story.builder().title("Second Story").subTitle("Middle").content("Content of the second story...").startDate(LocalDate.of(2026, 1, 4)).endDate(LocalDate.of(2026, 1, 6)).user(user2).build();
-            Story story3 = Story.builder().title("Third Story").subTitle("End").content("Content of the third story...").startDate(LocalDate.of(2026, 1, 7)).endDate(LocalDate.of(2026, 1, 10)).user(user3).build();
+            Story story1 = Story.builder().title("First Story").subtitle("Beginning").content("Content of the first story...").startDate(LocalDate.of(2026, 1, 1)).endDate(LocalDate.of(2026, 1, 3)).user(user1).build();
+            Story story2 = Story.builder().title("Second Story").subtitle("Middle").content("Content of the second story...").startDate(LocalDate.of(2026, 1, 4)).endDate(LocalDate.of(2026, 1, 6)).user(user2).build();
+            Story story3 = Story.builder().title("Third Story").subtitle("End").content("Content of the third story...").startDate(LocalDate.of(2026, 1, 7)).endDate(LocalDate.of(2026, 1, 10)).user(user3).build();
 
             em.persist(story1);
             em.persist(story2);

@@ -3,6 +3,7 @@ package app.services;
 import app.daos.userOwned.ArtifactDAO;
 import app.dtos.Artifact.ArtifactRequestDTO;
 import app.entities.Artifact;
+import app.entities.ArtifactType;
 import app.entities.User;
 import app.mappers.ArtifactMapper;
 
@@ -12,11 +13,13 @@ public class ArtifactService {
 
     private final ArtifactDAO artifactDAO;
     private final UserService userService;
+    private final ArtifactTypeService artifactTypeService;
     private final ArtifactMapper artifactMapper;
 
-    public ArtifactService(ArtifactDAO artifactDAO, UserService userService, ArtifactMapper artifactMapper) {
+    public ArtifactService(ArtifactDAO artifactDAO, UserService userService,ArtifactTypeService artifactTypeService, ArtifactMapper artifactMapper) {
         this.artifactDAO = artifactDAO;
         this.userService = userService;
+        this.artifactTypeService = artifactTypeService;
         this.artifactMapper = artifactMapper;
     }
 
@@ -27,7 +30,10 @@ public class ArtifactService {
             throw new IllegalArgumentException("An artifact with this title already exists.");
         }
 
+        ArtifactType resolvedType = artifactTypeService.resolveArtifactType(dto.artifactType(), owner);
+
         Artifact newArtifact = artifactMapper.toEntity(dto, owner);
+        newArtifact.setArtifactType(resolvedType);
 
         return artifactDAO.create(newArtifact);
     }
@@ -92,4 +98,6 @@ public class ArtifactService {
 
         return randomArtifact;
     }
+
+
 }

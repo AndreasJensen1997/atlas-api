@@ -29,7 +29,7 @@ public class UserOwnedDAO<T,I> extends GenericDAO<T, I> {
         try (EntityManager em = emf.createEntityManager()) {
             String fieldName = "title";
             String className = entityClass.getSimpleName();
-            if (className.equals("Person") || className.equals("Place")) {
+            if (className.equals("Person") || className.equals("Place") || className.equals("ArtifactType")) {
                 fieldName = "name";
             }
             String jpql = "SELECT e FROM " + className + " e WHERE LOWER(e." + fieldName + ") LIKE LOWER(:keyword) AND e.user.userId = :userId";
@@ -51,7 +51,7 @@ public class UserOwnedDAO<T,I> extends GenericDAO<T, I> {
         try (EntityManager em = emf.createEntityManager()) {
             String fieldName = "title";
             className = entityClass.getSimpleName();
-            if (className.equals("Person") || className.equals("Place")) {
+            if (className.equals("Person") || className.equals("Place") || className.equals("ArtifactType")) {
                 fieldName = "name";
             }
 

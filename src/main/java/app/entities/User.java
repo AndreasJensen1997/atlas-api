@@ -18,17 +18,22 @@ import java.util.Set;
 @Table(name = "users")
 public class User {
 
+    // ===== Fields =====
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
+
     private String name;
+
     @Enumerated(EnumType.STRING)
-    private Role role; // ADMIN or USER
+    private Role role;
+
     private String email;
     private String password;
 
 
-    // ===== RELATIONS =====
+    // ===== Relations =====
 
     // 1:M
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -81,9 +86,7 @@ public class User {
     @ToString.Exclude
     private Set<Fragment> fragments = new HashSet<>();
 
-
-
-    // ===== JPA LIFECYCLE CALLBACKS =====
+    // ===== JPA Lifecycle Callbacks =====
 
     @PrePersist
     protected void onCreate() {
@@ -92,7 +95,6 @@ public class User {
 
     @PreUpdate
     protected void onUpdate() {
-
     }
 
     public void normalizeEmail() {
@@ -101,8 +103,8 @@ public class User {
         }
     }
 
+    // ===== Equals & HashCode =====
 
-    // ===== EQUALS & HASHCODE =====
     @Override
     public final boolean equals(Object o) {
         if (this == o)
@@ -119,7 +121,6 @@ public class User {
         return getUserId() != null && Objects.equals(getUserId(), user.getUserId());
     }
 
-
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer()
@@ -128,5 +129,4 @@ public class User {
 
 
     }
-
 }

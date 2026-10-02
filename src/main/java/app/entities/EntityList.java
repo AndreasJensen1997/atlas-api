@@ -18,19 +18,22 @@ import java.util.Objects;
 @Builder
 public class EntityList {
 
+    // ===== Fields =====
 
     @Id
     @GeneratedValue
     private Integer listId;
+
     private String title;
     private String subtitle;
     private LocalDate createdAt;
     private LocalDate updatedAt;
     private int itemAmount;
+
     @Enumerated(EnumType.STRING)
     private Visibility visibility;
 
-    // ===== RELATIONS =====
+    // ===== Relations =====
 
     // M:1
     @ManyToOne(optional = false)
@@ -45,7 +48,8 @@ public class EntityList {
     private List<EntityListItem> items = new ArrayList<>();
 
 
-    // ===== JPA LIFECYCLE CALLBACKS =====
+    // ===== JPA Lifecycle Callbacks =====
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDate.now();
@@ -74,7 +78,8 @@ public class EntityList {
         }
     }
 
-    // ===== RELATIONSHIP HELPERS =====
+    // ===== Relationship Helper Methods =====
+
     public void addItem(EntityListItem item) {
         items.add(item);
         item.setEntityList(this);
@@ -92,7 +97,8 @@ public class EntityList {
             removeItem(item);
         }
     }
-    // ===== EQUALS & HASHCODE =====
+    // ===== Equals & HashCode =====
+
     @Override
     public final boolean equals(Object o) {
         if (this == o)
@@ -116,5 +122,4 @@ public class EntityList {
                 .hashCode() : getClass().hashCode();
 
     }
-
 }

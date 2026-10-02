@@ -18,24 +18,30 @@ import java.util.Objects;
 @Builder
 public class Artifact implements LinkableEntity {
 
+    // ===== Fields =====
 
     @Id
     @GeneratedValue
     private Integer artifactId;
+
     @Setter
     private String title;
+
     @Setter
     private String subtitle;
+
     @Setter
     private String content;
+
     private LocalDate createdAt;
     private LocalDate updatedAt;
+
     @Setter
     @Enumerated(EnumType.STRING)
     private Visibility visibility;
 
 
-    // ===== RELATIONS =====
+    // ===== Relations =====
 
     // M:1
     @ManyToOne(optional = false)
@@ -48,6 +54,7 @@ public class Artifact implements LinkableEntity {
     @Setter
     private ArtifactType artifactType;
 
+    // ===== LinkableEntity =====
 
     @Override
     public Integer getId() {
@@ -55,7 +62,8 @@ public class Artifact implements LinkableEntity {
     }
 
 
-    // ===== JPA LIFECYCLE CALLBACKS =====
+    // ===== JPA Lifecycle Callbacks =====
+
     @PrePersist
     protected void onCreate() {
         setCreatedDate();
@@ -85,8 +93,8 @@ public class Artifact implements LinkableEntity {
         }
     }
 
+    // ===== Equals & HashCode =====
 
-    // ===== EQUALS & HASHCODE =====
     @Override
     public final boolean equals(Object o) {
         if (this == o)

@@ -11,12 +11,15 @@ import lombok.*;
 @Builder
 public class EntityListItem {
 
+    // ===== Fields =====
+
     @Id
     @GeneratedValue
     private Integer itemId;
+
     private String text;
 
-    // RELATIONS
+    // ===== Relations =====
 
     // M:1
     @ManyToOne(optional = false)

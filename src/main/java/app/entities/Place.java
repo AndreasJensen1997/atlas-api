@@ -17,38 +17,41 @@ import java.util.Objects;
 @Builder
 public class Place implements LinkableEntity {
 
+    // ===== Fields =====
+
     @Id
     @GeneratedValue
     Integer placeId;
+
     @Setter
     private String name;
+
     @Setter
     String content;
+
     @Setter
     private Double latitude;
+
     @Setter
     private Double longitude;
+
     @Setter
     private String address;
+
     @Setter
     private String city;
+
     @Setter
     private String country;
+
     LocalDate createdAt;
     LocalDate updatedAt;
+
     @Enumerated(EnumType.STRING)
     @Setter
     private Visibility visibility;
 
-
-
-
-    @Override
-    public Integer getId() {
-        return placeId;
-    }
-
-    // RELATIONS
+    // ===== Relations =====
 
     // M:1
     @ManyToOne(optional = false)
@@ -56,7 +59,15 @@ public class Place implements LinkableEntity {
     @Setter
     User user;
 
-    // ===== JPA LIFECYCLE CALLBACKS =====
+    // ===== LinkableEntity =====
+
+    @Override
+    public Integer getId() {
+        return placeId;
+    }
+
+    // ===== JPA Lifecycle Callbacks =====
+
     @PrePersist
     protected void onCreate() {
         setCreatedDate();
@@ -85,7 +96,7 @@ public class Place implements LinkableEntity {
             this.visibility = Visibility.PRIVATE;
         }
     }
-    // ===== EQUALS & HASHCODE =====
+    // ===== Equals & HashCode =====
 
     @Override
     public final boolean equals(Object o) {
@@ -103,8 +114,6 @@ public class Place implements LinkableEntity {
         return getPlaceId() != null && Objects.equals(getPlaceId(), place.getPlaceId());
     }
 
-
-
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer()
@@ -113,6 +122,4 @@ public class Place implements LinkableEntity {
 
 
     }
-
-
 }

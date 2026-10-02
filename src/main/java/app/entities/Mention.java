@@ -16,32 +16,38 @@ import java.util.Objects;
 @Builder
 public class Mention {
 
+    // ===== Fields =====
+
     @Id
     @GeneratedValue
     private Integer mentionId;
 
-    // ===== 1. THE OWNER (Where the highlighted text lives) =====
+    // ===== The Owner (Where the highlighted text lives) =====
+
     @Column(nullable = false)
     private Integer ownerId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TargetType ownerType; // e.g., PERSON, PLACE, CHAPTER, ARTIFACT
+    private TargetType ownerType; // PERSON, PLACE, CHAPTER, ARTIFACT
 
-    // Text position tracking
+    // ===== Text Positioning Tracking =====
+
     private Integer startIndex;
     private Integer endIndex;
     private String selectedText;
 
-    // ===== 2. THE TARGET (What the link points to) =====
+    // ===== The Target (What the link points to) =====
+
     @Column(nullable = false)
     private Integer targetId;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private TargetType targetType; // e.g., TRIP, MEMORY, PERSON
+    private TargetType targetType; // ARTIFACT, MEMORY, PERSON
 
-    // ===== EQUALS & HASHCODE =====
+    // ===== Equals & HashCode =====
+
     @Override
     public final boolean equals(Object o) {
         if (this == o)
@@ -58,7 +64,6 @@ public class Mention {
         return getMentionId() != null && Objects.equals(getMentionId(), mention.getMentionId());
     }
 
-
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer()
@@ -67,6 +72,4 @@ public class Mention {
 
 
     }
-
-
 }

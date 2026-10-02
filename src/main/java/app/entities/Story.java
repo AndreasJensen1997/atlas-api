@@ -1,6 +1,5 @@
 package app.entities;
 
-
 import app.entities.generics.LinkableEntity;
 import app.enums.Visibility;
 import jakarta.persistence.*;
@@ -18,31 +17,35 @@ import java.util.Objects;
 @Builder
 public class Story implements LinkableEntity {
 
+    // ===== Fields =====
+
     @Id
     @GeneratedValue
     Integer storyId;
+
     @Setter
     String title;
+
     @Setter
     String subtitle;
+
     @Setter
     String content;
+
     @Setter
     LocalDate startDate;
+
     @Setter
     LocalDate endDate;
+
     LocalDate createdAt;
     LocalDate updatedAt;
+
     @Enumerated(EnumType.STRING)
     @Setter
     private Visibility visibility;
 
-    @Override
-    public Integer getId() {
-        return storyId;
-    }
-
-    // RELATIONS
+    // ===== Relations =====
 
     // M:1
     @ManyToOne(optional = false)
@@ -50,7 +53,15 @@ public class Story implements LinkableEntity {
     @Setter
     private User user;
 
-    // ===== JPA LIFECYCLE CALLBACKS =====
+    // ===== LinkableEntity =====
+
+    @Override
+    public Integer getId() {
+        return storyId;
+    }
+
+    // ===== JPA Lifecycle Callbacks =====
+
     @PrePersist
     protected void onCreate() {
         setCreatedDate();
@@ -81,7 +92,7 @@ public class Story implements LinkableEntity {
         }
     }
 
-    // ===== EQUALS & HASHCODE =====
+    // ===== Equals & HashCode =====
 
     @Override
     public final boolean equals(Object o) {
@@ -98,7 +109,6 @@ public class Story implements LinkableEntity {
         Story story = (Story) o;
         return getStoryId() != null && Objects.equals(getStoryId(), story.getStoryId());
     }
-
 
     @Override
     public final int hashCode() {

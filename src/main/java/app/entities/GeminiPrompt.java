@@ -13,15 +13,15 @@ import java.util.Objects;
 @Builder
 public class GeminiPrompt {
 
+    // ===== Fields =====
+
     @Id
     @GeneratedValue
     private Long geminiPromptId;
+
     String content;
 
-
-
-
-    // ===== RELATIONS =====
+    // ===== Relations =====
 
     // M:1
     @ManyToOne(optional = false)
@@ -29,7 +29,8 @@ public class GeminiPrompt {
     @Setter
     private User user;
 
-    // ===== EQUALS & HASHCODE =====
+    // ===== Equals & HashCode =====
+
     @Override
     public final boolean equals(Object o) {
         if (this == o)

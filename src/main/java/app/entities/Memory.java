@@ -19,32 +19,32 @@ import java.util.Objects;
 @Builder
 public class Memory implements LinkableEntity {
 
+    // ===== Fields =====
 
     @Id
     @GeneratedValue
     Integer memoryId;
+
     @Setter
     String title;
+
     @Setter
     String subtitle;
+
     @Setter
     String content;
+
     @Setter
     LocalDate date;
+
     LocalDate createdAt;
     LocalDate updatedAt;
+
     @Setter
     @Enumerated(EnumType.STRING)
     private Visibility visibility;
 
-
-    @Override
-    public Integer getId() {
-        return memoryId;
-    }
-
-
-    // ===== RELATIONS =====
+    // ===== Relations =====
 
     // M:1
     @ManyToOne(optional = false)
@@ -52,8 +52,15 @@ public class Memory implements LinkableEntity {
     @Setter
     private User user;
 
+    // ===== LinkableEntity =====
 
-    // ===== JPA LIFECYCLE CALLBACKS =====
+    @Override
+    public Integer getId() {
+        return memoryId;
+    }
+
+    // ===== JPA Lifecycle Callbacks =====
+
     @PrePersist
     protected void onCreate() {
         setDefaultVisibility();
@@ -84,7 +91,7 @@ public class Memory implements LinkableEntity {
         }
     }
 
-    // ===== EQUALS & HASHCODE =====
+    // ===== Equals & HashCode =====
 
     @Override
     public final boolean equals(Object o) {
@@ -102,7 +109,6 @@ public class Memory implements LinkableEntity {
         return getMemoryId() != null && Objects.equals(getMemoryId(), memory.getMemoryId());
     }
 
-
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer()
@@ -111,5 +117,4 @@ public class Memory implements LinkableEntity {
 
 
     }
-
 }

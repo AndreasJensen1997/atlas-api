@@ -1,6 +1,5 @@
 package app.entities;
 
-
 import app.entities.generics.LinkableEntity;
 import app.enums.Relation;
 import app.enums.Visibility;
@@ -11,7 +10,6 @@ import org.hibernate.proxy.HibernateProxy;
 import java.time.LocalDate;
 import java.util.Objects;
 
-
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,30 +18,31 @@ import java.util.Objects;
 @Builder
 public class Person implements LinkableEntity {
 
+    // ===== Fields =====
 
     @Id
     @GeneratedValue
     Integer personId;
+
     @Setter
     String name;
+
     @Setter
     String content;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     @Setter
     Relation relation;
+
     @Enumerated(EnumType.STRING)
     @Setter
     private Visibility visibility;
+
     LocalDate createdAt;
     LocalDate updatedAt;
 
-    @Override
-    public Integer getId() {
-        return personId;
-    }
-
-    // RELATIONS
+    // ===== Relations =====
 
     // M:1
     @ManyToOne(optional = false)
@@ -51,8 +50,16 @@ public class Person implements LinkableEntity {
     @Setter
     User user;
 
+    // ===== LinkableEntity =====
 
-    // ===== JPA LIFECYCLE CALLBACKS =====
+    @Override
+    public Integer getId() {
+        return personId;
+    }
+
+
+    // ===== JPA Lifecycle Callbacks =====
+
     @PrePersist
     protected void onCreate() {
      setCreatedDate();
@@ -82,7 +89,7 @@ public class Person implements LinkableEntity {
         }
     }
 
-    // ===== EQUALS & HASHCODE =====
+    // ===== Equals & HashCode =====
 
     @Override
     public final boolean equals(Object o) {
@@ -100,8 +107,6 @@ public class Person implements LinkableEntity {
         return getPersonId() != null && Objects.equals(getPersonId(), person.getPersonId());
     }
 
-
-
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer()
@@ -110,6 +115,4 @@ public class Person implements LinkableEntity {
 
 
     }
-
-
 }

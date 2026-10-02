@@ -15,23 +15,25 @@ import java.util.Objects;
 @ToString
 @Builder
 public class Fragment implements LinkableEntity {
+
+    // ===== Fields =====
+
     @Id
     @GeneratedValue
     Integer fragmentId;
+
     @Setter
     private String title;
+
     @Setter
     private String subtitle;
+
     @Setter
     String content;
+
     LocalDate createdAt;
     LocalDate updatedAt;
     int wordCount;
-
-    @Override
-    public Integer getId() {
-        return fragmentId;
-    }
 
     // ===== RELATIONS =====
 
@@ -41,8 +43,15 @@ public class Fragment implements LinkableEntity {
     @Setter
     User user;
 
+    // ===== LinkableEntity =====
 
-    // ===== JPA LIFECYCLE CALLBACKS =====
+    @Override
+    public Integer getId() {
+        return fragmentId;
+    }
+
+    // ===== JPA Lifecycle Callbacks =====
+
     @PrePersist
     protected void onCreate() {
         setCreatedDate();
@@ -75,7 +84,8 @@ public class Fragment implements LinkableEntity {
         }
     }
 
-    // ===== EQUALS & HASHCODE =====
+    // ===== Equals & HashCode =====
+
     @Override
     public final boolean equals(Object o) {
         if (this == o)
@@ -98,6 +108,4 @@ public class Fragment implements LinkableEntity {
                 .getPersistentClass()
                 .hashCode() : getClass().hashCode();
     }
-
-
 }

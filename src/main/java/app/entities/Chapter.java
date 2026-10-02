@@ -17,39 +17,51 @@ import java.util.Objects;
 @Builder
 public class Chapter implements LinkableEntity {
 
+    // ===== Fields =====
+
     @Id
     @GeneratedValue
     private Integer chapterId;
+
     @Setter
     private String title;
+
     @Setter
     private String subtitle;
+
     @Setter
     private String content;
+
     @Setter
     private LocalDate startDate;
+
     @Setter
     private LocalDate endDate;
+
     private LocalDate createdAt;
     private LocalDate updatedAt;
+
     @Enumerated(EnumType.STRING)
     @Setter
     private Visibility visibility;
+
+    // ===== LinkableEntity =====
 
     @Override
     public Integer getId() {
         return chapterId;
     }
 
+    // ===== Relations =====
 
-    // ===== RELATIONS =====
     // M:1
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     @Setter
     private User user;
 
-    // ===== JPA LIFECYCLE CALLBACKS =====
+    // ===== JPA Lifecycle Callbacks =====
+
     @PrePersist
     protected void onCreate() {
         setCreatedDate();
@@ -62,11 +74,12 @@ public class Chapter implements LinkableEntity {
         setUpdatedDate();
     }
 
-    public void setDefaultVisibility (){
-        if (this.visibility == null){
+    public void setDefaultVisibility() {
+        if (this.visibility == null) {
             this.visibility = Visibility.PRIVATE;
         }
     }
+
     public void setCreatedDate() {
         if (this.createdAt == null) {
             this.createdAt = LocalDate.now();
@@ -79,7 +92,8 @@ public class Chapter implements LinkableEntity {
         }
     }
 
-    // ===== EQUALS & HASHCODE =====
+    // ===== Equals & HashCode =====
+
     @Override
     public final boolean equals(Object o) {
         if (this == o)
@@ -96,7 +110,6 @@ public class Chapter implements LinkableEntity {
         return getChapterId() != null && Objects.equals(getChapterId(), chapter.getChapterId());
     }
 
-
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer()
@@ -105,5 +118,4 @@ public class Chapter implements LinkableEntity {
 
 
     }
-
 }

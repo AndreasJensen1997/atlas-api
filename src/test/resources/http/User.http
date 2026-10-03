@@ -1,0 +1,51 @@
+
+### ==========================================
+### 1. READ USER PROFILES
+### ==========================================
+
+### Get currently authenticated user profile
+GET {{url}}/users/current
+Authorization: {{JWT}}
+Accept: application/json
+
+###
+
+### Get all users (useful for mentions / search)
+GET {{url}}/users
+Authorization: {{JWT}}
+Accept: application/json
+
+###
+
+### Get specific user by ID
+GET {{url}}/users/1
+Authorization: {{JWT}}
+Accept: application/json
+
+###
+
+### ==========================================
+### 3. UPDATE USER PROFILE
+### ==========================================
+
+### Update own user profile
+PUT {{url}}/users/1
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "name": "Jane Doe Updated",
+  "email": "jane.doe.updated@example.com"
+}
+
+###
+
+### ==========================================
+### 4. DELETE USER ACCOUNT
+### ==========================================
+
+### Delete own user account
+DELETE {{url}}/users/1
+Authorization: {{JWT}}
+Accept: application/json

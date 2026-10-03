@@ -24,11 +24,14 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer userId;
 
+    @Setter
     private String name;
 
+    @Setter
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Setter
     private String email;
     private String password;
 

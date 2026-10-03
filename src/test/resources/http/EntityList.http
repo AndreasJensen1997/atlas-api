@@ -1,0 +1,97 @@
+### ==========================================
+### 1. CREATE ENTITY LIST
+### ==========================================
+
+### Create a new EntityList with initial items
+POST {{url}}/entitylists
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "Bucket List 2026",
+  "subtitle": "Things to achieve before the year ends",
+  "visibility": "PRIVATE",
+  "items": [
+    "Visit the Grand Canyon",
+    "Publish Atlas v1.0 backend",
+    "Learn native Java HttpClient"
+  ]
+}
+
+### Create second EntityList with initial items
+POST {{url}}/entitylists
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "My favourite albums",
+  "subtitle": "A list of the albums that mean a lot to me",
+  "visibility": "PUBLIC",
+  "items": [
+    "Blonde",
+    "I forget where we were",
+    "The great divide"
+  ]
+}
+
+###
+
+### ==========================================
+### 2. READ / FETCH ENTITY LISTS
+### ==========================================
+
+### Get all EntityLists owned by current user
+GET {{url}}/entitylists
+Authorization: {{JWT}}
+Accept: application/json
+
+###
+
+### Get a random EntityList for current user
+GET {{url}}/entitylists/random
+Authorization: {{JWT}}
+Accept: application/json
+
+###
+
+### Get specific EntityList by ID
+GET {{url}}/entitylists/1
+Authorization: {{JWT}}
+Accept: application/json
+
+###
+
+### ==========================================
+### 3. UPDATE ENTITY LIST
+### ==========================================
+
+### Update EntityList (modifies metadata & replaces items)
+PUT {{url}}/entitylists/1
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "Updated Bucket List 2026",
+  "subtitle": "Refined goals for late 2026",
+  "visibility": "PUBLIC",
+  "items": [
+    "Visit the Grand Canyon",
+    "Publish Atlas v1.0 backend",
+    "Learn native Java HttpClient",
+    "Complete frontend UI integration"
+  ]
+}
+
+###
+
+### ==========================================
+### 4. DELETE ENTITY LIST
+### ==========================================
+
+### Delete EntityList by ID (also deletes orphaned items)
+DELETE {{url}}/entitylists/1
+Authorization: {{JWT}}
+Accept: application/json

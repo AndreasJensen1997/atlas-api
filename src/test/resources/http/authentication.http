@@ -11,6 +11,32 @@ Content-Type:application/json
 
 ###
 
+POST {{url}}/auth/register
+Accept: application/json
+Content-Type:application/json
+
+{
+  "name": "morten",
+  "email": "morten@live.dk",
+  "password": "12345678!",
+  "passwordCheck": "12345678!"
+}
+
+###
+
+POST {{url}}/auth/register
+Accept: application/json
+Content-Type:application/json
+
+{
+  "name": "theis",
+  "email": "theis@live.dk",
+  "password": "12345678!",
+  "passwordCheck": "12345678!"
+}
+
+###
+
 POST {{url}}/auth/login
 Accept: application/json
 Content-Type:application/json

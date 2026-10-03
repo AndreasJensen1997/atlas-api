@@ -21,7 +21,8 @@ public class ApiException extends RuntimeException {
         logger.error("ApiException (code={}): {}", code, msg, cause); // Optional: log the cause too
     }
 
-    public int getCode(){
+    public int getStatusCode(){
         return code;
     }
+
 }

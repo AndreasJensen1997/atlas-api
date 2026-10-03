@@ -33,7 +33,7 @@ public abstract class AbstractController<Req, Res, T, ID> {
         try {
             Req requestDTO = parseBody(ctx);
 
-            ID userId = ctx.attribute("currentUserId");
+            ID userId = ctx.attribute("userId");
             if (userId == null) {
                 ctx.status(401).json(Map.of("error", "Unauthorized"));
                 return;
@@ -54,7 +54,7 @@ public abstract class AbstractController<Req, Res, T, ID> {
 
     public void getById(Context ctx) {
         try {
-            ID userId = ctx.attribute("currentUserId");
+            ID userId = ctx.attribute("userId");
             if (userId == null) {
                 ctx.status(401).json(Map.of("error", "Unauthorized"));
                 return;
@@ -78,7 +78,7 @@ public abstract class AbstractController<Req, Res, T, ID> {
 
     public void getAllById(Context ctx) {
         try {
-            ID userId = ctx.attribute("currentUserId");
+            ID userId = ctx.attribute("userId");
             if (userId == null) {
                 ctx.status(401).json(Map.of("error", "Unauthorized"));
                 return;
@@ -103,7 +103,7 @@ public abstract class AbstractController<Req, Res, T, ID> {
 
     public void deleteById(Context ctx) {
         try {
-            ID userId = ctx.attribute("currentUserId");
+            ID userId = ctx.attribute("userId");
             if (userId == null) {
                 ctx.status(401).json(Map.of("error", "Unauthorized"));
                 return;
@@ -124,7 +124,7 @@ public abstract class AbstractController<Req, Res, T, ID> {
 
     public void updateById(Context ctx) {
         try {
-            ID userId = ctx.attribute("currentUserId");
+            ID userId = ctx.attribute("userId");
             if (userId == null) {
                 ctx.status(401).json(Map.of("error", "Unauthorized"));
                 return;
@@ -150,7 +150,7 @@ public abstract class AbstractController<Req, Res, T, ID> {
 
     public void randomByUserId(Context ctx) {
         try {
-            ID userId = ctx.attribute("currentUserId");
+            ID userId = ctx.attribute("userId");
             if (userId == null) {
                 ctx.status(401).json(Map.of("error", "Unauthorized"));
                 return;

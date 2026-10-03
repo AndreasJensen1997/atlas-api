@@ -23,6 +23,7 @@ public class ApplicationConfig implements EndpointGroup {
     FragmentController fragmentController;
     MentionController mentionController;
     EntityListController entityListController;
+    UserController userController;
 
     public ApplicationConfig(EntityManagerFactory emf) {
 
@@ -31,6 +32,7 @@ public class ApplicationConfig implements EndpointGroup {
         UserDAO userDAO = new UserDAO(emf);
         UserService userService = new UserService(userDAO);
         authController = new AuthController(userService);
+        userController = new UserController(userService);
 
         // ===== Gemini prompt =====
 
@@ -113,6 +115,7 @@ public class ApplicationConfig implements EndpointGroup {
         entityListController = new EntityListController(entityListService, entityListMapper);
 
 
+
     }
 
 
@@ -130,5 +133,6 @@ public class ApplicationConfig implements EndpointGroup {
         fragmentController.addEndpoints();
         mentionController.addEndpoints();
         entityListController.addEndpoints();
+        userController.addEndpoints();
     }
 }

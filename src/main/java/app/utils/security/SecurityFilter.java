@@ -14,20 +14,31 @@ public class SecurityFilter {
         }
 
         String header = ctx.header("Authorization");
+        System.out.println("--> [AUTH DEBUG] Header received: " + header);
+
         if (header == null || !header.startsWith("Bearer ")) {
+            System.out.println("--> [AUTH DEBUG] Failed: Header is null or missing 'Bearer '");
             throw new ApiException(401, "Missing or invalid Authorization header");
         }
 
-        String token = header.substring(7);
-        String email = JWTToken.verifyTokenAndGetSubject(token);
+        String token = header.substring(7).trim();
 
-        // Optional: you can still verify the user exists
-        User user = userService.getByEmail(email);
-        if (user == null) {
-            throw new ApiException(401, "User belonging to token no longer exists");
+        try {
+            String email = JWTToken.verifyTokenAndGetSubject(token);
+            System.out.println("--> [AUTH DEBUG] Token verified for email: " + email);
+
+            User user = userService.getByEmail(email);
+            if (user == null) {
+                System.out.println("--> [AUTH DEBUG] Failed: User not found in DB for " + email);
+                throw new ApiException(401, "User belonging to token no longer exists");
+            }
+
+            ctx.attribute("userId", user.getUserId());
+            System.out.println("--> [AUTH DEBUG] SUCCESS! Set userId attribute to: " + user.getUserId());
+
+        } catch (Exception e) {
+            System.out.println("--> [AUTH DEBUG] Failed token verification: " + e.getMessage());
+            throw new ApiException(401, "Invalid token: " + e.getMessage());
         }
-
-        // Store the user's ID instead of the detached entity object
-        ctx.attribute("currentUserId", user.getUserId());
     }
 }

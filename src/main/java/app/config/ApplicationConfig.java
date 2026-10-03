@@ -22,6 +22,7 @@ public class ApplicationConfig implements EndpointGroup {
     TimeCapsuleController timeCapsuleController;
     FragmentController fragmentController;
     MentionController mentionController;
+    EntityListController entityListController;
 
     public ApplicationConfig(EntityManagerFactory emf) {
 
@@ -104,6 +105,14 @@ public class ApplicationConfig implements EndpointGroup {
         MentionMapper mentionMapper = new MentionMapper();
         MentionService mentionService = new MentionService(mentionDAO, mentionMapper);
         mentionController = new MentionController(mentionService);
+
+        // ===== EntityList =====
+        EntityListDAO entityListDAO = new EntityListDAO(emf);
+        EntityListMapper entityListMapper = new EntityListMapper();
+        EntityListService entityListService = new EntityListService(entityListDAO, userService, entityListMapper);
+        entityListController = new EntityListController(entityListService, entityListMapper);
+
+
     }
 
 
@@ -120,5 +129,6 @@ public class ApplicationConfig implements EndpointGroup {
         timeCapsuleController.addEndpoints();
         fragmentController.addEndpoints();
         mentionController.addEndpoints();
+        entityListController.addEndpoints();
     }
 }

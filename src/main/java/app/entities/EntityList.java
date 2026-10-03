@@ -24,12 +24,15 @@ public class EntityList {
     @GeneratedValue
     private Integer listId;
 
+    @Setter
     private String title;
+    @Setter
     private String subtitle;
     private LocalDate createdAt;
     private LocalDate updatedAt;
     private int itemAmount;
 
+    @Setter
     @Enumerated(EnumType.STRING)
     private Visibility visibility;
 
@@ -72,8 +75,8 @@ public class EntityList {
         }
     }
 
-    public void setDefaultVisibility (){
-        if (this.visibility == null){
+    public void setDefaultVisibility() {
+        if (this.visibility == null) {
             this.visibility = Visibility.PRIVATE;
         }
     }

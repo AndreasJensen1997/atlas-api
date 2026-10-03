@@ -1,13 +1,12 @@
 package app.entities;
 
-
-import app.entities.generics.LinkableEntity;
-import app.enums.Visibility;
+import app.enums.NotificationType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -16,30 +15,31 @@ import java.util.Objects;
 @Getter
 @ToString
 @Builder
-public class Artifact implements LinkableEntity {
+public class Notification {
 
     // ===== Fields =====
 
     @Id
     @GeneratedValue
-    private Integer artifactId;
+    Integer notificationId;
 
     @Setter
-    private String title;
-
-    @Setter
-    private String subtitle;
-
-    @Setter
-    private String content;
-
-    private LocalDate createdAt;
-    private LocalDate updatedAt;
+    String title;
 
     @Setter
     @Enumerated(EnumType.STRING)
-    private Visibility visibility;
+    NotificationType notificationType;
 
+    @Setter
+    Integer targetId;
+
+    @Setter
+    String targetType;
+
+    @Setter
+    boolean read;
+
+    LocalDateTime createdAt;
 
     // ===== Relations =====
 
@@ -49,46 +49,21 @@ public class Artifact implements LinkableEntity {
     @Setter
     private User user;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "artifact_type_id", nullable = false)
-    @Setter
-    private ArtifactType artifactType;
-
-    // ===== LinkableEntity =====
-
-    @Override
-    public Integer getId() {
-        return artifactId;
-    }
 
     // ===== JPA Lifecycle Callbacks =====
 
     @PrePersist
     protected void onCreate() {
         setCreatedDate();
-        setDefaultVisibility();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        setUpdatedDate();
     }
 
     public void setCreatedDate() {
         if (this.createdAt == null) {
-            this.createdAt = LocalDate.now();
-        }
-    }
-
-    public void setUpdatedDate() {
-        if (this.updatedAt == null) {
-            this.updatedAt = LocalDate.now();
-        }
-    }
-
-    public void setDefaultVisibility() {
-        if (this.visibility == null) {
-            this.visibility = Visibility.PRIVATE;
+            this.createdAt = LocalDateTime.now();
         }
     }
 
@@ -106,8 +81,8 @@ public class Artifact implements LinkableEntity {
                 .getPersistentClass() : this.getClass();
         if (thisEffectiveClass != oEffectiveClass)
             return false;
-        Artifact artifact = (Artifact) o;
-        return getArtifactId() != null && Objects.equals(getArtifactId(), artifact.getArtifactId());
+        Notification notification = (Notification) o;
+        return getNotificationId() != null && Objects.equals(getNotificationId(), notification.getNotificationId());
     }
 
     @Override

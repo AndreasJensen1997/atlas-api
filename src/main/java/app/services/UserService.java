@@ -86,7 +86,7 @@ public class UserService {
 
     public User getById(Integer id) {
         if (id == null) {
-            throw new IllegalArgumentException("Email must be provided.");
+            throw new IllegalArgumentException("User id  must be provided.");
         }
 
         User user = userDao.getById(id);
@@ -98,5 +98,31 @@ public class UserService {
         System.out.println("user successfully found :" + user.getName() + ": " + user.getUserId());
 
         return user;
+    }
+
+    public List<User> getAll() {
+        return userDao.getAll();
+    }
+
+    // ===== Update =====
+
+    public User update(Integer userId, String newName, String newEmail) {
+        User user = getById(userId);
+
+        if (newName != null && !newName.isBlank()) {
+            user.setName(newName);
+        }
+        if (newEmail != null && !newEmail.isBlank()) {
+            user.setEmail(newEmail);
+        }
+
+        return userDao.update(user);
+    }
+
+    // ===== Delete =====
+
+    public void delete(Integer id) {
+        User user = getById(id);
+        userDao.delete(user.getUserId());
     }
 }

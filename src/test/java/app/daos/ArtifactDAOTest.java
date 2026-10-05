@@ -24,6 +24,7 @@ class ArtifactDAOTest {
 
     @BeforeEach
     void setUp() {
+        TestPopulator.cleanup(emf);
         seeded = TestPopulator.populate(emf);
         artifactDAO = new ArtifactDAO(emf);
     }
@@ -91,7 +92,7 @@ class ArtifactDAOTest {
         Artifact seed = seeded.artifact1();
         String keyword = seed.getTitle().substring(0, 3).toLowerCase();
 
-        List<Artifact> results = artifactDAO.searchByName(keyword);
+        List<Artifact> results = artifactDAO.searchByTitle(keyword, seed.getUser().getUserId());
 
         assertThat(results, not(empty()));
         assertThat(results, hasItem(seed));
@@ -149,25 +150,25 @@ class ArtifactDAOTest {
     @Test
     void create_withNullStudy_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> artifactDAO.create(null));
-        assertThat(ex.getCode(), is(400));
+        assertThat(ex.getStatusCode(), is(400));
     }
 
     @Test
     void getById_withNullId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> artifactDAO.getById(null));
-        assertThat(ex.getCode(), is(400));
+        assertThat(ex.getStatusCode(), is(400));
     }
 
     @Test
     void getById_withMissingId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> artifactDAO.getById(999_999));
-        assertThat(ex.getCode(), is(404));
+        assertThat(ex.getStatusCode(), is(404));
     }
 
     @Test
     void update_withNullStudy_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> artifactDAO.update(null));
-        assertThat(ex.getCode(), is(400));
+        assertThat(ex.getStatusCode(), is(400));
     }
 
     @Test
@@ -178,19 +179,19 @@ class ArtifactDAOTest {
                 .build();
 
         ApiException ex = assertThrows(ApiException.class, () ->  artifactDAO.update(missing));
-        assertThat(ex.getCode(), is(404));
+        assertThat(ex.getStatusCode(), is(404));
     }
 
     @Test
     void delete_withNullId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> artifactDAO.delete(null));
-        assertThat(ex.getCode(), is(400));
+        assertThat(ex.getStatusCode(), is(400));
     }
 
     @Test
     void delete_withMissingId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> artifactDAO.delete(999_999));
-        assertThat(ex.getCode(), is(404));
+        assertThat(ex.getStatusCode(), is(404));
     }
 
     @Test
@@ -205,7 +206,7 @@ class ArtifactDAOTest {
 
     @Test
     void searchByName_withNonExistentKeyword_returnsEmptyList() {
-        List<Artifact> results = artifactDAO.searchByName("DoesNotExist12345");
+        List<Artifact> results = artifactDAO.searchByTitle("DoesNotExist12345",999);
 
         assertThat(results, is(empty()));
     }

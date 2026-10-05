@@ -25,6 +25,7 @@ class MemoryDAOTest {
 
     @BeforeEach
     void setUp() {
+        TestPopulator.cleanup(emf);
         seeded = TestPopulator.populate(emf);
         memoryDAO = new MemoryDAO(emf);
     }
@@ -79,7 +80,7 @@ class MemoryDAOTest {
         Memory seed = seeded.memory1();
         String keyword = seed.getTitle().substring(0, 3).toLowerCase();
 
-        List<Memory> results = memoryDAO.searchByName(keyword);
+        List<Memory> results = memoryDAO.searchByTitle(keyword,seed.getUser().getUserId());
 
         assertThat(results, not(empty()));
         assertThat(results, hasItem(seed));
@@ -121,25 +122,25 @@ class MemoryDAOTest {
     @Test
     void create_withNullMemory_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> memoryDAO.create(null));
-        assertThat(ex.getCode(), is(400));
+        assertThat(ex.getStatusCode(), is(400));
     }
 
     @Test
     void getById_withNullId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> memoryDAO.getById(null));
-        assertThat(ex.getCode(), is(400));
+        assertThat(ex.getStatusCode(), is(400));
     }
 
     @Test
     void getById_withMissingId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> memoryDAO.getById(999_999));
-        assertThat(ex.getCode(), is(404));
+        assertThat(ex.getStatusCode(), is(404));
     }
 
     @Test
     void update_withNullMemory_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> memoryDAO.update(null));
-        assertThat(ex.getCode(), is(400));
+        assertThat(ex.getStatusCode(), is(400));
     }
 
     @Test
@@ -150,23 +151,23 @@ class MemoryDAOTest {
                 .build();
 
         ApiException ex = assertThrows(ApiException.class, () -> memoryDAO.update(missing));
-        assertThat(ex.getCode(), is(404));
+        assertThat(ex.getStatusCode(), is(404));
     }
 
     @Test
     void delete_withNullId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> memoryDAO.delete(null));
-        assertThat(ex.getCode(), is(400));
+        assertThat(ex.getStatusCode(), is(400));
     }
 
     @Test
     void delete_withMissingId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> memoryDAO.delete(999_999));
-        assertThat(ex.getCode(), is(404));
+        assertThat(ex.getStatusCode(), is(404));
     }
     @Test
     void searchByName_withNonExistentKeyword_returnsEmptyList() {
-        List<Memory> results = memoryDAO.searchByName("DoesNotExist12345");
+        List<Memory> results = memoryDAO.searchByTitle("DoesNotExist12345",999);
 
         assertThat(results, is(empty()));
     }

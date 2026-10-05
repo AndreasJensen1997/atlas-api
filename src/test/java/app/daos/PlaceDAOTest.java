@@ -25,6 +25,7 @@ class PlaceDAOTest {
 
     @BeforeEach
     void setUp() {
+        TestPopulator.cleanup(emf);
         seeded = TestPopulator.populate(emf);
         placeDAO = new PlaceDAO(emf);
     }
@@ -91,7 +92,7 @@ class PlaceDAOTest {
         Place seed = seeded.place1();
         String keyword = seed.getName().substring(0, 3).toLowerCase();
 
-        List<Place> results = placeDAO.searchByName(keyword);
+        List<Place> results = placeDAO.searchByTitle(keyword,seed.getUser().getUserId());
 
         assertThat(results, not(empty()));
         assertThat(results, hasItem(seed));
@@ -137,25 +138,25 @@ class PlaceDAOTest {
     @Test
     void create_withNullPlace_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> placeDAO.create(null));
-        assertThat(ex.getCode(), is(400));
+        assertThat(ex.getStatusCode(), is(400));
     }
 
     @Test
     void getById_withNullId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> placeDAO.getById(null));
-        assertThat(ex.getCode(), is(400));
+        assertThat(ex.getStatusCode(), is(400));
     }
 
     @Test
     void getById_withMissingId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> placeDAO.getById(999_999));
-        assertThat(ex.getCode(), is(404));
+        assertThat(ex.getStatusCode(), is(404));
     }
 
     @Test
     void update_withNullPlace_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> placeDAO.update(null));
-        assertThat(ex.getCode(), is(400));
+        assertThat(ex.getStatusCode(), is(400));
     }
 
     @Test
@@ -163,24 +164,24 @@ class PlaceDAOTest {
         Place missing = Place.builder().placeId(999_999).name("Missing").build();
 
         ApiException ex = assertThrows(ApiException.class, () -> placeDAO.update(missing));
-        assertThat(ex.getCode(), is(404));
+        assertThat(ex.getStatusCode(), is(404));
     }
 
     @Test
     void delete_withNullId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> placeDAO.delete(null));
-        assertThat(ex.getCode(), is(400));
+        assertThat(ex.getStatusCode(), is(400));
     }
 
     @Test
     void delete_withMissingId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> placeDAO.delete(999_999));
-        assertThat(ex.getCode(), is(404));
+        assertThat(ex.getStatusCode(), is(404));
     }
 
     @Test
     void searchByName_withNonExistentKeyword_returnsEmptyList() {
-        List<Place> results = placeDAO.searchByName("DoesNotExist12345");
+        List<Place> results = placeDAO.searchByTitle("DoesNotExist12345",999);
 
         assertThat(results, is(empty()));
     }

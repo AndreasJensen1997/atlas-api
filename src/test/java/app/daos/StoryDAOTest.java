@@ -25,11 +25,10 @@ class StoryDAOTest {
 
     @BeforeEach
     void setUp() {
+        TestPopulator.cleanup(emf);
         seeded = TestPopulator.populate(emf);
         storyDAO = new StoryDAO(emf);
     }
-
-
 
     @Test
     void create() {
@@ -37,7 +36,7 @@ class StoryDAOTest {
 
         Story newStory = Story.builder()
                 .title("Test Story")
-                .subTitle("Test Subtitle")
+                .subtitle("Test Subtitle")
                 .content("Test story content")
                 .startDate(LocalDate.of(2026, 1, 1))
                 .endDate(LocalDate.of(2026, 1, 5))
@@ -49,7 +48,7 @@ class StoryDAOTest {
 
         assertThat(created.getStoryId(), notNullValue());
         assertThat(fetched.getTitle(), is("Test Story"));
-        assertThat(fetched.getSubTitle(), is("Test Subtitle"));
+        assertThat(fetched.getSubtitle(), is("Test Subtitle"));
         assertThat(fetched.getContent(), is("Test story content"));
         assertThat(fetched.getVisibility(), is(Visibility.PRIVATE));
         assertThat(fetched.getStartDate(), is(LocalDate.of(2026, 1, 1)));
@@ -79,7 +78,7 @@ class StoryDAOTest {
         Story seed = seeded.story1();
         String keyword = seed.getTitle().substring(0, 3).toLowerCase();
 
-        List<Story> results = storyDAO.searchByName(keyword);
+        List<Story> results = storyDAO.searchByTitle(keyword,seed.getUser().getUserId());
 
         assertThat(results, not(empty()));
         assertThat(results, hasItem(seed));
@@ -101,7 +100,7 @@ class StoryDAOTest {
         Story updated = Story.builder()
                 .storyId(seed.getStoryId())
                 .title("Updated Story Title")
-                .subTitle("Updated Subtitle")
+                .subtitle("Updated Subtitle")
                 .content("Updated content")
                 .startDate(LocalDate.of(2026, 2, 1))
                 .endDate(LocalDate.of(2026, 2, 10))
@@ -112,7 +111,7 @@ class StoryDAOTest {
 
         assertThat(result.getStoryId(), is(seed.getStoryId()));
         assertThat(result.getTitle(), is("Updated Story Title"));
-        assertThat(result.getSubTitle(), is("Updated Subtitle"));
+        assertThat(result.getSubtitle(), is("Updated Subtitle"));
         assertThat(result.getContent(), is("Updated content"));
         assertThat(result.getUpdatedAt(), is(LocalDate.now()));
         assertThat(result.getStartDate(), is(LocalDate.of(2026, 2, 1)));
@@ -132,25 +131,25 @@ class StoryDAOTest {
     @Test
     void create_withNullStory_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> storyDAO.create(null));
-        assertThat(ex.getCode(), is(400));
+        assertThat(ex.getStatusCode(), is(400));
     }
 
     @Test
     void getById_withNullId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> storyDAO.getById(null));
-        assertThat(ex.getCode(), is(400));
+        assertThat(ex.getStatusCode(), is(400));
     }
 
     @Test
     void getById_withMissingId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> storyDAO.getById(999_999));
-        assertThat(ex.getCode(), is(404));
+        assertThat(ex.getStatusCode(), is(404));
     }
 
     @Test
     void update_withNullStory_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> storyDAO.update(null));
-        assertThat(ex.getCode(), is(400));
+        assertThat(ex.getStatusCode(), is(400));
     }
 
     @Test
@@ -161,24 +160,24 @@ class StoryDAOTest {
                 .build();
 
         ApiException ex = assertThrows(ApiException.class, () -> storyDAO.update(missing));
-        assertThat(ex.getCode(), is(404));
+        assertThat(ex.getStatusCode(), is(404));
     }
 
     @Test
     void delete_withNullId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> storyDAO.delete(null));
-        assertThat(ex.getCode(), is(400));
+        assertThat(ex.getStatusCode(), is(400));
     }
 
     @Test
     void delete_withMissingId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> storyDAO.delete(999_999));
-        assertThat(ex.getCode(), is(404));
+        assertThat(ex.getStatusCode(), is(404));
     }
 
     @Test
     void searchByName_withNonExistentKeyword_returnsEmptyList() {
-        List<Story> results = storyDAO.searchByName("DoesNotExist12345");
+        List<Story> results = storyDAO.searchByTitle("DoesNotExist12345",999);
 
         assertThat(results, is(empty()));
     }

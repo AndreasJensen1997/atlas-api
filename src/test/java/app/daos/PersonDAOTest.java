@@ -26,6 +26,7 @@ class PersonDAOTest {
 
     @BeforeEach
     void setUp() {
+        TestPopulator.cleanup(emf);
         seeded = TestPopulator.populate(emf);
         personDAO = new PersonDAO(emf);
     }
@@ -79,7 +80,7 @@ class PersonDAOTest {
         Person seed = seeded.person1();
         String keyword = seed.getName().substring(0, 3).toLowerCase();
 
-        List<Person> results = personDAO.searchByName(keyword);
+        List<Person> results = personDAO.searchByTitle(keyword,seed.getUser().getUserId());
 
         assertThat(results, not(empty()));
         assertThat(results, hasItem(seed));
@@ -119,25 +120,25 @@ class PersonDAOTest {
     @Test
     void create_withNullPerson_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> personDAO.create(null));
-        assertThat(ex.getCode(), is(400));
+        assertThat(ex.getStatusCode(), is(400));
     }
 
     @Test
     void getById_withNullId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> personDAO.getById(null));
-        assertThat(ex.getCode(), is(400));
+        assertThat(ex.getStatusCode(), is(400));
     }
 
     @Test
     void getById_withMissingId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> personDAO.getById(999_999));
-        assertThat(ex.getCode(), is(404));
+        assertThat(ex.getStatusCode(), is(404));
     }
 
     @Test
     void update_withNullPerson_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> personDAO.update(null));
-        assertThat(ex.getCode(), is(400));
+        assertThat(ex.getStatusCode(), is(400));
     }
 
     @Test
@@ -148,24 +149,24 @@ class PersonDAOTest {
                 .build();
 
         ApiException ex = assertThrows(ApiException.class, () -> personDAO.update(missing));
-        assertThat(ex.getCode(), is(404));
+        assertThat(ex.getStatusCode(), is(404));
     }
 
     @Test
     void delete_withNullId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> personDAO.delete(null));
-        assertThat(ex.getCode(), is(400));
+        assertThat(ex.getStatusCode(), is(400));
     }
 
     @Test
     void delete_withMissingId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> personDAO.delete(999_999));
-        assertThat(ex.getCode(), is(404));
+        assertThat(ex.getStatusCode(), is(404));
     }
 
     @Test
     void searchByName_withNonExistentKeyword_returnsEmptyList() {
-        List<Person> results = personDAO.searchByName("DoesNotExist12345");
+        List<Person> results = personDAO.searchByTitle("DoesNotExist12345",999);
 
         assertThat(results, is(empty()));
     }

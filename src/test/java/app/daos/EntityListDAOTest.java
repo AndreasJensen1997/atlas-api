@@ -25,6 +25,7 @@ class EntityListDAOTest {
 
     @BeforeEach
     void setUp() {
+        TestPopulator.cleanup(emf);
         seeded = TestPopulator.populate(emf);
         entityListDAO = new EntityListDAO(emf);
     }
@@ -87,7 +88,7 @@ class EntityListDAOTest {
         EntityList seed = seeded.entityList1();
         String keyword = seed.getTitle().substring(0, 3).toLowerCase();
 
-        List<EntityList> results = entityListDAO.searchByName(keyword);
+        List<EntityList> results = entityListDAO.searchByTitle(keyword,seed.getUser().getUserId());
 
         assertThat(results, not(empty()));
         assertThat(results, hasItem(seed));
@@ -156,25 +157,25 @@ class EntityListDAOTest {
     @Test
     void create_withNullEntityList_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> entityListDAO.create(null));
-        assertThat(ex.getCode(), is(400));
+        assertThat(ex.getStatusCode(), is(400));
     }
 
     @Test
     void getById_withNullId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> entityListDAO.getById(null));
-        assertThat(ex.getCode(), is(400));
+        assertThat(ex.getStatusCode(), is(400));
     }
 
     @Test
     void getById_withMissingId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> entityListDAO.getById(999_999));
-        assertThat(ex.getCode(), is(404));
+        assertThat(ex.getStatusCode(), is(404));
     }
 
     @Test
     void update_withNullEntityList_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> entityListDAO.update(null));
-        assertThat(ex.getCode(), is(400));
+        assertThat(ex.getStatusCode(), is(400));
     }
 
     @Test
@@ -185,24 +186,24 @@ class EntityListDAOTest {
                 .build();
 
         ApiException ex = assertThrows(ApiException.class, () -> entityListDAO.update(missing));
-        assertThat(ex.getCode(), is(404));
+        assertThat(ex.getStatusCode(), is(404));
     }
 
     @Test
     void delete_withNullId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> entityListDAO.delete(null));
-        assertThat(ex.getCode(), is(400));
+        assertThat(ex.getStatusCode(), is(400));
     }
 
     @Test
     void delete_withMissingId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> entityListDAO.delete(999_999));
-        assertThat(ex.getCode(), is(404));
+        assertThat(ex.getStatusCode(), is(404));
     }
 
     @Test
     void searchByName_withNonExistentKeyword_returnsEmptyList() {
-        List<EntityList> results = entityListDAO.searchByName("DoesNotExist12345");
+        List<EntityList> results = entityListDAO.searchByTitle("DoesNotExist12345",999);
 
         assertThat(results, is(empty()));
     }

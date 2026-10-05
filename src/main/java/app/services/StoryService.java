@@ -4,6 +4,7 @@ import app.daos.userOwned.StoryDAO;
 import app.dtos.story.StoryRequestDTO;
 import app.entities.Story;
 import app.entities.User;
+import app.exceptions.ApiException;
 import app.mappers.StoryMapper;
 
 import java.util.List;
@@ -48,7 +49,7 @@ public class StoryService {
         }
 
         if (!story.getUser().getUserId().equals(userId)) {
-            throw new IllegalArgumentException("You do not have permission to access this story.");
+            throw new ApiException(404, "Chapter not found with ID: " + storyId);
         }
         return story;
     }

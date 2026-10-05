@@ -1,6 +1,7 @@
 package app.controllers;
 
 import app.controllers.generics.AbstractController;
+import app.dtos.chapter.ChapterRequestDTO;
 import app.dtos.story.StoryRequestDTO;
 import app.dtos.story.StoryResponseDTO;
 import app.entities.Memory;
@@ -34,9 +35,13 @@ public class StoryController extends AbstractController<StoryRequestDTO, StoryRe
 
     @Override
     protected StoryRequestDTO parseBody(Context ctx) {
-        return ctx.bodyAsClass(StoryRequestDTO.class);
-    }
+        return ctx.bodyValidator(StoryRequestDTO.class)
+                .check(req -> req.title() != null && !req.title().isBlank(), "Title cannot be blank")
+                .check(req -> req.subtitle() != null && !req.subtitle().isBlank(), "Subtitle cannot be blank")
+                .check(req -> req.startDate() == null || req.endDate() == null || !req.endDate().isBefore(req.startDate()), "End date cannot be before start date")
+                .get();
 
+    }
 
     // ===== Entity Operations =====
 

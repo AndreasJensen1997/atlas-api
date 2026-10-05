@@ -11,4 +11,6 @@ public class NotificationDAO extends UserOwnedDAO<Devlog, Integer> {
     protected NotificationDAO(EntityManagerFactory emf, Class<Devlog> entityClass) {
         super(emf, entityClass);
     }
+
+
 }

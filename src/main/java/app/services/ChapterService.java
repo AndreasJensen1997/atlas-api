@@ -4,6 +4,7 @@ import app.daos.userOwned.ChapterDAO;
 import app.dtos.chapter.ChapterRequestDTO;
 import app.entities.Chapter;
 import app.entities.User;
+import app.exceptions.ApiException;
 import app.mappers.ChapterMapper;
 import app.mappers.UserMapper;
 
@@ -51,7 +52,7 @@ public class ChapterService {
         }
 
         if (!chapter.getUser().getUserId().equals(userId)) {
-            throw new IllegalArgumentException("You do not have permission to access this chapter.");
+            throw new ApiException(404, "Chapter not found with ID: " + chapterId);
         }
         return chapter;
     }

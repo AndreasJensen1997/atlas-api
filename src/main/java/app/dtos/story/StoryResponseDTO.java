@@ -5,7 +5,7 @@ import app.enums.Visibility;
 import java.time.LocalDate;
 
 public record StoryResponseDTO(
-        Integer chapterId,
+        Integer storyId,
         String title,
         String subtitle,
         String content,

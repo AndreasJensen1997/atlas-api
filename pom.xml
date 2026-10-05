@@ -150,6 +150,16 @@
             <version>0.4</version>
         </dependency>
 
+
+        <!-- Rest assured -->
+
+        <dependency>
+            <groupId>io.rest-assured</groupId>
+            <artifactId>rest-assured</artifactId>
+            <version>5.5.0</version>
+            <scope>test</scope>
+        </dependency>
+
         <!-- Javalin -->
         <dependency>
             <groupId>io.javalin</groupId>

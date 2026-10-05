@@ -3,13 +3,25 @@ package app.config;
 import app.controllers.*;
 import app.daos.user.UserDAO;
 import app.daos.userOwned.*;
+import app.exceptions.ApiException;
 import app.mappers.*;
 import app.services.*;
+import app.utils.security.SecurityFilter;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.javalin.Javalin;
 import io.javalin.apibuilder.EndpointGroup;
+import io.javalin.config.JavalinConfig;
+import io.javalin.json.JavalinJackson;
 import jakarta.persistence.EntityManagerFactory;
+import lombok.extern.slf4j.Slf4j;
+import io.javalin.validation.ValidationException;
 
+
+import java.util.Map;
+
+@Slf4j
 public class ApplicationConfig implements EndpointGroup {
-
 
     AuthController authController;
     GeminiPromptController geminiPromptController;
@@ -25,12 +37,14 @@ public class ApplicationConfig implements EndpointGroup {
     EntityListController entityListController;
     UserController userController;
 
+    UserService userService;
+
     public ApplicationConfig(EntityManagerFactory emf) {
 
         // ===== User =====
 
         UserDAO userDAO = new UserDAO(emf);
-        UserService userService = new UserService(userDAO);
+        userService = new UserService(userDAO);
         authController = new AuthController(userService);
         userController = new UserController(userService);
 
@@ -113,9 +127,6 @@ public class ApplicationConfig implements EndpointGroup {
         EntityListMapper entityListMapper = new EntityListMapper();
         EntityListService entityListService = new EntityListService(entityListDAO, userService, entityListMapper);
         entityListController = new EntityListController(entityListService, entityListMapper);
-
-
-
     }
 
 
@@ -135,4 +146,83 @@ public class ApplicationConfig implements EndpointGroup {
         entityListController.addEndpoints();
         userController.addEndpoints();
     }
+
+
+    public void configuration(JavalinConfig javalinConfig) {
+        javalinConfig.jsonMapper(new JavalinJackson().updateMapper(mapper -> {
+            mapper.registerModule(new JavaTimeModule());
+
+        }));
+
+        // ===== Define API Routes =====
+        javalinConfig.router.apiBuilder(this);
+
+    }
+
+    public Javalin startServer(int port) {
+        var app = Javalin.create(this::configuration);
+
+        // ===== Security Filter =====
+        app.before("/api/*", ctx -> SecurityFilter.verifyToken(ctx, userService));
+
+        // ===== Global Exception Handling =====
+
+        // 1. Javalin Validation Exception (400 Bad Request)
+        // Triggered by ctx.bodyValidator(...) when validation rules fail
+        app.exception(ValidationException.class, (e, ctx) -> {
+            log.warn("Validation Error: {}", e.getErrors());
+            ctx.status(400).json(Map.of(
+                    "status", 400,
+                    "error", e.getErrors()
+            ));
+        });
+
+        // 2. Custom Business/API Exceptions (400, 401, 403, 404, etc.)
+        // Thrown intentionally from services (e.g., throw new ApiException(404, "Chapter not found"))
+        app.exception(ApiException.class, (e, ctx) -> {
+            log.warn("API Exception ({}): {}", e.getStatusCode(), e.getMessage());
+            ctx.status(e.getStatusCode()).json(Map.of(
+                    "status", e.getStatusCode(),
+                    "error", e.getMessage()
+            ));
+        });
+
+        // 3. Bad Input / Argument Exception (400 Bad Request)
+        // Thrown when invalid parameters or primitive conversions fail (e.g., Integer.parseInt)
+        app.exception(IllegalArgumentException.class, (e, ctx) -> {
+            log.warn("Illegal Argument: {}", e.getMessage());
+            ctx.status(400).json(Map.of(
+                    "status", 400,
+                    "error", e.getMessage()
+            ));
+        });
+
+        // 4. JPA Entity Not Found (404 Not Found)
+        // Thrown by Hibernate/JPA if an entity is missing during lookup
+        app.exception(jakarta.persistence.EntityNotFoundException.class, (e, ctx) -> {
+            log.warn("Entity Not Found: {}", e.getMessage());
+            ctx.status(404).json(Map.of(
+                    "status", 404,
+                    "error", e.getMessage()
+            ));
+        });
+
+        // 5. Fallback Catch-All (500 Internal Server Error) - MUST BE LAST!
+        // Catches unexpected crashes or database failure bugs
+        app.exception(Exception.class, (e, ctx) -> {
+            log.error("Unhandled Internal Server Error", e);
+            ctx.status(500).json(Map.of(
+                    "status", 500,
+                    "error", "An unexpected internal server error occurred."
+            ));
+        });
+
+        app.start(port);
+        return app;
+    }
+
+    public void stopServer(Javalin app) {
+        app.stop();
+    }
+
 }

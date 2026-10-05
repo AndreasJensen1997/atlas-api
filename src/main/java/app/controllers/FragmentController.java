@@ -43,10 +43,6 @@ public class FragmentController extends AbstractController<FragmentRequestDTO, F
         return ctx.bodyAsClass(FragmentRequestDTO.class);
     }
 
-    @Override
-    protected Integer parseId(String idStr) {
-        return Integer.parseInt(idStr);
-    }
 
     // ===== Entity Operations =====
 

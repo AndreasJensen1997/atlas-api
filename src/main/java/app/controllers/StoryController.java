@@ -37,10 +37,6 @@ public class StoryController extends AbstractController<StoryRequestDTO, StoryRe
         return ctx.bodyAsClass(StoryRequestDTO.class);
     }
 
-    @Override
-    protected Integer parseId(String idStr) {
-        return Integer.parseInt(idStr);
-    }
 
     // ===== Entity Operations =====
 

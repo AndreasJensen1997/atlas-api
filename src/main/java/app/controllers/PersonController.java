@@ -34,10 +34,6 @@ public class PersonController extends AbstractController<PersonRequestDTO, Perso
         return ctx.bodyAsClass(PersonRequestDTO.class);
     }
 
-    @Override
-    protected Integer parseId(String idStr) {
-        return Integer.parseInt(idStr);
-    }
 
     // ===== Entity Operations =====
 

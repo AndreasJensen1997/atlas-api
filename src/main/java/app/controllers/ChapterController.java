@@ -34,12 +34,11 @@ public class ChapterController extends AbstractController<ChapterRequestDTO, Cha
 
     @Override
     protected ChapterRequestDTO parseBody(Context ctx) {
-        return ctx.bodyAsClass(ChapterRequestDTO.class);
-    }
-
-    @Override
-    protected Integer parseId(String idStr) {
-        return Integer.parseInt(idStr);
+        return ctx.bodyValidator(ChapterRequestDTO.class)
+                .check(req -> req.title() != null && !req.title().isBlank(), "Title cannot be blank")
+                .check(req -> req.subtitle() != null && !req.subtitle().isBlank(), "Subtitle cannot be blank")
+                .check(req -> req.startDate() == null || req.endDate() == null || !req.endDate().isBefore(req.startDate()), "End date cannot be before start date")
+                .get();
     }
 
     // ===== Entity Operations =====

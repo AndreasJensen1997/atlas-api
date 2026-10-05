@@ -37,11 +37,6 @@ public class ArtifactController extends AbstractController<ArtifactRequestDTO, A
         return ctx.bodyAsClass(ArtifactRequestDTO.class);
     }
 
-    @Override
-    protected Integer parseId(String idStr) {
-        return Integer.parseInt(idStr);
-    }
-
     // ===== Entity Operations =====
 
     @Override

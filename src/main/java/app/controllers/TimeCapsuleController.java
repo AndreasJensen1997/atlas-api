@@ -35,10 +35,6 @@ public class TimeCapsuleController extends AbstractController<TimeCapsuleRequest
         return ctx.bodyAsClass(TimeCapsuleRequestDTO.class);
     }
 
-    @Override
-    protected Integer parseId(String idStr) {
-        return Integer.parseInt(idStr);
-    }
 
     // ===== Entity Operations =====
 

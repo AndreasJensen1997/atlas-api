@@ -34,11 +34,6 @@ public class PlaceController extends AbstractController<PlaceRequestDTO, PlaceRe
         return ctx.bodyAsClass(PlaceRequestDTO.class);
     }
 
-    @Override
-    protected Integer parseId(String idStr) {
-        return Integer.parseInt(idStr);
-    }
-
     // ===== Entity Operations =====
 
     @Override

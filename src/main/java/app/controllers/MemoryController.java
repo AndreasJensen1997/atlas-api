@@ -38,10 +38,6 @@ public class MemoryController extends AbstractController<MemoryRequestDTO, Memor
         return ctx.bodyAsClass(MemoryRequestDTO.class);
     }
 
-    @Override
-    protected Integer parseId(String idStr) {
-        return Integer.parseInt(idStr); // Converts the URL string to an Integer
-    }
 
     // ===== Entity Operations =====
 

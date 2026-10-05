@@ -24,6 +24,7 @@ class TimeCapsuleDAOTest {
 
     @BeforeEach
     void setUp() {
+        TestPopulator.cleanup(emf);
         seeded = TestPopulator.populate(emf);
         timeCapsuleDAO = new TimeCapsuleDAO(emf);
     }
@@ -84,7 +85,7 @@ class TimeCapsuleDAOTest {
         TimeCapsule seed = seeded.timeCapsule1();
         String keyword = seed.getTitle().substring(0, 3).toLowerCase();
 
-        List<TimeCapsule> results = timeCapsuleDAO.searchByName(keyword);
+        List<TimeCapsule> results = timeCapsuleDAO.searchByTitle(keyword,seed.getUser().getUserId());
 
         assertThat(results, not(empty()));
         assertThat(results, hasItem(seed));
@@ -101,7 +102,7 @@ class TimeCapsuleDAOTest {
                 .timeCapsuleId(seed.getTimeCapsuleId())
                 .content("Updated capsule content")
                 .unlockDate(seed.getUnlockDate())
-                .lockStatus(false)
+                .lockStatus(true)
                 .user(newUser)
                 .build();
 
@@ -109,7 +110,7 @@ class TimeCapsuleDAOTest {
 
         assertThat(result.getTimeCapsuleId(), is(seed.getTimeCapsuleId()));
         assertThat(result.getContent(), is("Updated capsule content"));
-        assertThat(result.isLockStatus(), is(false));
+        assertThat(result.isLockStatus(), is(true));
         assertThat(result.getUser(), is(newUser));
     }
 
@@ -126,25 +127,25 @@ class TimeCapsuleDAOTest {
     @Test
     void create_withNullTimeCapsule_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> timeCapsuleDAO.create(null));
-        assertThat(ex.getCode(), is(400));
+        assertThat(ex.getStatusCode(), is(400));
     }
 
     @Test
     void getById_withNullId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> timeCapsuleDAO.getById(null));
-        assertThat(ex.getCode(), is(400));
+        assertThat(ex.getStatusCode(), is(400));
     }
 
     @Test
     void getById_withMissingId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> timeCapsuleDAO.getById(999_999));
-        assertThat(ex.getCode(), is(404));
+        assertThat(ex.getStatusCode(), is(404));
     }
 
     @Test
     void update_withNullTimeCapsule_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> timeCapsuleDAO.update(null));
-        assertThat(ex.getCode(), is(400));
+        assertThat(ex.getStatusCode(), is(400));
     }
 
     @Test
@@ -155,24 +156,24 @@ class TimeCapsuleDAOTest {
                 .build();
 
         ApiException ex = assertThrows(ApiException.class, () -> timeCapsuleDAO.update(missing));
-        assertThat(ex.getCode(), is(404));
+        assertThat(ex.getStatusCode(), is(404));
     }
 
     @Test
     void delete_withNullId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> timeCapsuleDAO.delete(null));
-        assertThat(ex.getCode(), is(400));
+        assertThat(ex.getStatusCode(), is(400));
     }
 
     @Test
     void delete_withMissingId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> timeCapsuleDAO.delete(999_999));
-        assertThat(ex.getCode(), is(404));
+        assertThat(ex.getStatusCode(), is(404));
     }
 
     @Test
     void searchByName_withNonExistentKeyword_returnsEmptyList() {
-        List<TimeCapsule> results = timeCapsuleDAO.searchByName("DoesNotExist12345");
+        List<TimeCapsule> results = timeCapsuleDAO.searchByTitle("DoesNotExist12345",999);
 
         assertThat(results, is(empty()));
     }

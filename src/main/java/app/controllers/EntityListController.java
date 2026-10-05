@@ -37,10 +37,6 @@ public class EntityListController extends AbstractController<EntityListRequestDT
         return ctx.bodyAsClass(EntityListRequestDTO.class);
     }
 
-    @Override
-    protected Integer parseId(String idStr) {
-        return Integer.parseInt(idStr);
-    }
 
     // ===== Entity Operations =====
 

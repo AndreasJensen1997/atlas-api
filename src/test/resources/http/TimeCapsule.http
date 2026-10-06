@@ -1,4 +1,4 @@
-POST {{url}}/timecapsules
+POST {{url}}/time-capsules
 Authorization: {{JWT}}
 Accept: application/json
 Content-Type:application/json
@@ -11,7 +11,7 @@ Content-Type:application/json
 }
 
 ###
-POST {{url}}/timecapsules
+POST {{url}}/time-capsules
 Authorization: {{JWT}}
 Accept: application/json
 Content-Type:application/json
@@ -25,21 +25,21 @@ Content-Type:application/json
 
 ###
 
-GET {{url}}/timecapsules/1
+GET {{url}}/time-capsules/1
 Authorization:{{JWT}}
 Accept: application/json
 Content-Type:application/json
 
 ###
 
-GET {{url}}/timecapsules
+GET {{url}}/time-capsules
 Authorization:{{JWT}}
 Accept: application/json
 Content-Type:application/json
 
 ###
 
-DELETE {{url}}/timecapsules/2
+DELETE {{url}}/time-capsules/2
 Authorization:{{JWT}}
 Accept: application/json
 Content-Type:application/json

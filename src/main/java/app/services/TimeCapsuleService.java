@@ -4,6 +4,7 @@ import app.daos.userOwned.TimeCapsuleDAO;
 import app.dtos.timeCapsule.TimeCapsuleRequestDTO;
 import app.entities.TimeCapsule;
 import app.entities.User;
+import app.exceptions.ApiException;
 import app.mappers.TimeCapsuleMapper;
 
 import java.util.List;
@@ -47,7 +48,7 @@ public class TimeCapsuleService {
         }
 
         if (!timeCapsule.getUser().getUserId().equals(userId)) {
-            throw new IllegalArgumentException("You do not have permission to access this time capsule.");
+            throw new ApiException(404, "Chapter not found with ID: " + timeCapsuleId);
         }
         return timeCapsule;
     }

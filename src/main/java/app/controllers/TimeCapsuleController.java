@@ -32,7 +32,10 @@ public class TimeCapsuleController extends AbstractController<TimeCapsuleRequest
 
     @Override
     protected TimeCapsuleRequestDTO parseBody(Context ctx) {
-        return ctx.bodyAsClass(TimeCapsuleRequestDTO.class);
+        return ctx.bodyValidator(TimeCapsuleRequestDTO.class)
+                .check(req -> req.title() != null && !req.title().isBlank(), "Title cannot be blank")
+                .check(req -> req.unlockDate() != null, "Unlock date cannot be blank")
+                .get();
     }
 
 
@@ -79,10 +82,10 @@ public class TimeCapsuleController extends AbstractController<TimeCapsuleRequest
 
     @Override
     public void addEndpoints() {
-        post("/api/timecapsules", this::create);
-        get("/api/timecapsules/random", this::randomByUserId);
-        get("/api/timecapsules/{id}", this::getById);
-        get("/api/timecapsules", this::getAllById);
-        delete("/api/timecapsules/{id}", this::deleteById);
+        post("/api/time-capsules", this::create);
+        get("/api/time-capsules/random", this::randomByUserId);
+        get("/api/time-capsules/{id}", this::getById);
+        get("/api/time-capsules", this::getAllById);
+        delete("/api/time-capsules/{id}", this::deleteById);
     }
 }

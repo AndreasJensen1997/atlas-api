@@ -4,6 +4,7 @@ import app.daos.userOwned.PersonDAO;
 import app.dtos.person.PersonRequestDTO;
 import app.entities.Person;
 import app.entities.User;
+import app.exceptions.ApiException;
 import app.mappers.PersonMapper;
 
 import java.util.List;
@@ -48,7 +49,7 @@ public class PersonService {
         }
 
         if (!person.getUser().getUserId().equals(userId)) {
-            throw new IllegalArgumentException("You do not have permission to access this person.");
+            throw new ApiException(404, "Chapter not found with ID: " + personId);
         }
         return person;
     }

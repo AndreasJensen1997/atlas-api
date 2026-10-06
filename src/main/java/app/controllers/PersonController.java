@@ -13,7 +13,7 @@ import java.util.List;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 
-public class PersonController extends AbstractController<PersonRequestDTO, PersonResponseDTO, Person, Integer> implements EndpointGroup {
+public class  PersonController extends AbstractController<PersonRequestDTO, PersonResponseDTO, Person, Integer> implements EndpointGroup {
 
     // ===== Dependencies =====
 
@@ -31,7 +31,9 @@ public class PersonController extends AbstractController<PersonRequestDTO, Perso
 
     @Override
     protected PersonRequestDTO parseBody(Context ctx) {
-        return ctx.bodyAsClass(PersonRequestDTO.class);
+        return ctx.bodyValidator(PersonRequestDTO.class)
+                .check(req -> req.name() != null && !req.name().isBlank(), "Name cannot be blank")
+                .get();
     }
 
 
@@ -78,11 +80,11 @@ public class PersonController extends AbstractController<PersonRequestDTO, Perso
 
     @Override
     public void addEndpoints() {
-        post("/api/people", this::create);
-        get("/api/people/random", this::randomByUserId);
-        get("/api/people/{id}", this::getById);
-        get("/api/people", this::getAllById);
-        put("/api/people/{id}", this::updateById);
-        delete("/api/people/{id}", this::deleteById);
+        post("/api/persons", this::create);
+        get("/api/persons/random", this::randomByUserId);
+        get("/api/persons/{id}", this::getById);
+        get("/api/persons", this::getAllById);
+        put("/api/persons/{id}", this::updateById);
+        delete("/api/persons/{id}", this::deleteById);
     }
 }

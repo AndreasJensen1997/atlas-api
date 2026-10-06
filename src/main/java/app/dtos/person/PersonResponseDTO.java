@@ -6,7 +6,8 @@ import app.enums.Visibility;
 import java.time.LocalDate;
 
 public record PersonResponseDTO(
-        Integer personId, String name,
+        Integer personId,
+        String name,
         String content,
         Relation relation,
         Visibility visibility,

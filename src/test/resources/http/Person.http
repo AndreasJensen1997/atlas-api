@@ -1,5 +1,5 @@
 ### 1. Create a Person
-POST {{url}}/people
+POST {{url}}/persons
 Authorization: {{JWT}}
 Accept: application/json
 Content-Type: application/json
@@ -12,7 +12,7 @@ Content-Type: application/json
 }
 
 ### 1. Create second Person
-POST {{url}}/people
+POST {{url}}/persons
 Authorization: {{JWT}}
 Accept: application/json
 Content-Type: application/json
@@ -27,28 +27,28 @@ Content-Type: application/json
 ###
 
 ### 2. Get All People
-GET {{url}}/people
+GET {{url}}/persons
 Authorization: {{JWT}}
 Accept: application/json
 
 ###
 
 ### 3. Get Person by ID
-GET {{url}}/people/1
+GET {{url}}/persons/1
 Authorization: {{JWT}}
 Accept: application/json
 
 ###
 
 ### 4. Get Random Person
-GET {{url}}/people/random
+GET {{url}}/persons/random
 Authorization: {{JWT}}
 Accept: application/json
 
 ###
 
 ### 5. Update a Person
-PUT {{url}}/people/1
+PUT {{url}}/persons/1
 Authorization: {{JWT}}
 Accept: application/json
 Content-Type: application/json
@@ -63,6 +63,6 @@ Content-Type: application/json
 ###
 
 ### 6. Delete a Person
-DELETE {{url}}/people/1
+DELETE {{url}}/persons/1
 Authorization: {{JWT}}
 Accept: application/json

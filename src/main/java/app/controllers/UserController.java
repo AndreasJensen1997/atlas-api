@@ -38,6 +38,10 @@ public class UserController implements EndpointGroup {
 
     public void getById(Context ctx) {
         int id = Integer.parseInt(ctx.pathParam("id"));
+
+        if (id <= 0) {w
+            throw new IllegalArgumentException("ID must be a positive integer.");
+        }
         User user = userService.getById(id);
         ctx.json(UserMapper.toResponse(user));
     }

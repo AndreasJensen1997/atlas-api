@@ -3,7 +3,7 @@
 ### ==========================================
 
 ### Create a new EntityList with initial items
-POST {{url}}/entitylists
+POST {{url}}/entity-lists
 Authorization: {{JWT}}
 Accept: application/json
 Content-Type: application/json
@@ -20,7 +20,7 @@ Content-Type: application/json
 }
 
 ### Create second EntityList with initial items
-POST {{url}}/entitylists
+POST {{url}}/entity-lists
 Authorization: {{JWT}}
 Accept: application/json
 Content-Type: application/json
@@ -43,21 +43,21 @@ Content-Type: application/json
 ### ==========================================
 
 ### Get all EntityLists owned by current user
-GET {{url}}/entitylists
+GET {{url}}/entity-lists
 Authorization: {{JWT}}
 Accept: application/json
 
 ###
 
 ### Get a random EntityList for current user
-GET {{url}}/entitylists/random
+GET {{url}}/entity-lists/random
 Authorization: {{JWT}}
 Accept: application/json
 
 ###
 
 ### Get specific EntityList by ID
-GET {{url}}/entitylists/1
+GET {{url}}/entity-lists/1
 Authorization: {{JWT}}
 Accept: application/json
 
@@ -68,7 +68,7 @@ Accept: application/json
 ### ==========================================
 
 ### Update EntityList (modifies metadata & replaces items)
-PUT {{url}}/entitylists/1
+PUT {{url}}/entity-lists/1
 Authorization: {{JWT}}
 Accept: application/json
 Content-Type: application/json
@@ -92,6 +92,6 @@ Content-Type: application/json
 ### ==========================================
 
 ### Delete EntityList by ID (also deletes orphaned items)
-DELETE {{url}}/entitylists/1
+DELETE {{url}}/entity-lists/1
 Authorization: {{JWT}}
 Accept: application/json

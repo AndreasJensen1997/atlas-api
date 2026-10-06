@@ -6,6 +6,7 @@ import app.entities.Chapter;
 import app.entities.EntityList;
 import app.entities.EntityListItem;
 import app.entities.User;
+import app.exceptions.ApiException;
 import app.mappers.EntityListMapper;
 
 import java.util.List;
@@ -50,7 +51,7 @@ public class EntityListService {
         }
 
         if (!entityList.getUser().getUserId().equals(userId)) {
-            throw new IllegalArgumentException("You do not have permission to access this list.");
+            throw new ApiException(404, "Chapter not found with ID: " + entityList);
         }
         return entityList;
     }

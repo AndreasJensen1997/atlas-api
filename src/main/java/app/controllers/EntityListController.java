@@ -34,7 +34,9 @@ public class EntityListController extends AbstractController<EntityListRequestDT
 
     @Override
     protected EntityListRequestDTO parseBody(Context ctx) {
-        return ctx.bodyAsClass(EntityListRequestDTO.class);
+        return ctx.bodyValidator(EntityListRequestDTO.class)
+                .check(req -> req.title() != null && !req.title().isBlank(), "Title cannot be blank")
+                .get();
     }
 
 
@@ -81,11 +83,11 @@ public class EntityListController extends AbstractController<EntityListRequestDT
 
     @Override
     public void addEndpoints() {
-        post("/api/entitylists", this::create);
-        get("/api/entitylists/random", this::randomByUserId);
-        get("/api/entitylists/{id}", this::getById);
-        get("/api/entitylists", this::getAllById);
-        put("/api/entitylists/{id}", this::updateById);
-        delete("/api/entitylists/{id}", this::deleteById);
+        post("/api/entity-lists", this::create);
+        get("/api/entity-lists/random", this::randomByUserId);
+        get("/api/entity-lists/{id}", this::getById);
+        get("/api/entity-lists", this::getAllById);
+        put("/api/entity-lists/{id}", this::updateById);
+        delete("/api/entity-lists/{id}", this::deleteById);
     }
 }

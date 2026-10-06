@@ -7,7 +7,6 @@ import app.exceptions.ApiException;
 import app.mappers.*;
 import app.services.*;
 import app.utils.security.SecurityFilter;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.javalin.Javalin;
 import io.javalin.apibuilder.EndpointGroup;
@@ -36,6 +35,8 @@ public class ApplicationConfig implements EndpointGroup {
     MentionController mentionController;
     EntityListController entityListController;
     UserController userController;
+    DevlogController devlogController;
+    NotificationController notificationController;
 
     UserService userService;
 
@@ -127,7 +128,24 @@ public class ApplicationConfig implements EndpointGroup {
         EntityListMapper entityListMapper = new EntityListMapper();
         EntityListService entityListService = new EntityListService(entityListDAO, userService, entityListMapper);
         entityListController = new EntityListController(entityListService, entityListMapper);
+
+        // ===== Devlog =====
+        DevlogDAO devlogDAO = new DevlogDAO(emf);
+        DevlogMapper devlogMapper = new DevlogMapper();
+        DevlogService devlogService = new DevlogService(devlogDAO,userService,devlogMapper);
+        devlogController = new DevlogController(devlogService,devlogMapper);
+
+        // ===== Notification =====
+        NotificationDAO notificationDAO = new NotificationDAO(emf);
+        NotificationMapper notificationMapper = new NotificationMapper();
+        NotificationService notificationService = new NotificationService(notificationDAO,userService,notificationMapper);
+        notificationController = new NotificationController(notificationService,notificationMapper);
+
+
     }
+
+
+
 
 
     @Override
@@ -145,6 +163,8 @@ public class ApplicationConfig implements EndpointGroup {
         mentionController.addEndpoints();
         entityListController.addEndpoints();
         userController.addEndpoints();
+        devlogController.addEndpoints();
+        notificationController.addEndpoints();
     }
 
 

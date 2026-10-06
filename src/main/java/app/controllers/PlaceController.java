@@ -31,7 +31,9 @@ public class PlaceController extends AbstractController<PlaceRequestDTO, PlaceRe
 
     @Override
     protected PlaceRequestDTO parseBody(Context ctx) {
-        return ctx.bodyAsClass(PlaceRequestDTO.class);
+        return ctx.bodyValidator(PlaceRequestDTO.class)
+                .check(req -> req.name() != null && !req.name().isBlank(), "Title cannot be blank")
+                .get();
     }
 
     // ===== Entity Operations =====

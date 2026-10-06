@@ -4,6 +4,7 @@ import app.daos.userOwned.PlaceDAO;
 import app.dtos.place.PlaceRequestDTO;
 import app.entities.Place;
 import app.entities.User;
+import app.exceptions.ApiException;
 import app.mappers.PlaceMapper;
 
 import java.util.List;
@@ -48,7 +49,7 @@ public class PlaceService {
         }
 
         if (!place.getUser().getUserId().equals(userId)) {
-            throw new IllegalArgumentException("You do not have permission to access this place.");
+            throw new ApiException(404, "Chapter not found with ID: " + placeId);
         }
         return place;
     }

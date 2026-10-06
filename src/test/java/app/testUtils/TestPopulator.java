@@ -2,6 +2,7 @@ package app.testUtils;
 
 import app.entities.*;
 import app.enums.Relation;
+import app.enums.Role;
 import app.enums.TargetType;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -50,9 +51,9 @@ public final class TestPopulator {
             em.getTransaction().begin();
 
         // Create baseline users
-        User user1 = User.builder().name("Andreas").email("andreas.jensen@outlook.dk").password("1234").build();
-        User user2 = User.builder().name("morten").email("morten.jensen@outlook.dk").password("1234").build();
-        User user3 = User.builder().name("theis").email("theis.jensen@outlook.dk").password("1234").build();
+        User user1 = User.builder().name("Andreas").email("andreas.jensen@outlook.dk").password("1234").role(Role.USER).build();
+        User user2 = User.builder().name("morten").email("morten.jensen@outlook.dk").password("1234").role(Role.USER).build();
+        User user3 = User.builder().name("theis").email("theis.jensen@outlook.dk").password("1234").role(Role.USER).build();
 
         em.persist(user1);
         em.persist(user2);
@@ -69,8 +70,8 @@ public final class TestPopulator {
 
         // Create and persist Artifact Types first (since Artifacts depend on them)
         ArtifactType musicType = ArtifactType.builder().name("Music").user(user1).build();
-        ArtifactType objectType = ArtifactType.builder().name("Physical Object").user(user1).build();
-        ArtifactType vehicleType = ArtifactType.builder().name("Vehicle").user(user1).build();
+        ArtifactType objectType = ArtifactType.builder().name("Physical Object").user(user2).build();
+        ArtifactType vehicleType = ArtifactType.builder().name("Vehicle").user(user3).build();
 
         em.persist(musicType);
         em.persist(objectType);
@@ -80,11 +81,12 @@ public final class TestPopulator {
         Artifact artifact1 = Artifact.builder().title("I forget where we were").subtitle("ben howard album").content("my favourite album").createdAt(LocalDate.of(2026, 1, 1)).user(user1).artifactType(musicType).build();
         Artifact artifact2 = Artifact.builder().title("Magnus the teddy").subtitle("childhood teddy").content("my favourite teddy as a kid").createdAt(LocalDate.of(2022, 1, 1)).user(user2).artifactType(objectType).build();
         Artifact artifact3 = Artifact.builder().title("Red bike").subtitle("My first bike").content("my mom got me this for my third birthday").createdAt(LocalDate.of(2002, 1, 1)).user(user3).artifactType(vehicleType).build();
-        Artifact artifact4 = Artifact.builder().title("My first car").subtitle("car").content("first car").createdAt(LocalDate.of(2022, 1, 1)).user(user2).artifactType(vehicleType).build();
+        Artifact artifact4 = Artifact.builder().title("My first car").subtitle("car").content("first car").createdAt(LocalDate.of(2022, 1, 1)).user(user2).artifactType(objectType).build();
 
         em.persist(artifact1);
         em.persist(artifact2);
         em.persist(artifact3);
+        em.persist(artifact4);
 
         // FRAGMENTS
         Fragment fragment1 = Fragment.builder().title("idea for wedding speech").subtitle("Daniels wedding").content("talk about vacation in sweden").createdAt(LocalDate.of(2026, 1, 1)).user(user1).build();

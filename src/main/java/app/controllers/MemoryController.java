@@ -1,6 +1,7 @@
 package app.controllers;
 
 import app.controllers.generics.AbstractController;
+import app.dtos.chapter.ChapterRequestDTO;
 import app.dtos.memory.MemoryRequestDTO;
 import app.dtos.memory.MemoryResponseDTO;
 import app.entities.Chapter;
@@ -35,7 +36,10 @@ public class MemoryController extends AbstractController<MemoryRequestDTO, Memor
 
     @Override
     protected MemoryRequestDTO parseBody(Context ctx) {
-        return ctx.bodyAsClass(MemoryRequestDTO.class);
+        return ctx.bodyValidator(MemoryRequestDTO.class)
+                .check(req -> req.title() != null && !req.title().isBlank(), "Title cannot be blank")
+                .check(req -> req.subtitle() != null && !req.subtitle().isBlank(), "Subtitle cannot be blank")
+                .get();
     }
 
 

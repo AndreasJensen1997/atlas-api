@@ -5,7 +5,7 @@ import app.enums.Visibility;
 import java.time.LocalDate;
 
 public record MemoryResponseDTO(
-        Integer chapterId,
+        Integer memoryId,
         String title,
         String subtitle,
         String content,

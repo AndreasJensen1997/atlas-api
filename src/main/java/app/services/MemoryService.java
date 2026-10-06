@@ -5,6 +5,7 @@ import app.dtos.memory.MemoryRequestDTO;
 import app.entities.Chapter;
 import app.entities.Memory;
 import app.entities.User;
+import app.exceptions.ApiException;
 import app.mappers.MemoryMapper;
 
 import java.util.List;
@@ -49,7 +50,7 @@ public class MemoryService {
         }
 
         if (!memory.getUser().getUserId().equals(userId)) {
-            throw new IllegalArgumentException("You do not have permission to access this memory.");
+            throw new ApiException(404, "Chapter not found with ID: " + memoryId);
         }
         return memory;
     }

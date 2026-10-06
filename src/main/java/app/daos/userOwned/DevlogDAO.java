@@ -9,7 +9,7 @@ public class DevlogDAO extends UserOwnedDAO<Devlog, Integer> {
 
     // ===== Constructor =====
 
-    protected DevlogDAO(EntityManagerFactory emf, Class<Devlog> entityClass) {
-        super(emf, entityClass);
+    public DevlogDAO(EntityManagerFactory emf) {
+        super(emf, Devlog.class);
     }
 }

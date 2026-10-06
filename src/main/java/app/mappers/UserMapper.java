@@ -20,7 +20,7 @@ public class UserMapper {
         if (user == null) return null;
 
         return new UserResponseDTO(
-                user.getUserId(),
+                user.getId(),
                 user.getName(),
                 user.getEmail(),
                 user.getRole().toString()

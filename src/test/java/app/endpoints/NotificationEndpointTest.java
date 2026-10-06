@@ -94,7 +94,7 @@ public class NotificationEndpointTest {
                 .post("/notifications")
                 .then()
                 .statusCode(HttpStatus.CREATED.getCode())
-                .body("notificationId", notNullValue())
+                .body("id", notNullValue())
                 .body("title", equalTo("New comment on your post"))
                 .body("notificationType", equalTo("MENTION"))
                 .log().all();
@@ -104,7 +104,7 @@ public class NotificationEndpointTest {
 
     @Test
     void getNotificationById_Success() {
-        int notificationId = seeded.notification1().getNotificationId();
+        int notificationId = seeded.notification1().getId();
 
         given()
                 .header("Authorization", userToken)
@@ -112,7 +112,7 @@ public class NotificationEndpointTest {
                 .get("/notifications/" + notificationId)
                 .then()
                 .statusCode(HttpStatus.OK.getCode())
-                .body("notificationId", equalTo(notificationId))
+                .body("id", equalTo(notificationId))
                 .body("title", equalTo("new friend request"))
                 .body("notificationType", equalTo("FRIEND_REQUEST"));
     }
@@ -138,7 +138,7 @@ public class NotificationEndpointTest {
 
     @Test
     void updateNotification_Success() {
-        int notificationId = seeded.notification1().getNotificationId();
+        int notificationId = seeded.notification1().getId();
 
         NotificationRequestDTO requestDTO = new NotificationRequestDTO(
                 "Updated Notification Title",
@@ -163,7 +163,7 @@ public class NotificationEndpointTest {
 
     @Test
     void deleteNotification_Success() {
-        int notificationId = seeded.notification1().getNotificationId();
+        int notificationId = seeded.notification1().getId();
 
         given()
                 .header("Authorization", userToken)
@@ -265,7 +265,7 @@ public class NotificationEndpointTest {
     @Test
     void getNotificationById_BelongsToAnotherUser() {
         // notification3 belongs to user2, attempting access with user1 token returns 404
-        int notification3Id = seeded.notification3().getNotificationId();
+        int notification3Id = seeded.notification3().getId();
 
         given()
                 .header("Authorization", userToken)
@@ -280,7 +280,7 @@ public class NotificationEndpointTest {
 
     @Test
     void updateNotification_Unauthorized_WithoutToken() {
-        int notificationId = seeded.notification1().getNotificationId();
+        int notificationId = seeded.notification1().getId();
 
         NotificationRequestDTO requestDTO = new NotificationRequestDTO(
                 "Updated Title",

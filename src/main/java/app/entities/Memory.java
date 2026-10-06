@@ -23,7 +23,7 @@ public class Memory implements LinkableEntity {
 
     @Id
     @GeneratedValue
-    Integer memoryId;
+    Integer id;
 
     @Setter
     String title;
@@ -56,7 +56,7 @@ public class Memory implements LinkableEntity {
 
     @Override
     public Integer getId() {
-        return memoryId;
+        return id;
     }
 
     // ===== JPA Lifecycle Callbacks =====
@@ -106,7 +106,7 @@ public class Memory implements LinkableEntity {
         if (thisEffectiveClass != oEffectiveClass)
             return false;
         Memory memory = (Memory) o;
-        return getMemoryId() != null && Objects.equals(getMemoryId(), memory.getMemoryId());
+        return getId() != null && Objects.equals(getId(), memory.getId());
     }
 
     @Override

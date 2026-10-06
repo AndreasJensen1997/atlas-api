@@ -55,7 +55,7 @@ public class GeminiPromptController implements EndpointGroup {
 
             GeminiPrompt saved = geminiPromptService.savePromptText(dto.content(), currentUserId);
 
-            GeminiPromptResponseDTO responseDTO = new GeminiPromptResponseDTO(saved.getGeminiPromptId(), saved.getContent());
+            GeminiPromptResponseDTO responseDTO = new GeminiPromptResponseDTO(saved.getId(), saved.getContent());
 
             ctx.status(201).json(responseDTO);
 

@@ -91,7 +91,7 @@ public class EntityListEndpointTest {
                 .post("/entity-lists")
                 .then()
                 .statusCode(HttpStatus.CREATED.getCode())
-                .body("listId", notNullValue())
+                .body("id", notNullValue())
                 .body("title", equalTo("My Reading List"));
     }
 
@@ -99,7 +99,7 @@ public class EntityListEndpointTest {
 
     @Test
     void getEntityListById_Success() {
-        int listId = seeded.entityList1().getListId();
+        int listId = seeded.entityList1().getId();
 
         given()
                 .header("Authorization", userToken)
@@ -107,7 +107,7 @@ public class EntityListEndpointTest {
                 .get("/entity-lists/" + listId)
                 .then()
                 .statusCode(HttpStatus.OK.getCode())
-                .body("listId", equalTo(listId))
+                .body("id", equalTo(listId))
                 .body("title", equalTo(seeded.entityList1().getTitle()));
     }
 
@@ -131,7 +131,7 @@ public class EntityListEndpointTest {
 
     @Test
     void updateEntityList_Success() {
-        int listId = seeded.entityList1().getListId();
+        int listId = seeded.entityList1().getId();
 
         EntityListRequestDTO requestDTO = new EntityListRequestDTO(
                 "Updated List Title",
@@ -154,7 +154,7 @@ public class EntityListEndpointTest {
 
     @Test
     void deleteEntityList_Success() {
-        int listId = seeded.entityList1().getListId();
+        int listId = seeded.entityList1().getId();
 
         given()
                 .header("Authorization", userToken)
@@ -248,7 +248,7 @@ public class EntityListEndpointTest {
 
     @Test
     void getEntityListById_BelongsToAnotherUser() {
-        int listId = seeded.entityList1().getListId();
+        int listId = seeded.entityList1().getId();
         String wrongToken = "Bearer " + JWTToken.generateToken(seeded.user2().getEmail());
 
         given()
@@ -263,7 +263,7 @@ public class EntityListEndpointTest {
 
     @Test
     void updateEntityList_Unauthorized_WithoutToken() {
-        int listId = seeded.entityList1().getListId();
+        int listId = seeded.entityList1().getId();
 
         EntityListRequestDTO requestDTO = new EntityListRequestDTO(
                 "Updated Title",

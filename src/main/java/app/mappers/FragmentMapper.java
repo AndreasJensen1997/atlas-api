@@ -24,7 +24,7 @@ public class FragmentMapper implements IMapper<FragmentRequestDTO, FragmentRespo
         if (fragment == null) return null;
 
         return new FragmentResponseDTO(
-                fragment.getFragmentId(),
+                fragment.getId(),
                 fragment.getTitle(),
                 fragment.getSubtitle(),
                 fragment.getContent(),

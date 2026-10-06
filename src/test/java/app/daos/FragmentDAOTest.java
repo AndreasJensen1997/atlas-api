@@ -43,9 +43,9 @@ class FragmentDAOTest {
                 .build();
 
         Fragment created = fragmentDAO.create(newFragment);
-        Fragment fetched = fragmentDAO.getById(created.getFragmentId());
+        Fragment fetched = fragmentDAO.getById(created.getId());
 
-        assertThat(created.getFragmentId(), notNullValue());
+        assertThat(created.getId(), notNullValue());
         assertThat(fetched.getTitle(), is("Test note"));
         assertThat(fetched.getSubtitle(), is("Test note subtitle"));
         assertThat(fetched.getContent(), is("one two three four five"));
@@ -57,8 +57,8 @@ class FragmentDAOTest {
     @Test
     void getById() {
         Fragment seed = seeded.fragment1();
-        Fragment fetched = fragmentDAO.getById(seed.getFragmentId());
-        assertThat(fetched.getFragmentId(), is(seed.getFragmentId()));
+        Fragment fetched = fragmentDAO.getById(seed.getId());
+        assertThat(fetched.getId(), is(seed.getId()));
         assertThat(fetched.getTitle(), is(seed.getTitle()));
     }
 
@@ -72,13 +72,13 @@ class FragmentDAOTest {
     @Test
     void getAllChaptersByUserId(){
 
-        List<Fragment> all = fragmentDAO.getAllByUserId(seeded.fragment1().getUser().getUserId());
+        List<Fragment> all = fragmentDAO.getAllByUserId(seeded.fragment1().getUser().getId());
 
         assertThat(all, hasSize(2));
         assertThat(all, containsInAnyOrder(seeded.fragment1(), seeded.fragment2()));
         for (Fragment f : all) {
-            assertThat(f.getUser().getUserId(), is(seeded.fragment1().getUser().getUserId()));
-            System.out.println(f.getUser().getUserId() + "-" +  seeded.fragment1().getUser().getUserId());
+            assertThat(f.getUser().getId(), is(seeded.fragment1().getUser().getId()));
+            System.out.println(f.getUser().getId() + "-" +  seeded.fragment1().getUser().getId());
         }
     }
 
@@ -87,7 +87,7 @@ class FragmentDAOTest {
         Fragment seed = seeded.fragment1();
         String keyword = seed.getTitle().substring(0, 3).toLowerCase();
 
-        List<Fragment> results = fragmentDAO.searchByTitle(keyword,seed.getUser().getUserId());
+        List<Fragment> results = fragmentDAO.searchByTitle(keyword,seed.getUser().getId());
 
         assertThat(results, not(empty()));
         assertThat(results, hasItem(seed));
@@ -101,7 +101,7 @@ class FragmentDAOTest {
         User newUser = seeded.user2();
 
         Fragment updated = Fragment.builder()
-                .fragmentId(seed.getFragmentId())
+                .id(seed.getId())
                 .title("updated title")
                 .subtitle("updated subtitle")
                 .content("updated content")
@@ -112,7 +112,7 @@ class FragmentDAOTest {
 
         Fragment result = fragmentDAO.update(updated);
 
-        assertThat(result.getFragmentId(), is(seed.getFragmentId()));
+        assertThat(result.getId(), is(seed.getId()));
         assertThat(result.getTitle(), is("updated title"));
         assertThat(result.getSubtitle(), is("updated subtitle"));
         assertThat(result.getContent(), is("updated content"));
@@ -125,10 +125,10 @@ class FragmentDAOTest {
     void delete() {
         Fragment seed = seeded.fragment1();
 
-        boolean deleted = fragmentDAO.delete(seed.getFragmentId());
+        boolean deleted = fragmentDAO.delete(seed.getId());
 
         assertThat(deleted, is(true));
-        assertThrows(ApiException.class, () -> fragmentDAO.getById(seed.getFragmentId()));
+        assertThrows(ApiException.class, () -> fragmentDAO.getById(seed.getId()));
     }
 
     @Test
@@ -158,7 +158,7 @@ class FragmentDAOTest {
     @Test
     void update_withMissingId_throwsApiException() {
         Fragment missing = Fragment.builder()
-                .fragmentId(999_999)
+                .id(999_999)
                 .title("Missing")
                 .build();
 

@@ -27,7 +27,7 @@ public class MemoryMapper implements IMapper<MemoryRequestDTO, MemoryResponseDTO
         if (memory == null) return null;
 
         return new MemoryResponseDTO(
-                memory.getMemoryId(),
+                memory.getId(),
                 memory.getTitle(),
                 memory.getSubtitle(),
                 memory.getContent(),

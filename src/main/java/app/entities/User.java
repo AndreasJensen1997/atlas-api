@@ -22,7 +22,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer userId;
+    private Integer id;
 
     @Setter
     private String name;
@@ -133,7 +133,7 @@ public class User {
         if (thisEffectiveClass != oEffectiveClass)
             return false;
         User user = (User) o;
-        return getUserId() != null && Objects.equals(getUserId(), user.getUserId());
+        return getId() != null && Objects.equals(getId(), user.getId());
     }
 
     @Override

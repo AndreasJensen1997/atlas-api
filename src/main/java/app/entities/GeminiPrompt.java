@@ -17,7 +17,7 @@ public class GeminiPrompt {
 
     @Id
     @GeneratedValue
-    private Long geminiPromptId;
+    private Long id;
 
     String content;
 
@@ -44,7 +44,7 @@ public class GeminiPrompt {
         if (thisEffectiveClass != oEffectiveClass)
             return false;
         GeminiPrompt geminiPrompt = (GeminiPrompt) o;
-        return getGeminiPromptId() != null && Objects.equals(getGeminiPromptId(), geminiPrompt.getGeminiPromptId());
+        return getId() != null && Objects.equals(getId(), geminiPrompt.getId());
     }
 
     @Override

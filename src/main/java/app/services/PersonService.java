@@ -31,7 +31,7 @@ public class PersonService {
         User owner = userService.getById(userId);
 
         // UserOwnedDAO's findByTitleAndUserId automatically handles 'name' for Person entities
-        if (personDAO.findByTitleAndUserId(dto.name(), owner.getUserId()) != null) {
+        if (personDAO.findByTitleAndUserId(dto.name(), owner.getId()) != null) {
             throw new IllegalArgumentException("A person with this name already exists.");
         }
 
@@ -48,7 +48,7 @@ public class PersonService {
             throw new IllegalArgumentException("Person not found with ID: " + personId);
         }
 
-        if (!person.getUser().getUserId().equals(userId)) {
+        if (!person.getUser().getId().equals(userId)) {
             throw new ApiException(404, "Chapter not found with ID: " + personId);
         }
         return person;
@@ -65,7 +65,7 @@ public class PersonService {
             throw new IllegalArgumentException("No people were found");
         }
 
-        if (!randomPerson.getUser().getUserId().equals(userId)) {
+        if (!randomPerson.getUser().getId().equals(userId)) {
             throw new IllegalArgumentException("You do not have permission to access this person.");
         }
 
@@ -81,7 +81,7 @@ public class PersonService {
             throw new IllegalArgumentException("Person not found with ID: " + personId);
         }
 
-        if (!person.getUser().getUserId().equals(userId)) {
+        if (!person.getUser().getId().equals(userId)) {
             throw new IllegalArgumentException("You do not have permission to access this person.");
         }
 

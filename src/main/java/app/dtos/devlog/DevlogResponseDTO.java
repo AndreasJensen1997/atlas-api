@@ -3,7 +3,7 @@ package app.dtos.devlog;
 import java.time.LocalDate;
 
 public record DevlogResponseDTO(
-        Integer devlogId,
+        Integer id,
         String title,
         String subtitle,
         String content,

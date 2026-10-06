@@ -15,7 +15,7 @@ public class EntityListItem {
 
     @Id
     @GeneratedValue
-    private Integer itemId;
+    private Integer id;
 
     private String text;
 

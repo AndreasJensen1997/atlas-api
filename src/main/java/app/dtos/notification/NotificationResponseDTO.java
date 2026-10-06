@@ -4,7 +4,7 @@ import app.enums.NotificationType;
 import java.time.LocalDateTime;
 
 public record NotificationResponseDTO(
-        Integer notificationId,
+        Integer id,
         String title,
         NotificationType notificationType,
         Integer targetId,

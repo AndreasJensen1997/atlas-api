@@ -3,7 +3,7 @@ package app.dtos.fragment;
 import java.time.LocalDate;
 
 public record FragmentResponseDTO(
-        Integer fragmentId,
+        Integer id,
         String title,
         String subtitle,
         String content,

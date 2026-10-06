@@ -94,7 +94,7 @@ public class StoryEndpointTest {
                 .post("/stories")
                 .then()
                 .statusCode(HttpStatus.CREATED.getCode())
-                .body("storyId", notNullValue())
+                .body("id", notNullValue())
                 .body("title", equalTo("New Story Title"));
     }
 
@@ -110,7 +110,7 @@ public class StoryEndpointTest {
                 .get("/stories/" + storyId)
                 .then()
                 .statusCode(HttpStatus.OK.getCode())
-                .body("storyId", equalTo(storyId))
+                .body("id", equalTo(storyId))
                 .body("title", equalTo(seeded.story1().getTitle()));
     }
 

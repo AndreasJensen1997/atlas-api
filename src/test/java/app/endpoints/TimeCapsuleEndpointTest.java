@@ -91,7 +91,7 @@ public class TimeCapsuleEndpointTest {
                 .post("/time-capsules")
                 .then()
                 .statusCode(HttpStatus.CREATED.getCode())
-                .body("timeCapsuleId", notNullValue())
+                .body("id", notNullValue())
                 .body("title", equalTo("Message to the Future"));
     }
 
@@ -99,7 +99,7 @@ public class TimeCapsuleEndpointTest {
 
     @Test
     void getTimeCapsuleById_Success() {
-        int timeCapsuleId = seeded.timeCapsule1().getTimeCapsuleId();
+        int timeCapsuleId = seeded.timeCapsule1().getId();
 
         given()
                 .header("Authorization", userToken)
@@ -107,7 +107,7 @@ public class TimeCapsuleEndpointTest {
                 .get("/time-capsules/" + timeCapsuleId)
                 .then()
                 .statusCode(HttpStatus.OK.getCode())
-                .body("timeCapsuleId", equalTo(timeCapsuleId))
+                .body("id", equalTo(timeCapsuleId))
                 .body("title", equalTo(seeded.timeCapsule1().getTitle()));
     }
 
@@ -131,7 +131,7 @@ public class TimeCapsuleEndpointTest {
 
     @Test
     void deleteTimeCapsule_Success() {
-        int timeCapsuleId = seeded.timeCapsule1().getTimeCapsuleId();
+        int timeCapsuleId = seeded.timeCapsule1().getId();
 
         given()
                 .header("Authorization", userToken)
@@ -225,7 +225,7 @@ public class TimeCapsuleEndpointTest {
 
     @Test
     void getTimeCapsuleById_BelongsToAnotherUser() {
-        int timeCapsuleId = seeded.timeCapsule1().getTimeCapsuleId();
+        int timeCapsuleId = seeded.timeCapsule1().getId();
         String wrongToken = "Bearer " + JWTToken.generateToken(seeded.user2().getEmail());
 
         given()
@@ -240,7 +240,7 @@ public class TimeCapsuleEndpointTest {
 
     @Test
     void updateTimeCapsule_Unauthorized_WithoutToken() {
-        int timeCapsuleId = seeded.timeCapsule1().getTimeCapsuleId();
+        int timeCapsuleId = seeded.timeCapsule1().getId();
 
         TimeCapsuleRequestDTO timeCapsuleRequestDTO = new TimeCapsuleRequestDTO(
                 "Updated Title",

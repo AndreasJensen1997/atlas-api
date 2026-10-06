@@ -6,10 +6,8 @@ import app.entities.Chapter;
 import app.entities.User;
 import app.exceptions.ApiException;
 import app.mappers.ChapterMapper;
-import app.mappers.UserMapper;
 
 import java.util.List;
-import java.util.Random;
 
 
 public class ChapterService {
@@ -33,7 +31,7 @@ public class ChapterService {
     public Chapter createChapter(ChapterRequestDTO dto, int userId) {
         User owner = userService.getById(userId);
 
-        if (chapterDAO.findByTitleAndUserId(dto.title(), owner.getUserId()) != null) {
+        if (chapterDAO.findByTitleAndUserId(dto.title(), owner.getId()) != null) {
             throw new IllegalArgumentException("A chapter with this title already exists.");
         }
 
@@ -51,7 +49,7 @@ public class ChapterService {
             throw new IllegalArgumentException("Chapter not found with ID: " + chapterId);
         }
 
-        if (!chapter.getUser().getUserId().equals(userId)) {
+        if (!chapter.getUser().getId().equals(userId)) {
             throw new ApiException(404, "Chapter not found with ID: " + chapterId);
         }
         return chapter;
@@ -70,7 +68,7 @@ public class ChapterService {
             throw new IllegalArgumentException("No chapters were found");
         }
 
-        if (!randomChapter.getUser().getUserId().equals(userId)) {
+        if (!randomChapter.getUser().getId().equals(userId)) {
             throw new IllegalArgumentException("You do not have permission to access this chapter.");
         }
 
@@ -86,7 +84,7 @@ public class ChapterService {
             throw new IllegalArgumentException("Chapter not found with ID: " + chapterId);
         }
 
-        if (!chapter.getUser().getUserId().equals(userId)) {
+        if (!chapter.getUser().getId().equals(userId)) {
             throw new IllegalArgumentException("You do not have permission to access this chapter.");
         }
 

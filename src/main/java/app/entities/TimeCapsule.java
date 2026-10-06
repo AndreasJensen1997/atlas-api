@@ -19,7 +19,7 @@ public class TimeCapsule {
 
     @Id
     @GeneratedValue
-    Integer timeCapsuleId;
+    Integer id;
 
     @Setter
     String title;
@@ -80,7 +80,7 @@ public class TimeCapsule {
         if (thisEffectiveClass != oEffectiveClass)
             return false;
         TimeCapsule timeCapsule = (TimeCapsule) o;
-        return getTimeCapsuleId() != null && Objects.equals(getTimeCapsuleId(), timeCapsule.getTimeCapsuleId());
+        return getId() != null && Objects.equals(getId(), timeCapsule.getId());
     }
 
     @Override

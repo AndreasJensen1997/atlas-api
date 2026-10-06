@@ -20,7 +20,7 @@ public class Mention {
 
     @Id
     @GeneratedValue
-    private Integer mentionId;
+    private Integer id;
 
     // ===== The Owner (Where the highlighted text lives) =====
 
@@ -61,7 +61,7 @@ public class Mention {
         if (thisEffectiveClass != oEffectiveClass)
             return false;
         Mention mention = (Mention) o;
-        return getMentionId() != null && Objects.equals(getMentionId(), mention.getMentionId());
+        return getId() != null && Objects.equals(getId(), mention.getId());
     }
 
     @Override

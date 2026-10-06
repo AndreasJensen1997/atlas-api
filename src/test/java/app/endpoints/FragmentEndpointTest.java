@@ -89,7 +89,7 @@ public class FragmentEndpointTest {
                 .post("/fragments")
                 .then()
                 .statusCode(HttpStatus.CREATED.getCode())
-                .body("fragmentId", notNullValue())
+                .body("id", notNullValue())
                 .body("title", equalTo("New Fragment Title"));
     }
 
@@ -105,7 +105,7 @@ public class FragmentEndpointTest {
                 .get("/fragments/" + fragmentId)
                 .then()
                 .statusCode(HttpStatus.OK.getCode())
-                .body("fragmentId", equalTo(fragmentId))
+                .body("id", equalTo(fragmentId))
                 .body("title", equalTo(seeded.fragment1().getTitle()));
     }
 

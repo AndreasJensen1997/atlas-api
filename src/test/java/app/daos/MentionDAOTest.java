@@ -41,9 +41,9 @@ class MentionDAOTest {
                 .build();
 
         Mention created = mentionDAO.create(newMention);
-        Mention fetched = mentionDAO.getById(created.getMentionId());
+        Mention fetched = mentionDAO.getById(created.getId());
 
-        assertThat(created.getMentionId(), notNullValue());
+        assertThat(created.getId(), notNullValue());
         assertThat(fetched.getTargetType(), is(TargetType.PERSON));
         assertThat(fetched.getTargetId(), is(1));
         assertThat(fetched.getOwnerType(), is(TargetType.MEMORY));
@@ -53,8 +53,8 @@ class MentionDAOTest {
     @Test
     void getById() {
         Mention seed = seeded.mention1();
-        Mention fetched = mentionDAO.getById(seed.getMentionId());
-        assertThat(fetched.getMentionId(), is(seed.getMentionId()));
+        Mention fetched = mentionDAO.getById(seed.getId());
+        assertThat(fetched.getId(), is(seed.getId()));
         assertThat(fetched.getTargetType(), is(seed.getTargetType()));
     }
 
@@ -94,7 +94,7 @@ class MentionDAOTest {
         Mention seed = seeded.mention1();
 
         Mention updated = Mention.builder()
-                .mentionId(seed.getMentionId())
+                .id(seed.getId())
                 .targetType(TargetType.PLACE)
                 .targetId(99)
                 .ownerType(TargetType.STORY)
@@ -103,7 +103,7 @@ class MentionDAOTest {
 
         Mention result = mentionDAO.update(updated);
 
-        assertThat(result.getMentionId(), is(seed.getMentionId()));
+        assertThat(result.getId(), is(seed.getId()));
         assertThat(result.getTargetType(), is(TargetType.PLACE));
         assertThat(result.getTargetId(), is(99));
         assertThat(result.getOwnerType(), is(TargetType.STORY));
@@ -114,10 +114,10 @@ class MentionDAOTest {
     void delete() {
         Mention seed = seeded.mention1();
 
-        boolean deleted = mentionDAO.delete(seed.getMentionId());
+        boolean deleted = mentionDAO.delete(seed.getId());
 
         assertThat(deleted, is(true));
-        assertThrows(ApiException.class, () -> mentionDAO.getById(seed.getMentionId()));
+        assertThrows(ApiException.class, () -> mentionDAO.getById(seed.getId()));
     }
 
     @Test
@@ -147,7 +147,7 @@ class MentionDAOTest {
     @Test
     void update_withMissingId_throwsApiException() {
         Mention missing = Mention.builder()
-                .mentionId(999_999)
+                .id(999_999)
                 .targetId(1)
                 .build();
 

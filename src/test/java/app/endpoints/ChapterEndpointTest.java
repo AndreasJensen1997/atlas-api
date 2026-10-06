@@ -97,7 +97,7 @@ public class ChapterEndpointTest {
                 .post("/chapters")
                 .then()
                 .statusCode(HttpStatus.CREATED.getCode())
-                .body("chapterId", notNullValue())
+                .body("id", notNullValue())
                 .body("title", equalTo("New Chapter"))
                 .log().all();
     }
@@ -114,7 +114,7 @@ public class ChapterEndpointTest {
                 .get("/chapters/" + chapterId)
                 .then()
                 .statusCode(HttpStatus.OK.getCode())
-                .body("chapterId", equalTo(chapterId))
+                .body("id", equalTo(chapterId))
                 .body("title", equalTo(seeded.chapter1().getTitle()));
     }
 

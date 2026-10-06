@@ -27,7 +27,7 @@ public class ArtifactMapper implements IMapper<ArtifactRequestDTO, ArtifactRespo
         if (artifact == null) return null;
 
         return new ArtifactResponseDTO(
-                artifact.getArtifactId(),
+                artifact.getId(),
                 artifact.getTitle(),
                 artifact.getSubtitle(),
                 artifact.getContent(),

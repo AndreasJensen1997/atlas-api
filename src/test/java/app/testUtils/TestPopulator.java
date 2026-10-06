@@ -153,9 +153,9 @@ public final class TestPopulator {
             em.persist(timeCapsule2);
             em.persist(timeCapsule3);
 
-            Mention mention1 = Mention.builder().targetType(TargetType.PERSON).targetId(person1.getPersonId()).ownerType(TargetType.MEMORY).ownerId(memory1.getMemoryId()).build();
-            Mention mention2 = Mention.builder().targetType(TargetType.PLACE).targetId(place1.getPlaceId()).ownerType(TargetType.STORY).ownerId(story1.getStoryId()).build();
-            Mention mention3 = Mention.builder().targetType(TargetType.PERSON).targetId(person2.getPersonId()).ownerType(TargetType.CHAPTER).ownerId(chapter1.getChapterId()).build();
+            Mention mention1 = Mention.builder().targetType(TargetType.PERSON).targetId(person1.getId()).ownerType(TargetType.MEMORY).ownerId(memory1.getId()).build();
+            Mention mention2 = Mention.builder().targetType(TargetType.PLACE).targetId(place1.getId()).ownerType(TargetType.STORY).ownerId(story1.getId()).build();
+            Mention mention3 = Mention.builder().targetType(TargetType.PERSON).targetId(person2.getId()).ownerType(TargetType.CHAPTER).ownerId(chapter1.getId()).build();
 
             em.persist(mention1);
             em.persist(mention2);

@@ -85,13 +85,13 @@ public class UserEndpointTest {
                 .get("/users/current")
                 .then()
                 .statusCode(HttpStatus.OK.getCode())
-                .body("userId", equalTo(seeded.user1().getUserId()))
+                .body("id", equalTo(seeded.user1().getId()))
                 .body("email", equalTo(seeded.user1().getEmail()));
     }
 
     @Test
     void getUserById_Success() {
-        int userId = seeded.user1().getUserId();
+        int userId = seeded.user1().getId();
 
         given()
                 .header("Authorization", userToken)
@@ -99,7 +99,7 @@ public class UserEndpointTest {
                 .get("/users/" + userId)
                 .then()
                 .statusCode(HttpStatus.OK.getCode())
-                .body("userId", equalTo(userId))
+                .body("id", equalTo(userId))
                 .body("email", equalTo(seeded.user1().getEmail()));
     }
 
@@ -122,7 +122,7 @@ public class UserEndpointTest {
 
     @Test
     void updateUser_Success() {
-        int userId = seeded.user1().getUserId();
+        int userId = seeded.user1().getId();
 
         UserUpdateDTO updateDTO = new UserUpdateDTO(
                 "Updated Name",
@@ -137,7 +137,7 @@ public class UserEndpointTest {
                 .put("/users/" + userId)
                 .then()
                 .statusCode(HttpStatus.OK.getCode())
-                .body("userId", equalTo(userId))
+                .body("id", equalTo(userId))
                 .body("name", equalTo("Updated Name"))
                 .body("email", equalTo("updated.email@test.com"));
     }
@@ -146,7 +146,7 @@ public class UserEndpointTest {
 
     @Test
     void deleteUser_Success() {
-        int userId = seeded.user1().getUserId();
+        int userId = seeded.user1().getId();
 
         given()
                 .header("Authorization", userToken)
@@ -212,7 +212,7 @@ public class UserEndpointTest {
 
     @Test
     void updateUser_Unauthorized_WithoutToken() {
-        int userId = seeded.user1().getUserId();
+        int userId = seeded.user1().getId();
 
         UserUpdateDTO updateDTO = new UserUpdateDTO(
                 "Updated Name",
@@ -230,7 +230,7 @@ public class UserEndpointTest {
 
     @Test
     void updateUser_BelongsToAnotherUser() {
-        int targetUserId = seeded.user1().getUserId();
+        int targetUserId = seeded.user1().getId();
         // user2 attempting to update user1's account
         String wrongUserToken = "Bearer " + JWTToken.generateToken(seeded.user2().getEmail());
 
@@ -279,7 +279,7 @@ public class UserEndpointTest {
 
     @Test
     void deleteUser_BelongsToAnotherUser() {
-        int targetUserId = seeded.user1().getUserId();
+        int targetUserId = seeded.user1().getId();
         // user2 attempting to delete user1's account
         String wrongUserToken = "Bearer " + JWTToken.generateToken(seeded.user2().getEmail());
 

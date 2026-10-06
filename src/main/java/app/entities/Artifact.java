@@ -22,7 +22,7 @@ public class Artifact implements LinkableEntity {
 
     @Id
     @GeneratedValue
-    private Integer artifactId;
+    private Integer id;
 
     @Setter
     private String title;
@@ -58,7 +58,7 @@ public class Artifact implements LinkableEntity {
 
     @Override
     public Integer getId() {
-        return artifactId;
+        return id;
     }
 
     // ===== JPA Lifecycle Callbacks =====
@@ -107,7 +107,7 @@ public class Artifact implements LinkableEntity {
         if (thisEffectiveClass != oEffectiveClass)
             return false;
         Artifact artifact = (Artifact) o;
-        return getArtifactId() != null && Objects.equals(getArtifactId(), artifact.getArtifactId());
+        return getId() != null && Objects.equals(getId(), artifact.getId());
     }
 
     @Override

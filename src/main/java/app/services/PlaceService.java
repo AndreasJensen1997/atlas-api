@@ -31,7 +31,7 @@ public class PlaceService {
         User owner = userService.getById(userId);
 
         // UserOwnedDAO's findByTitleAndUserId handles 'name' automatically for Place entities
-        if (placeDAO.findByTitleAndUserId(dto.name(), owner.getUserId()) != null) {
+        if (placeDAO.findByTitleAndUserId(dto.name(), owner.getId()) != null) {
             throw new IllegalArgumentException("A place with this name already exists.");
         }
 
@@ -48,7 +48,7 @@ public class PlaceService {
             throw new IllegalArgumentException("Place not found with ID: " + placeId);
         }
 
-        if (!place.getUser().getUserId().equals(userId)) {
+        if (!place.getUser().getId().equals(userId)) {
             throw new ApiException(404, "Chapter not found with ID: " + placeId);
         }
         return place;
@@ -65,7 +65,7 @@ public class PlaceService {
             throw new IllegalArgumentException("No places were found");
         }
 
-        if (!randomPlace.getUser().getUserId().equals(userId)) {
+        if (!randomPlace.getUser().getId().equals(userId)) {
             throw new IllegalArgumentException("You do not have permission to access this place.");
         }
 
@@ -81,7 +81,7 @@ public class PlaceService {
             throw new IllegalArgumentException("Place not found with ID: " + placeId);
         }
 
-        if (!place.getUser().getUserId().equals(userId)) {
+        if (!place.getUser().getId().equals(userId)) {
             throw new IllegalArgumentException("You do not have permission to access this place.");
         }
 

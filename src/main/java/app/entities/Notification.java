@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -21,7 +20,7 @@ public class Notification {
 
     @Id
     @GeneratedValue
-    Integer notificationId;
+    Integer id;
 
     @Setter
     String title;
@@ -82,7 +81,7 @@ public class Notification {
         if (thisEffectiveClass != oEffectiveClass)
             return false;
         Notification notification = (Notification) o;
-        return getNotificationId() != null && Objects.equals(getNotificationId(), notification.getNotificationId());
+        return getId() != null && Objects.equals(getId(), notification.getId());
     }
 
     @Override

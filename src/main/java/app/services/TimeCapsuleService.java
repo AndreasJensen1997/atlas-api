@@ -30,7 +30,7 @@ public class TimeCapsuleService {
     public TimeCapsule createTimeCapsule(TimeCapsuleRequestDTO dto, int userId) {
         User owner = userService.getById(userId);
 
-        if (timeCapsuleDAO.findByTitleAndUserId(dto.title(), owner.getUserId()) != null) {
+        if (timeCapsuleDAO.findByTitleAndUserId(dto.title(), owner.getId()) != null) {
             throw new IllegalArgumentException("A time capsule with this title already exists.");
         }
 
@@ -47,7 +47,7 @@ public class TimeCapsuleService {
             throw new IllegalArgumentException("Time capsule not found with ID: " + timeCapsuleId);
         }
 
-        if (!timeCapsule.getUser().getUserId().equals(userId)) {
+        if (!timeCapsule.getUser().getId().equals(userId)) {
             throw new ApiException(404, "Chapter not found with ID: " + timeCapsuleId);
         }
         return timeCapsule;
@@ -61,6 +61,6 @@ public class TimeCapsuleService {
 
     public void delete(Integer timeCapsuleId, int userId) {
         TimeCapsule timeCapsule = getById(timeCapsuleId, userId);
-        timeCapsuleDAO.delete(timeCapsule.getTimeCapsuleId());
+        timeCapsuleDAO.delete(timeCapsule.getId());
     }
 }

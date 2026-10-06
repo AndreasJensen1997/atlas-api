@@ -22,7 +22,7 @@ public class ArtifactType {
 
     @Id
     @GeneratedValue
-    private Integer artifactTypeId;
+    private Integer id;
 
     @Column(nullable = false, unique = true)
     private String name; // e.g., "Song", "Movie", "Physical Object"
@@ -54,7 +54,7 @@ public class ArtifactType {
         if (thisEffectiveClass != oEffectiveClass)
             return false;
         ArtifactType artifactType = (ArtifactType) o;
-        return getArtifactTypeId() != null && Objects.equals(getArtifactTypeId(), artifactType.getArtifactTypeId());
+        return getId() != null && Objects.equals(getId(), artifactType.getId());
     }
 
     @Override

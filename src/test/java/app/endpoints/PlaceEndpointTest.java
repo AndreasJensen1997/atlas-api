@@ -95,7 +95,7 @@ public class PlaceEndpointTest {
                 .post("/places")
                 .then()
                 .statusCode(HttpStatus.CREATED.getCode())
-                .body("placeId", notNullValue())
+                .body("id", notNullValue())
                 .body("name", equalTo("Central Park"));
     }
 
@@ -111,7 +111,7 @@ public class PlaceEndpointTest {
                 .get("/places/" + placeId)
                 .then()
                 .statusCode(HttpStatus.OK.getCode())
-                .body("placeId", equalTo(placeId))
+                .body("id", equalTo(placeId))
                 .body("name", equalTo(seeded.place1().getName()));
     }
 

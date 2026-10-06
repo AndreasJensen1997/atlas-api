@@ -25,7 +25,7 @@ public class TimeCapsuleMapper implements IMapper<TimeCapsuleRequestDTO, TimeCap
         if (timeCapsule == null) return null;
 
         return new TimeCapsuleResponseDTO(
-                timeCapsule.getTimeCapsuleId(),
+                timeCapsule.getId(),
                 timeCapsule.getTitle(),
                 timeCapsule.getSubtitle(),
                 timeCapsule.getContent(),

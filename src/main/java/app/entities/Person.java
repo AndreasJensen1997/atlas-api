@@ -22,7 +22,7 @@ public class Person implements LinkableEntity {
 
     @Id
     @GeneratedValue
-    Integer personId;
+    Integer id;
 
     @Setter
     String name;
@@ -54,7 +54,7 @@ public class Person implements LinkableEntity {
 
     @Override
     public Integer getId() {
-        return personId;
+        return id;
     }
 
 
@@ -104,7 +104,7 @@ public class Person implements LinkableEntity {
         if (thisEffectiveClass != oEffectiveClass)
             return false;
         Person person = (Person) o;
-        return getPersonId() != null && Objects.equals(getPersonId(), person.getPersonId());
+        return getId() != null && Objects.equals(getId(), person.getId());
     }
 
     @Override

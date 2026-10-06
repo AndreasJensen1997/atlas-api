@@ -22,7 +22,7 @@ public class EntityList {
 
     @Id
     @GeneratedValue
-    private Integer listId;
+    private Integer id;
 
     @Setter
     private String title;
@@ -115,7 +115,7 @@ public class EntityList {
         if (thisEffectiveClass != oEffectiveClass)
             return false;
         EntityList entityList = (EntityList) o;
-        return getListId() != null && Objects.equals(getListId(), entityList.getListId());
+        return getId() != null && Objects.equals(getId(), entityList.getId());
     }
 
     @Override

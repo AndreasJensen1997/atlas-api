@@ -29,7 +29,7 @@ public class NotificationMapper implements IMapper<NotificationRequestDTO, Notif
         if (notification == null) return null;
 
         return new NotificationResponseDTO(
-                notification.getNotificationId(),
+                notification.getId(),
                 notification.getTitle(),
                 notification.getNotificationType(),
                 notification.getTargetId(),

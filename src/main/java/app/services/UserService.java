@@ -95,7 +95,7 @@ public class UserService {
             throw new IllegalArgumentException("No user was found attached to this email");
         }
 
-        System.out.println("user successfully found :" + user.getName() + ": " + user.getUserId());
+        System.out.println("user successfully found :" + user.getName() + ": " + user.getId());
 
         return user;
     }
@@ -123,6 +123,6 @@ public class UserService {
 
     public void delete(Integer id) {
         User user = getById(id);
-        userDao.delete(user.getUserId());
+        userDao.delete(user.getId());
     }
 }

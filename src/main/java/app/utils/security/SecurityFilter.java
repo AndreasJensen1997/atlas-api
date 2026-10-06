@@ -33,8 +33,8 @@ public class SecurityFilter {
                 throw new ApiException(401, "User belonging to token no longer exists");
             }
 
-            ctx.attribute("userId", user.getUserId());
-            System.out.println("--> [AUTH DEBUG] SUCCESS! Set userId attribute to: " + user.getUserId());
+            ctx.attribute("userId", user.getId());
+            System.out.println("--> [AUTH DEBUG] SUCCESS! Set userId attribute to: " + user.getId());
 
         } catch (Exception e) {
             System.out.println("--> [AUTH DEBUG] Failed token verification: " + e.getMessage());

@@ -20,7 +20,7 @@ public class MentionMapper {
 
     public MentionResponseDTO toResponse(Mention entity) {
         return new MentionResponseDTO(
-                entity.getMentionId(),
+                entity.getId(),
                 entity.getOwnerId(),
                 entity.getOwnerType(),
                 entity.getStartIndex(),

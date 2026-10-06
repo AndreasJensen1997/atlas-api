@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public record EntityListResponseDTO(
-        Integer listId,
+        Integer id,
         String title,
         String subtitle,
         LocalDate createdAt,

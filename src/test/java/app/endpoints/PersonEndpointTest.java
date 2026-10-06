@@ -92,7 +92,7 @@ public class PersonEndpointTest {
                 .post("/persons")
                 .then()
                 .statusCode(HttpStatus.CREATED.getCode())
-                .body("personId", notNullValue())
+                .body("id", notNullValue())
                 .body("name", equalTo("Jane Doe"));
     }
 
@@ -108,7 +108,7 @@ public class PersonEndpointTest {
                 .get("/persons/" + personId)
                 .then()
                 .statusCode(HttpStatus.OK.getCode())
-                .body("personId", equalTo(personId))
+                .body("id", equalTo(personId))
                 .body("name", equalTo(seeded.person1().getName()));
     }
 

@@ -25,7 +25,7 @@ public class DevlogMapper implements IMapper<DevlogRequestDTO, DevlogResponseDTO
         if (devlog == null) return null;
 
         return new DevlogResponseDTO(
-                devlog.getDevlogId(),
+                devlog.getId(),
                 devlog.getTitle(),
                 devlog.getSubtitle(),
                 devlog.getContent(),

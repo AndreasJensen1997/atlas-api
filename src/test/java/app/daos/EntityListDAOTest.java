@@ -44,9 +44,9 @@ class EntityListDAOTest {
 
         EntityList created = entityListDAO.create(newEntityList);
 
-        EntityList fetched = entityListDAO.getById(created.getListId());
+        EntityList fetched = entityListDAO.getById(created.getId());
 
-        assertThat(created.getListId(), notNullValue());
+        assertThat(created.getId(), notNullValue());
         assertThat(fetched.getTitle(), is("Test entityList"));
         assertThat(fetched.getSubtitle(), is("Test entityList subtitle"));
         assertThat(fetched.getVisibility(), is(Visibility.PRIVATE));
@@ -58,8 +58,8 @@ class EntityListDAOTest {
     @Test
     void getById() {
         EntityList seed = seeded.entityList1();
-        EntityList fetched = entityListDAO.getById(seed.getListId());
-        assertThat(fetched.getListId(), is(seed.getListId()));
+        EntityList fetched = entityListDAO.getById(seed.getId());
+        assertThat(fetched.getId(), is(seed.getId()));
         assertThat(fetched.getTitle(), is(seed.getTitle()));
     }
 
@@ -73,12 +73,12 @@ class EntityListDAOTest {
     @Test
     void getAllChaptersByUserId(){
 
-        List<EntityList> all = entityListDAO.getAllByUserId(seeded.entityList1().getUser().getUserId());
+        List<EntityList> all = entityListDAO.getAllByUserId(seeded.entityList1().getUser().getId());
 
         assertThat(all, hasSize(1));
         assertThat(all, containsInAnyOrder(seeded.entityList1()));
         for (EntityList e : all) {
-            assertThat(e.getUser().getUserId(), is(seeded.entityList1().getUser().getUserId()));
+            assertThat(e.getUser().getId(), is(seeded.entityList1().getUser().getId()));
         }
     }
 
@@ -88,7 +88,7 @@ class EntityListDAOTest {
         EntityList seed = seeded.entityList1();
         String keyword = seed.getTitle().substring(0, 3).toLowerCase();
 
-        List<EntityList> results = entityListDAO.searchByTitle(keyword,seed.getUser().getUserId());
+        List<EntityList> results = entityListDAO.searchByTitle(keyword,seed.getUser().getId());
 
         assertThat(results, not(empty()));
         assertThat(results, hasItem(seed));
@@ -100,7 +100,7 @@ class EntityListDAOTest {
         User newUser = seeded.user2();
 
         EntityList updated = EntityList.builder()
-                .listId(seed.getListId())
+                .id(seed.getId())
                 .title("updated title")
                 .subtitle("updated subtitle")
                 .user(newUser)
@@ -108,7 +108,7 @@ class EntityListDAOTest {
 
         EntityList result = entityListDAO.update(updated);
 
-        assertThat(result.getListId(), is(seed.getListId()));
+        assertThat(result.getId(), is(seed.getId()));
         assertThat(result.getTitle(), is("updated title"));
         assertThat(result.getSubtitle(), is("updated subtitle"));
         assertThat(result.getUpdatedAt(), is(LocalDate.now()));
@@ -119,10 +119,10 @@ class EntityListDAOTest {
     void delete() {
         EntityList seed = seeded.entityList1();
 
-        boolean deleted = entityListDAO.delete(seed.getListId());
+        boolean deleted = entityListDAO.delete(seed.getId());
 
         assertThat(deleted, is(true));
-        assertThrows(ApiException.class, () -> entityListDAO.getById(seed.getListId()));
+        assertThrows(ApiException.class, () -> entityListDAO.getById(seed.getId()));
     }
 
     @Test
@@ -181,7 +181,7 @@ class EntityListDAOTest {
     @Test
     void update_withMissingId_throwsApiException() {
         EntityList missing = EntityList.builder()
-                .listId(999_999)
+                .id(999_999)
                 .title("Missing")
                 .build();
 

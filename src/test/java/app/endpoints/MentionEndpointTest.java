@@ -74,12 +74,12 @@ public class MentionEndpointTest {
     @Test
     void createMention_Success() {
         MentionRequestDTO requestDTO = new MentionRequestDTO(
-                seeded.memory1().getMemoryId(),
+                seeded.memory1().getId(),
                 TargetType.MEMORY,
                 0,
                 15,
                 "wedding night",
-                seeded.person1().getPersonId(),
+                seeded.person1().getId(),
                 TargetType.PERSON
         );
 
@@ -91,10 +91,10 @@ public class MentionEndpointTest {
                 .post("/mentions")
                 .then()
                 .statusCode(HttpStatus.CREATED.getCode())
-                .body("mentionId", notNullValue())
-                .body("ownerId", equalTo(seeded.memory1().getMemoryId()))
+                .body("id", notNullValue())
+                .body("ownerId", equalTo(seeded.memory1().getId()))
                 .body("ownerType", equalTo("MEMORY"))
-                .body("targetId", equalTo(seeded.person1().getPersonId()))
+                .body("targetId", equalTo(seeded.person1().getId()))
                 .body("targetType", equalTo("PERSON"))
                 .body("selectedText", equalTo("wedding night"));
     }
@@ -107,11 +107,11 @@ public class MentionEndpointTest {
         given()
                 .header("Authorization", userToken)
                 .when()
-                .get("/mentions/owner/MEMORY/" + seeded.memory1().getMemoryId())
+                .get("/mentions/owner/MEMORY/" + seeded.memory1().getId())
                 .then()
                 .statusCode(HttpStatus.OK.getCode())
                 .body("size()", greaterThanOrEqualTo(1))
-                .body("[0].ownerId", equalTo(seeded.memory1().getMemoryId()))
+                .body("[0].ownerId", equalTo(seeded.memory1().getId()))
                 .body("[0].ownerType", equalTo("MEMORY"));
     }
 
@@ -121,11 +121,11 @@ public class MentionEndpointTest {
         given()
                 .header("Authorization", userToken)
                 .when()
-                .get("/mentions/target/PERSON/" + seeded.person1().getPersonId())
+                .get("/mentions/target/PERSON/" + seeded.person1().getId())
                 .then()
                 .statusCode(HttpStatus.OK.getCode())
                 .body("size()", greaterThanOrEqualTo(1))
-                .body("[0].targetId", equalTo(seeded.person1().getPersonId()))
+                .body("[0].targetId", equalTo(seeded.person1().getId()))
                 .body("[0].targetType", equalTo("PERSON"));
     }
 
@@ -133,7 +133,7 @@ public class MentionEndpointTest {
 
     @Test
     void deleteMention_Success() {
-        int mentionId = seeded.mention1().getMentionId();
+        int mentionId = seeded.mention1().getId();
 
         given()
                 .header("Authorization", userToken)
@@ -152,12 +152,12 @@ public class MentionEndpointTest {
     @Test
     void createMention_Unauthorized_WithoutToken() {
         MentionRequestDTO requestDTO = new MentionRequestDTO(
-                seeded.memory1().getMemoryId(),
+                seeded.memory1().getId(),
                 TargetType.MEMORY,
                 0,
                 5,
                 "test",
-                seeded.person1().getPersonId(),
+                seeded.person1().getId(),
                 TargetType.PERSON
         );
 
@@ -176,7 +176,7 @@ public class MentionEndpointTest {
     void getOutgoingMentions_Unauthorized_WithoutToken() {
         given()
                 .when()
-                .get("/mentions/owner/MEMORY/" + seeded.memory1().getMemoryId())
+                .get("/mentions/owner/MEMORY/" + seeded.memory1().getId())
                 .then()
                 .statusCode(HttpStatus.UNAUTHORIZED.getCode());
     }
@@ -195,7 +195,7 @@ public class MentionEndpointTest {
     void getIncomingMentions_Unauthorized_WithoutToken() {
         given()
                 .when()
-                .get("/mentions/target/PERSON/" + seeded.person1().getPersonId())
+                .get("/mentions/target/PERSON/" + seeded.person1().getId())
                 .then()
                 .statusCode(HttpStatus.UNAUTHORIZED.getCode());
     }

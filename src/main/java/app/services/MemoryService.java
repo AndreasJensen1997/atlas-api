@@ -2,7 +2,6 @@ package app.services;
 
 import app.daos.userOwned.MemoryDAO;
 import app.dtos.memory.MemoryRequestDTO;
-import app.entities.Chapter;
 import app.entities.Memory;
 import app.entities.User;
 import app.exceptions.ApiException;
@@ -31,7 +30,7 @@ public class MemoryService {
     public Memory createMemory(MemoryRequestDTO dto, int userId) {
         User owner = userService.getById(userId);
 
-        if (memoryDAO.findByTitleAndUserId(dto.title(), owner.getUserId()) != null) {
+        if (memoryDAO.findByTitleAndUserId(dto.title(), owner.getId()) != null) {
             throw new IllegalArgumentException("A memory with this title already exists.");
         }
 
@@ -49,7 +48,7 @@ public class MemoryService {
             throw new IllegalArgumentException("Memory not found with ID: " + memoryId);
         }
 
-        if (!memory.getUser().getUserId().equals(userId)) {
+        if (!memory.getUser().getId().equals(userId)) {
             throw new ApiException(404, "Chapter not found with ID: " + memoryId);
         }
         return memory;
@@ -67,7 +66,7 @@ public class MemoryService {
             throw new IllegalArgumentException("No memories were found");
         }
 
-        if (!randomMemory.getUser().getUserId().equals(userId)) {
+        if (!randomMemory.getUser().getId().equals(userId)) {
             throw new IllegalArgumentException("You do not have permission to access this memory.");
         }
 

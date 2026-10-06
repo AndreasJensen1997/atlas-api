@@ -4,7 +4,7 @@ import app.enums.Visibility;
 import java.time.LocalDate;
 
 public record ChapterResponseDTO(
-        Integer chapterId,
+        Integer id,
         String title,
         String subtitle,
         String content,

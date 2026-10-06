@@ -92,7 +92,7 @@ public class DevlogEndpointTest {
                 .post("/devlogs")
                 .then()
                 .statusCode(HttpStatus.CREATED.getCode())
-                .body("devlogId", notNullValue())
+                .body("id", notNullValue())
                 .body("title", equalTo("New Devlog Title"))
                 .log().all();
     }
@@ -101,7 +101,7 @@ public class DevlogEndpointTest {
 
     @Test
     void getDevlogById_Success() {
-        int devlogId = seeded.devlog1().getDevlogId();
+        int devlogId = seeded.devlog1().getId();
 
         given()
                 .header("Authorization", userToken)
@@ -109,7 +109,7 @@ public class DevlogEndpointTest {
                 .get("/devlogs/" + devlogId)
                 .then()
                 .statusCode(HttpStatus.OK.getCode())
-                .body("devlogId", equalTo(devlogId))
+                .body("id", equalTo(devlogId))
                 .body("title", equalTo(seeded.devlog1().getTitle()));
     }
 
@@ -133,7 +133,7 @@ public class DevlogEndpointTest {
 
     @Test
     void updateDevlog_Success() {
-        int devlogId = seeded.devlog1().getDevlogId();
+        int devlogId = seeded.devlog1().getId();
 
         DevlogRequestDTO devlogRequestDTO = new DevlogRequestDTO(
                 "Updated Devlog Title",
@@ -157,7 +157,7 @@ public class DevlogEndpointTest {
 
     @Test
     void deleteDevlog_Success() {
-        int devlogId = seeded.devlog1().getDevlogId();
+        int devlogId = seeded.devlog1().getId();
 
         given()
                 .header("Authorization", userToken)
@@ -256,7 +256,7 @@ public class DevlogEndpointTest {
 
     @Test
     void getDevlogById_BelongsToAnotherUser() {
-        int devlogId = seeded.devlog1().getDevlogId();
+        int devlogId = seeded.devlog1().getId();
         String wrongToken = "Bearer " + JWTToken.generateToken(seeded.user2().getEmail());
 
         given()
@@ -272,7 +272,7 @@ public class DevlogEndpointTest {
 
     @Test
     void updateDevlog_Unauthorized_WithoutToken() {
-        int devlogId = seeded.devlog1().getDevlogId();
+        int devlogId = seeded.devlog1().getId();
 
         DevlogRequestDTO devlogRequestDTO = new DevlogRequestDTO(
                 "Test Title",

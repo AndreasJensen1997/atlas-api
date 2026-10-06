@@ -21,7 +21,7 @@ public class UserOwnedDAO<T, I> extends GenericDAO<T, I> {
 
     public List<T> getAllByUserId(I userId) {
         try (EntityManager em = emf.createEntityManager()) {
-            String jpql = "SELECT e FROM " + entityClass.getSimpleName() + " e WHERE e.user.userId = :userId";
+            String jpql = "SELECT e FROM " + entityClass.getSimpleName() + " e WHERE e.user.id = :userId";
             TypedQuery<T> query = em.createQuery(jpql, entityClass);
             query.setParameter("userId", userId);
             return query.getResultList();
@@ -35,7 +35,7 @@ public class UserOwnedDAO<T, I> extends GenericDAO<T, I> {
             if (className.equals("Person") || className.equals("Place") || className.equals("ArtifactType")) {
                 fieldName = "name";
             }
-            String jpql = "SELECT e FROM " + className + " e WHERE LOWER(e." + fieldName + ") LIKE LOWER(:keyword) AND e.user.userId = :userId";
+            String jpql = "SELECT e FROM " + className + " e WHERE LOWER(e." + fieldName + ") LIKE LOWER(:keyword) AND e.user.id = :userId";
 
             TypedQuery<T> query = em.createQuery(jpql, entityClass);
             query.setParameter("keyword", "%" + keyword + "%");
@@ -56,7 +56,7 @@ public class UserOwnedDAO<T, I> extends GenericDAO<T, I> {
                 fieldName = "name";
             }
 
-            String jpql = "SELECT e FROM " + className + " e WHERE e." + fieldName + " = :title AND e.user.userId = :userId";
+            String jpql = "SELECT e FROM " + className + " e WHERE e." + fieldName + " = :title AND e.user.id = :userId";
 
             TypedQuery<T> query = em.createQuery(jpql, entityClass);
             query.setParameter("title", title);

@@ -3,7 +3,7 @@ package app.dtos.timeCapsule;
 import java.time.LocalDate;
 
 public record TimeCapsuleResponseDTO(
-        Integer timeCapsuleId,
+        Integer id,
         String title,
         String subtitle,
         String content,

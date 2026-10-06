@@ -28,7 +28,7 @@ public class StoryMapper implements IMapper<StoryRequestDTO, StoryResponseDTO, S
         if (story == null) return null;
 
         return new StoryResponseDTO(
-                story.getStoryId(),
+                story.getId(),
                 story.getTitle(),
                 story.getSubtitle(),
                 story.getContent(),

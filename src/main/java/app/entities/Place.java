@@ -21,7 +21,7 @@ public class Place implements LinkableEntity {
 
     @Id
     @GeneratedValue
-    Integer placeId;
+    Integer id;
 
     @Setter
     private String name;
@@ -63,7 +63,7 @@ public class Place implements LinkableEntity {
 
     @Override
     public Integer getId() {
-        return placeId;
+        return id;
     }
 
     // ===== JPA Lifecycle Callbacks =====
@@ -111,7 +111,7 @@ public class Place implements LinkableEntity {
         if (thisEffectiveClass != oEffectiveClass)
             return false;
         Place place = (Place) o;
-        return getPlaceId() != null && Objects.equals(getPlaceId(), place.getPlaceId());
+        return getId() != null && Objects.equals(getId(), place.getId());
     }
 
     @Override

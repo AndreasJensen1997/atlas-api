@@ -30,7 +30,7 @@ public class StoryService {
     public Story createStory(StoryRequestDTO dto, int userId) {
         User owner = userService.getById(userId);
 
-        if (storyDAO.findByTitleAndUserId(dto.title(), owner.getUserId()) != null) {
+        if (storyDAO.findByTitleAndUserId(dto.title(), owner.getId()) != null) {
             throw new IllegalArgumentException("A story with this title already exists.");
         }
 
@@ -48,7 +48,7 @@ public class StoryService {
             throw new IllegalArgumentException("Story not found with ID: " + storyId);
         }
 
-        if (!story.getUser().getUserId().equals(userId)) {
+        if (!story.getUser().getId().equals(userId)) {
             throw new ApiException(404, "Chapter not found with ID: " + storyId);
         }
         return story;
@@ -66,7 +66,7 @@ public class StoryService {
             throw new IllegalArgumentException("No stories were found");
         }
 
-        if (!randomStory.getUser().getUserId().equals(userId)) {
+        if (!randomStory.getUser().getId().equals(userId)) {
             throw new IllegalArgumentException("You do not have permission to access this story.");
         }
 

@@ -182,7 +182,7 @@ public abstract class GenericDAO<T,I> implements IDAO<T,I> {
 
         try (EntityManager em = emf.createEntityManager()) {
 
-            String jpql = "SELECT e FROM " + entityName + " e WHERE e.user.userId = :userId";
+            String jpql = "SELECT e FROM " + entityName + " e WHERE e.user.id = :userId";
             TypedQuery<T> query = em.createQuery(jpql, entityClass);
             query.setParameter("userId", userId);
 

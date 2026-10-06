@@ -20,7 +20,7 @@ public class Fragment implements LinkableEntity {
 
     @Id
     @GeneratedValue
-    Integer fragmentId;
+    Integer id;
 
     @Setter
     private String title;
@@ -47,7 +47,7 @@ public class Fragment implements LinkableEntity {
 
     @Override
     public Integer getId() {
-        return fragmentId;
+        return id;
     }
 
     // ===== JPA Lifecycle Callbacks =====
@@ -99,7 +99,7 @@ public class Fragment implements LinkableEntity {
         if (thisEffectiveClass != oEffectiveClass)
             return false;
         Fragment fragment = (Fragment) o;
-        return getFragmentId() != null && Objects.equals(getFragmentId(), fragment.getFragmentId());
+        return getId() != null && Objects.equals(getId(), fragment.getId());
     }
 
     @Override

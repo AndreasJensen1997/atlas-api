@@ -47,8 +47,8 @@ class ArtifactDAOTest {
 
         Artifact created = artifactDAO.create(newArtifact);
 
-        assertThat(created.getArtifactId(), notNullValue());
-        Artifact fetched = artifactDAO.getById(created.getArtifactId());
+        assertThat(created.getId(), notNullValue());
+        Artifact fetched = artifactDAO.getById(created.getId());
 
         assertThat(fetched.getTitle(), is("I forget where we were"));
         assertThat(fetched.getSubtitle(), is("ben howard album"));
@@ -56,14 +56,14 @@ class ArtifactDAOTest {
         assertThat(fetched.getCreatedAt(), is(LocalDate.of(2012, 1, 1)));
         assertThat(fetched.getVisibility(), is(Visibility.PRIVATE));
         assertThat(fetched.getUser(), is(existingUser));
-        assertThat(fetched.getArtifactType().getArtifactTypeId(), is(existingArtifactType.getArtifactTypeId()));
+        assertThat(fetched.getArtifactType().getId(), is(existingArtifactType.getId()));
     }
 
     @Test
     void getById() {
         Artifact seed = seeded.artifact1();
-        Artifact fetched = artifactDAO.getById(seed.getArtifactId());
-        assertThat(fetched.getArtifactId(), is(seed.getArtifactId()));
+        Artifact fetched = artifactDAO.getById(seed.getId());
+        assertThat(fetched.getId(), is(seed.getId()));
         assertThat(fetched.getTitle(), is(seed.getTitle()));
     }
 
@@ -77,13 +77,13 @@ class ArtifactDAOTest {
     @Test
     void getAllChaptersByUserId(){
 
-        List<Artifact> all = artifactDAO.getAllByUserId(seeded.artifact1().getUser().getUserId());
+        List<Artifact> all = artifactDAO.getAllByUserId(seeded.artifact1().getUser().getId());
 
         assertThat(all, hasSize(1));
         assertThat(all, containsInAnyOrder(seeded.artifact1()));
         for (Artifact a : all) {
-            assertThat(a.getUser().getUserId(), is(seeded.artifact1().getUser().getUserId()));
-            System.out.println(a.getUser().getUserId() + "-" +  seeded.artifact1().getUser().getUserId());
+            assertThat(a.getUser().getId(), is(seeded.artifact1().getUser().getId()));
+            System.out.println(a.getUser().getId() + "-" +  seeded.artifact1().getUser().getId());
         }
     }
 
@@ -92,7 +92,7 @@ class ArtifactDAOTest {
         Artifact seed = seeded.artifact1();
         String keyword = seed.getTitle().substring(0, 3).toLowerCase();
 
-        List<Artifact> results = artifactDAO.searchByTitle(keyword, seed.getUser().getUserId());
+        List<Artifact> results = artifactDAO.searchByTitle(keyword, seed.getUser().getId());
 
         assertThat(results, not(empty()));
         assertThat(results, hasItem(seed));
@@ -101,8 +101,8 @@ class ArtifactDAOTest {
     @Test
     void getArtifactsByType() {
         Artifact seed = seeded.artifact1();
-        Integer userId = seed.getUser().getUserId();
-        Integer typeId = seed.getArtifactType().getArtifactTypeId();
+        Integer userId = seed.getUser().getId();
+        Integer typeId = seed.getArtifactType().getId();
 
         List<Artifact> results = artifactDAO.getArtifactsByType(userId, typeId);
 
@@ -116,7 +116,7 @@ class ArtifactDAOTest {
         User newUser = seeded.user2();
 
         Artifact updated = Artifact.builder()
-                .artifactId(seed.getArtifactId())
+                .id(seed.getId())
                 .title("updated title")
                 .subtitle("updated subtitle")
                 .content("updated content")
@@ -128,7 +128,7 @@ class ArtifactDAOTest {
 
         Artifact result = artifactDAO.update(updated);
 
-        assertThat(result.getArtifactId(), is(seed.getArtifactId()));
+        assertThat(result.getId(), is(seed.getId()));
         assertThat(result.getTitle(), is("updated title"));
         assertThat(result.getSubtitle(), is("updated subtitle"));
         assertThat(result.getContent(), is("updated content"));
@@ -141,10 +141,10 @@ class ArtifactDAOTest {
     void delete() {
         Artifact seed = seeded.artifact1();
 
-        boolean deleted = artifactDAO.delete(seed.getArtifactId());
+        boolean deleted = artifactDAO.delete(seed.getId());
 
         assertThat(deleted, is(true));
-        assertThrows(ApiException.class, () -> artifactDAO.getById(seed.getArtifactId()));
+        assertThrows(ApiException.class, () -> artifactDAO.getById(seed.getId()));
     }
 
     @Test
@@ -174,7 +174,7 @@ class ArtifactDAOTest {
     @Test
     void update_withMissingId_throwsApiException() {
         Artifact missing = Artifact.builder()
-                .artifactId(999_999)
+                .id(999_999)
                 .title("Missing")
                 .build();
 
@@ -197,7 +197,7 @@ class ArtifactDAOTest {
     @Test
     void getArtifactsByType_withNonExistentType_returnsEmptyList() {
         Artifact seed = seeded.artifact1();
-        Integer userId = seed.getUser().getUserId();
+        Integer userId = seed.getUser().getId();
 
         List<Artifact> results = artifactDAO.getArtifactsByType(userId, 999_999);
 

@@ -40,9 +40,9 @@ class PersonDAOTest {
         Person newPerson = Person.builder().name("Test Person").relation(Relation.FRIEND).user(existingUser).build();
 
         Person created = personDAO.create(newPerson);
-        Person fetched = personDAO.getById(created.getPersonId());
+        Person fetched = personDAO.getById(created.getId());
 
-        assertThat(created.getPersonId(), notNullValue());
+        assertThat(created.getId(), notNullValue());
         assertThat(fetched.getName(), is("Test Person"));
         assertThat(fetched.getRelation(), is(Relation.FRIEND));
         assertThat(fetched.getVisibility(), is(Visibility.PRIVATE));
@@ -52,8 +52,8 @@ class PersonDAOTest {
     @Test
     void getById() {
         Person seed = seeded.person1();
-        Person fetched = personDAO.getById(seed.getPersonId());
-        assertThat(fetched.getPersonId(), is(seed.getPersonId()));
+        Person fetched = personDAO.getById(seed.getId());
+        assertThat(fetched.getId(), is(seed.getId()));
         assertThat(fetched.getName(), is(seed.getName()));
         assertThat(fetched.getRelation(), is(seed.getRelation()));
     }
@@ -67,11 +67,11 @@ class PersonDAOTest {
 
     @Test
     void getAllByUserId() {
-        List<Person> all = personDAO.getAllByUserId(seeded.user1().getUserId());
+        List<Person> all = personDAO.getAllByUserId(seeded.user1().getId());
 
         assertThat(all, not(empty()));
         for (Person p : all) {
-            assertThat(p.getUser().getUserId(), is(seeded.user1().getUserId()));
+            assertThat(p.getUser().getId(), is(seeded.user1().getId()));
         }
     }
 
@@ -80,7 +80,7 @@ class PersonDAOTest {
         Person seed = seeded.person1();
         String keyword = seed.getName().substring(0, 3).toLowerCase();
 
-        List<Person> results = personDAO.searchByTitle(keyword,seed.getUser().getUserId());
+        List<Person> results = personDAO.searchByTitle(keyword,seed.getUser().getId());
 
         assertThat(results, not(empty()));
         assertThat(results, hasItem(seed));
@@ -92,7 +92,7 @@ class PersonDAOTest {
         User newUser = seeded.user2();
 
         Person updated = Person.builder()
-                .personId(seed.getPersonId())
+                .id(seed.getId())
                 .name("Updated Person Name")
                 .relation(Relation.MOTHER)
                 .user(newUser)
@@ -100,7 +100,7 @@ class PersonDAOTest {
 
         Person result = personDAO.update(updated);
 
-        assertThat(result.getPersonId(), is(seed.getPersonId()));
+        assertThat(result.getId(), is(seed.getId()));
         assertThat(result.getName(), is("Updated Person Name"));
         assertThat(result.getRelation(), is(Relation.MOTHER));
         assertThat(result.getUpdatedAt(), is(LocalDate.now()));
@@ -111,10 +111,10 @@ class PersonDAOTest {
     void delete() {
         Person seed = seeded.person1();
 
-        boolean deleted = personDAO.delete(seed.getPersonId());
+        boolean deleted = personDAO.delete(seed.getId());
 
         assertThat(deleted, is(true));
-        assertThrows(ApiException.class, () -> personDAO.getById(seed.getPersonId()));
+        assertThrows(ApiException.class, () -> personDAO.getById(seed.getId()));
     }
 
     @Test
@@ -144,7 +144,7 @@ class PersonDAOTest {
     @Test
     void update_withMissingId_throwsApiException() {
         Person missing = Person.builder()
-                .personId(999_999)
+                .id(999_999)
                 .name("Missing")
                 .build();
 

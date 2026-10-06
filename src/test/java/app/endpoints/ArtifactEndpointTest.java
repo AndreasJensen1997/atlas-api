@@ -92,7 +92,7 @@ public class ArtifactEndpointTest {
                 .post("/artifacts")
                 .then()
                 .statusCode(HttpStatus.CREATED.getCode())
-                .body("artifactId", notNullValue())
+                .body("id", notNullValue())
                 .body("title", equalTo("New Artifact Title"));
     }
 
@@ -108,7 +108,7 @@ public class ArtifactEndpointTest {
                 .get("/artifacts/" + artifactId)
                 .then()
                 .statusCode(HttpStatus.OK.getCode())
-                .body("artifactId", equalTo(artifactId))
+                .body("id", equalTo(artifactId))
                 .body("title", equalTo(seeded.artifact1().getTitle()));
     }
 

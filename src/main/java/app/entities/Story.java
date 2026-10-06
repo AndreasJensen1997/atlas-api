@@ -21,7 +21,7 @@ public class Story implements LinkableEntity {
 
     @Id
     @GeneratedValue
-    Integer storyId;
+    Integer id;
 
     @Setter
     String title;
@@ -57,7 +57,7 @@ public class Story implements LinkableEntity {
 
     @Override
     public Integer getId() {
-        return storyId;
+        return id;
     }
 
     // ===== JPA Lifecycle Callbacks =====
@@ -107,7 +107,7 @@ public class Story implements LinkableEntity {
         if (thisEffectiveClass != oEffectiveClass)
             return false;
         Story story = (Story) o;
-        return getStoryId() != null && Objects.equals(getStoryId(), story.getStoryId());
+        return getId() != null && Objects.equals(getId(), story.getId());
     }
 
     @Override

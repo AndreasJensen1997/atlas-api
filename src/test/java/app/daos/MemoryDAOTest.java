@@ -41,9 +41,9 @@ class MemoryDAOTest {
                 .build();
 
         Memory created = memoryDAO.create(newMemory);
-        Memory fetched = memoryDAO.getById(created.getMemoryId());
+        Memory fetched = memoryDAO.getById(created.getId());
 
-        assertThat(created.getMemoryId(), notNullValue());
+        assertThat(created.getId(), notNullValue());
         assertThat(fetched.getTitle(), is("Test Memory"));
         assertThat(fetched.getContent(), is("Test memory content"));
         assertThat(fetched.getVisibility(), is(Visibility.PRIVATE));
@@ -53,8 +53,8 @@ class MemoryDAOTest {
     @Test
     void getById() {
         Memory seed = seeded.memory1();
-        Memory fetched = memoryDAO.getById(seed.getMemoryId());
-        assertThat(fetched.getMemoryId(), is(seed.getMemoryId()));
+        Memory fetched = memoryDAO.getById(seed.getId());
+        assertThat(fetched.getId(), is(seed.getId()));
         assertThat(fetched.getTitle(), is(seed.getTitle()));
     }
 
@@ -67,11 +67,11 @@ class MemoryDAOTest {
 
     @Test
     void getAllByUserId() {
-        List<Memory> all = memoryDAO.getAllByUserId(seeded.user1().getUserId());
+        List<Memory> all = memoryDAO.getAllByUserId(seeded.user1().getId());
 
         assertThat(all, not(empty()));
         for (Memory m : all) {
-            assertThat(m.getUser().getUserId(), is(seeded.user1().getUserId()));
+            assertThat(m.getUser().getId(), is(seeded.user1().getId()));
         }
     }
 
@@ -80,7 +80,7 @@ class MemoryDAOTest {
         Memory seed = seeded.memory1();
         String keyword = seed.getTitle().substring(0, 3).toLowerCase();
 
-        List<Memory> results = memoryDAO.searchByTitle(keyword,seed.getUser().getUserId());
+        List<Memory> results = memoryDAO.searchByTitle(keyword,seed.getUser().getId());
 
         assertThat(results, not(empty()));
         assertThat(results, hasItem(seed));
@@ -94,7 +94,7 @@ class MemoryDAOTest {
         User newUser = seeded.user2();
 
         Memory updated = Memory.builder()
-                .memoryId(seed.getMemoryId())
+                .id(seed.getId())
                 .title("Updated memory title")
                 .content("Updated memory content")
                 .user(newUser)
@@ -102,7 +102,7 @@ class MemoryDAOTest {
 
         Memory result = memoryDAO.update(updated);
 
-        assertThat(result.getMemoryId(), is(seed.getMemoryId()));
+        assertThat(result.getId(), is(seed.getId()));
         assertThat(result.getTitle(), is("Updated memory title"));
         assertThat(result.getContent(), is("Updated memory content"));
         assertThat(result.getUpdatedAt(), is(LocalDate.now()));
@@ -113,10 +113,10 @@ class MemoryDAOTest {
     void delete() {
         Memory seed = seeded.memory1();
 
-        boolean deleted = memoryDAO.delete(seed.getMemoryId());
+        boolean deleted = memoryDAO.delete(seed.getId());
 
         assertThat(deleted, is(true));
-        assertThrows(ApiException.class, () -> memoryDAO.getById(seed.getMemoryId()));
+        assertThrows(ApiException.class, () -> memoryDAO.getById(seed.getId()));
     }
 
     @Test
@@ -146,7 +146,7 @@ class MemoryDAOTest {
     @Test
     void update_withMissingId_throwsApiException() {
         Memory missing = Memory.builder()
-                .memoryId(999_999)
+                .id(999_999)
                 .title("Missing")
                 .build();
 

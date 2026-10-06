@@ -1,6 +1,5 @@
 package app.services;
 
-import app.daos.userOwned.ArtifactDAO;
 import app.daos.userOwned.ArtifactTypeDAO;
 import app.entities.ArtifactType;
 import app.entities.User;
@@ -25,7 +24,7 @@ public class ArtifactTypeService {
         }
 
         // Check if THIS user already has an artifact type with this name
-        ArtifactType existingType = artifactTypeDAO.findByTitleAndUserId(requestedType.getName(), owner.getUserId());
+        ArtifactType existingType = artifactTypeDAO.findByTitleAndUserId(requestedType.getName(), owner.getId());
         if (existingType != null) {
             return existingType;
         }

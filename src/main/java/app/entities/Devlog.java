@@ -19,7 +19,7 @@ public class Devlog {
 
     @Id
     @GeneratedValue
-    Integer devlogId;
+    Integer id;
 
     @Setter
     String title;
@@ -73,7 +73,7 @@ public class Devlog {
         if (thisEffectiveClass != oEffectiveClass)
             return false;
         Devlog devlog = (Devlog) o;
-        return getDevlogId() != null && Objects.equals(getDevlogId(), devlog.getDevlogId());
+        return getId() != null && Objects.equals(getId(), devlog.getId());
     }
 
     @Override

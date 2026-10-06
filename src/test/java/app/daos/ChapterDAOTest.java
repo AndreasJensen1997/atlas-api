@@ -48,8 +48,8 @@ class ChapterDAOTest {
 
         Chapter created = chapterDAO.create(newChapter);
 
-        assertThat(created.getChapterId(), notNullValue());
-        Chapter fetched = chapterDAO.getById(created.getChapterId());
+        assertThat(created.getId(), notNullValue());
+        Chapter fetched = chapterDAO.getById(created.getId());
         assertThat(fetched.getTitle(), is("China"));
         assertThat(fetched.getSubtitle(), is("My two year exchange in china"));
         assertThat(fetched.getContent(), is("This will cover my years in china"));
@@ -61,8 +61,8 @@ class ChapterDAOTest {
     @Test
     void getById() {
         Chapter seed = seeded.chapter1();
-        Chapter fetched = chapterDAO.getById(seed.getChapterId());
-        assertThat(fetched.getChapterId(), is(seed.getChapterId()));
+        Chapter fetched = chapterDAO.getById(seed.getId());
+        assertThat(fetched.getId(), is(seed.getId()));
         assertThat(fetched.getTitle(), is(seed.getTitle()));
     }
 
@@ -76,13 +76,13 @@ class ChapterDAOTest {
    @Test
    void getAllChaptersByUserId(){
 
-       List<Chapter> all = chapterDAO.getAllByUserId(seeded.user1().getUserId());
+       List<Chapter> all = chapterDAO.getAllByUserId(seeded.user1().getId());
 
        assertThat(all, hasSize(1));
        assertThat(all, containsInAnyOrder(seeded.chapter1()));
        for (Chapter c : all) {
-           assertThat(c.getUser().getUserId(), is(seeded.user1().getUserId()));
-           System.out.println(c.getUser().getUserId() + "-" +  seeded.user1().getUserId());
+           assertThat(c.getUser().getId(), is(seeded.user1().getId()));
+           System.out.println(c.getUser().getId() + "-" +  seeded.user1().getId());
        }
    }
 
@@ -91,7 +91,7 @@ class ChapterDAOTest {
         Chapter seed = seeded.chapter1();
         String keyword = seed.getTitle().substring(0, 3).toLowerCase();
 
-        List<Chapter> results = chapterDAO.searchByTitle(keyword,seed.getUser().getUserId());
+        List<Chapter> results = chapterDAO.searchByTitle(keyword,seed.getUser().getId());
 
         assertThat(results, not(empty()));
         assertThat(results, hasItem(seed));
@@ -106,7 +106,7 @@ class ChapterDAOTest {
         User newUser = seeded.user2();
 
         Chapter updated = Chapter.builder()
-                .chapterId(seed.getChapterId())
+                .id(seed.getId())
                 .title("updated title")
                 .subtitle("updated subtitle")
                 .content("updated content")
@@ -118,7 +118,7 @@ class ChapterDAOTest {
 
         Chapter result = chapterDAO.update(updated);
 
-        assertThat(result.getChapterId(), is(seed.getChapterId()));
+        assertThat(result.getId(), is(seed.getId()));
         assertThat(result.getTitle(), is("updated title"));
         assertThat(result.getSubtitle(), is("updated subtitle"));
         assertThat(result.getContent(), is("updated content"));
@@ -131,10 +131,10 @@ class ChapterDAOTest {
     void delete() {
         Chapter seed = seeded.chapter1();
 
-        boolean deleted = chapterDAO.delete(seed.getChapterId());
+        boolean deleted = chapterDAO.delete(seed.getId());
 
         assertThat(deleted, is(true));
-        assertThrows(ApiException.class, () -> chapterDAO.getById(seed.getChapterId()));
+        assertThrows(ApiException.class, () -> chapterDAO.getById(seed.getId()));
     }
 
     @Test
@@ -164,7 +164,7 @@ class ChapterDAOTest {
     @Test
     void update_withMissingId_throwsApiException() {
         Chapter missing = Chapter.builder()
-                .chapterId(999_999)
+                .id(999_999)
                 .title("Missing")
                 .build();
 

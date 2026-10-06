@@ -36,11 +36,11 @@ public class EntityListMapper {
     public EntityListResponseDTO toResponseDTO(EntityList entity) {
         List<EntityListItemDTO> itemDTOs = entity.getItems() == null ? Collections.emptyList() :
                 entity.getItems().stream()
-                        .map(item -> new EntityListItemDTO(item.getItemId(), item.getText()))
+                        .map(item -> new EntityListItemDTO(item.getId(), item.getText()))
                         .toList();
 
         return new EntityListResponseDTO(
-                entity.getListId(),
+                entity.getId(),
                 entity.getTitle(),
                 entity.getSubtitle(),
                 entity.getCreatedAt(),

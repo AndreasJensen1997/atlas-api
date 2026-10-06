@@ -2,7 +2,6 @@ package app.services;
 
 import app.daos.userOwned.EntityListDAO;
 import app.dtos.entityList.EntityListRequestDTO;
-import app.entities.Chapter;
 import app.entities.EntityList;
 import app.entities.EntityListItem;
 import app.entities.User;
@@ -32,7 +31,7 @@ public class EntityListService {
     public EntityList createEntityList(EntityListRequestDTO dto, int userId) {
         User owner = userService.getById(userId);
 
-        if (entityListDAO.findByTitleAndUserId(dto.title(), owner.getUserId()) != null) {
+        if (entityListDAO.findByTitleAndUserId(dto.title(), owner.getId()) != null) {
             throw new IllegalArgumentException("A Entity list with this title already exists.");
         }
 
@@ -50,7 +49,7 @@ public class EntityListService {
             throw new IllegalArgumentException("List not found with ID: " + entityListId);
         }
 
-        if (!entityList.getUser().getUserId().equals(userId)) {
+        if (!entityList.getUser().getId().equals(userId)) {
             throw new ApiException(404, "Chapter not found with ID: " + entityList);
         }
         return entityList;
@@ -69,7 +68,7 @@ public class EntityListService {
             throw new IllegalArgumentException("No lists were found");
         }
 
-        if (!randomEntityList.getUser().getUserId().equals(userId)) {
+        if (!randomEntityList.getUser().getId().equals(userId)) {
             throw new IllegalArgumentException("You do not have permission to access this list.");
         }
 
@@ -114,7 +113,7 @@ public class EntityListService {
         EntityList entityList = getById(entityListId, userId);
 
         EntityListItem targetItem = entityList.getItems().stream()
-                .filter(item -> item.getItemId().equals(itemId))
+                .filter(item -> item.getId().equals(itemId))
                 .findFirst()
                 .orElseThrow(() -> new IllegalArgumentException("Item not found in this list with ID: " + itemId));
 
@@ -128,6 +127,6 @@ public class EntityListService {
     public void delete(Integer entityListId, int userId) {
         EntityList entityList = getById(entityListId, userId);
 
-        entityListDAO.delete(entityList.getListId());
+        entityListDAO.delete(entityList.getId());
     }
 }

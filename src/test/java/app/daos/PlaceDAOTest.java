@@ -47,9 +47,9 @@ class PlaceDAOTest {
                 .build();
 
         Place created = placeDAO.create(newPlace);
-        Place fetched = placeDAO.getById(created.getPlaceId());
+        Place fetched = placeDAO.getById(created.getId());
 
-        assertThat(created.getPlaceId(), notNullValue());
+        assertThat(created.getId(), notNullValue());
         assertThat(fetched.getName(), is("Test Place"));
         assertThat(fetched.getContent(), is("Test place description"));
         assertThat(fetched.getLatitude(), is(55.6761));
@@ -64,8 +64,8 @@ class PlaceDAOTest {
     @Test
     void getById() {
         Place seed = seeded.place1();
-        Place fetched = placeDAO.getById(seed.getPlaceId());
-        assertThat(fetched.getPlaceId(), is(seed.getPlaceId()));
+        Place fetched = placeDAO.getById(seed.getId());
+        assertThat(fetched.getId(), is(seed.getId()));
         assertThat(fetched.getName(), is(seed.getName()));
         assertThat(fetched.getCity(), is(seed.getCity()));
     }
@@ -79,11 +79,11 @@ class PlaceDAOTest {
 
     @Test
     void getAllByUserId() {
-        List<Place> all = placeDAO.getAllByUserId(seeded.user1().getUserId());
+        List<Place> all = placeDAO.getAllByUserId(seeded.user1().getId());
 
         assertThat(all, not(empty()));
         for (Place p : all) {
-            assertThat(p.getUser().getUserId(), is(seeded.user1().getUserId()));
+            assertThat(p.getUser().getId(), is(seeded.user1().getId()));
         }
     }
 
@@ -92,7 +92,7 @@ class PlaceDAOTest {
         Place seed = seeded.place1();
         String keyword = seed.getName().substring(0, 3).toLowerCase();
 
-        List<Place> results = placeDAO.searchByTitle(keyword,seed.getUser().getUserId());
+        List<Place> results = placeDAO.searchByTitle(keyword,seed.getUser().getId());
 
         assertThat(results, not(empty()));
         assertThat(results, hasItem(seed));
@@ -104,7 +104,7 @@ class PlaceDAOTest {
         User newUser = seeded.user2();
 
         Place updated = Place.builder()
-                .placeId(seed.getPlaceId())
+                .id(seed.getId())
                 .name("Updated Place Name")
                 .content("Updated content")
                 .latitude(0.0)
@@ -117,7 +117,7 @@ class PlaceDAOTest {
 
         Place result = placeDAO.update(updated);
 
-        assertThat(result.getPlaceId(), is(seed.getPlaceId()));
+        assertThat(result.getId(), is(seed.getId()));
         assertThat(result.getName(), is("Updated Place Name"));
         assertThat(result.getContent(), is("Updated content"));
         assertThat(result.getCity(), is("Aarhus"));
@@ -129,10 +129,10 @@ class PlaceDAOTest {
     void delete() {
         Place seed = seeded.place1();
 
-        boolean deleted = placeDAO.delete(seed.getPlaceId());
+        boolean deleted = placeDAO.delete(seed.getId());
 
         assertThat(deleted, is(true));
-        assertThrows(ApiException.class, () -> placeDAO.getById(seed.getPlaceId()));
+        assertThrows(ApiException.class, () -> placeDAO.getById(seed.getId()));
     }
 
     @Test
@@ -161,7 +161,7 @@ class PlaceDAOTest {
 
     @Test
     void update_withMissingId_throwsApiException() {
-        Place missing = Place.builder().placeId(999_999).name("Missing").build();
+        Place missing = Place.builder().id(999_999).name("Missing").build();
 
         ApiException ex = assertThrows(ApiException.class, () -> placeDAO.update(missing));
         assertThat(ex.getStatusCode(), is(404));

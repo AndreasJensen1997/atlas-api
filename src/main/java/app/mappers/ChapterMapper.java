@@ -28,7 +28,7 @@ public class ChapterMapper implements IMapper<ChapterRequestDTO, ChapterResponse
         if (chapter == null) return null;
 
         return new ChapterResponseDTO(
-                chapter.getChapterId(),
+                chapter.getId(),
                 chapter.getTitle(),
                 chapter.getSubtitle(),
                 chapter.getContent(),

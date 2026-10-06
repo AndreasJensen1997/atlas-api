@@ -45,9 +45,9 @@ class TimeCapsuleDAOTest {
                 .build();
 
         TimeCapsule created = timeCapsuleDAO.create(newCapsule);
-        TimeCapsule fetched = timeCapsuleDAO.getById(created.getTimeCapsuleId());
+        TimeCapsule fetched = timeCapsuleDAO.getById(created.getId());
 
-        assertThat(created.getTimeCapsuleId(), notNullValue());
+        assertThat(created.getId(), notNullValue());
         assertThat(fetched.getTitle(), is("secret message"));
         assertThat(fetched.getSubtitle(), is("my first timecapsule"));
         assertThat(fetched.getContent(), is("Secret message for the future"));
@@ -58,8 +58,8 @@ class TimeCapsuleDAOTest {
     @Test
     void getById() {
         TimeCapsule seed = seeded.timeCapsule1();
-        TimeCapsule fetched = timeCapsuleDAO.getById(seed.getTimeCapsuleId());
-        assertThat(fetched.getTimeCapsuleId(), is(seed.getTimeCapsuleId()));
+        TimeCapsule fetched = timeCapsuleDAO.getById(seed.getId());
+        assertThat(fetched.getId(), is(seed.getId()));
         assertThat(fetched.getContent(), is(seed.getContent()));
     }
 
@@ -72,11 +72,11 @@ class TimeCapsuleDAOTest {
 
     @Test
     void getAllByUserId() {
-        List<TimeCapsule> all = timeCapsuleDAO.getAllByUserId(seeded.user1().getUserId());
+        List<TimeCapsule> all = timeCapsuleDAO.getAllByUserId(seeded.user1().getId());
 
         assertThat(all, not(empty()));
         for (TimeCapsule t : all) {
-            assertThat(t.getUser().getUserId(), is(seeded.user1().getUserId()));
+            assertThat(t.getUser().getId(), is(seeded.user1().getId()));
         }
     }
 
@@ -85,7 +85,7 @@ class TimeCapsuleDAOTest {
         TimeCapsule seed = seeded.timeCapsule1();
         String keyword = seed.getTitle().substring(0, 3).toLowerCase();
 
-        List<TimeCapsule> results = timeCapsuleDAO.searchByTitle(keyword,seed.getUser().getUserId());
+        List<TimeCapsule> results = timeCapsuleDAO.searchByTitle(keyword,seed.getUser().getId());
 
         assertThat(results, not(empty()));
         assertThat(results, hasItem(seed));
@@ -99,7 +99,7 @@ class TimeCapsuleDAOTest {
         User newUser = seeded.user2();
 
         TimeCapsule updated = TimeCapsule.builder()
-                .timeCapsuleId(seed.getTimeCapsuleId())
+                .id(seed.getId())
                 .content("Updated capsule content")
                 .unlockDate(seed.getUnlockDate())
                 .lockStatus(true)
@@ -108,7 +108,7 @@ class TimeCapsuleDAOTest {
 
         TimeCapsule result = timeCapsuleDAO.update(updated);
 
-        assertThat(result.getTimeCapsuleId(), is(seed.getTimeCapsuleId()));
+        assertThat(result.getId(), is(seed.getId()));
         assertThat(result.getContent(), is("Updated capsule content"));
         assertThat(result.isLockStatus(), is(true));
         assertThat(result.getUser(), is(newUser));
@@ -118,10 +118,10 @@ class TimeCapsuleDAOTest {
     void delete() {
         TimeCapsule seed = seeded.timeCapsule1();
 
-        boolean deleted = timeCapsuleDAO.delete(seed.getTimeCapsuleId());
+        boolean deleted = timeCapsuleDAO.delete(seed.getId());
 
         assertThat(deleted, is(true));
-        assertThrows(ApiException.class, () -> timeCapsuleDAO.getById(seed.getTimeCapsuleId()));
+        assertThrows(ApiException.class, () -> timeCapsuleDAO.getById(seed.getId()));
     }
 
     @Test
@@ -151,7 +151,7 @@ class TimeCapsuleDAOTest {
     @Test
     void update_withMissingId_throwsApiException() {
         TimeCapsule missing = TimeCapsule.builder()
-                .timeCapsuleId(999_999)
+                .id(999_999)
                 .content("Missing")
                 .build();
 

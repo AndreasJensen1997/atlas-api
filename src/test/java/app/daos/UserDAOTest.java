@@ -40,8 +40,8 @@ class UserDAOTest {
 
         User created = userDAO.create(newUser);
 
-        assertThat(created.getUserId(), notNullValue());
-        User fetched = userDAO.getById(created.getUserId());
+        assertThat(created.getId(), notNullValue());
+        User fetched = userDAO.getById(created.getId());
         assertThat(fetched.getName(), is("Sofie"));
         assertThat(fetched.getEmail(), is("sofie.jensen@outlook.dk"));
     }
@@ -49,8 +49,8 @@ class UserDAOTest {
     @Test
     void getById() {
         User seed = seeded.user1();
-        User fetched = userDAO.getById(seed.getUserId());
-        assertThat(fetched.getUserId(), is(seed.getUserId()));
+        User fetched = userDAO.getById(seed.getId());
+        assertThat(fetched.getId(), is(seed.getId()));
         assertThat(fetched.getName(), is(seed.getName()));
     }
 
@@ -65,7 +65,7 @@ class UserDAOTest {
     void update() {
         User seed = seeded.user2();
         User updated = User.builder()
-                .userId(seed.getUserId())
+                .id(seed.getId())
                 .name("Updated name")
                 .email(seed.getEmail())
                 .password(seed.getPassword())
@@ -73,7 +73,7 @@ class UserDAOTest {
 
         User result = userDAO.update(updated);
 
-        assertThat(result.getUserId(), is(seed.getUserId()));
+        assertThat(result.getId(), is(seed.getId()));
         assertThat(result.getName(), is("Updated name"));
         assertThat(result.getEmail(), is(seed.getEmail()));
         assertThat(result.getPassword(), is(seed.getPassword()));
@@ -83,10 +83,10 @@ class UserDAOTest {
     void delete() {
         User seed = seeded.user1();
 
-        boolean deleted = userDAO.delete(seed.getUserId());
+        boolean deleted = userDAO.delete(seed.getId());
 
         assertThat(deleted, is(true));
-        assertThrows(ApiException.class, () -> userDAO.getById(seed.getUserId()));
+        assertThrows(ApiException.class, () -> userDAO.getById(seed.getId()));
     }
 
     @Test
@@ -116,7 +116,7 @@ class UserDAOTest {
     @Test
     void update_withMissingId_throwsApiException() {
         User missing = User.builder()
-                .userId(999_999)
+                .id(999_999)
                 .name("Missing")
                 .build();
 

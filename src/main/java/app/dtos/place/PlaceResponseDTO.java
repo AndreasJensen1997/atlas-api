@@ -5,7 +5,7 @@ import app.enums.Visibility;
 import java.time.LocalDate;
 
 public record PlaceResponseDTO(
-        Integer placeId,
+        Integer id,
         String name,
         String content,
         Double latitude,

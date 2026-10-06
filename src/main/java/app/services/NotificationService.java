@@ -44,7 +44,7 @@ public class NotificationService {
             throw new IllegalArgumentException("Notification not found with ID: " + notificationId);
         }
 
-        if (!notification.getUser().getUserId().equals(userId)) {
+        if (!notification.getUser().getId().equals(userId)) {
             throw new ApiException(404, "Notification not found with ID: " + notificationId);
         }
 
@@ -64,7 +64,7 @@ public class NotificationService {
             throw new IllegalArgumentException("Notification not found with ID: " + notificationId);
         }
 
-        if (!notification.getUser().getUserId().equals(userId)) {
+        if (!notification.getUser().getId().equals(userId)) {
             throw new IllegalArgumentException("You do not have permission to access this notification.");
         }
 
@@ -89,6 +89,6 @@ public class NotificationService {
     public void delete(Integer notificationId, int userId) {
         Notification notification = getById(notificationId, userId);
 
-        notificationDAO.delete(notification.getNotificationId());
+        notificationDAO.delete(notification.getId());
     }
 }

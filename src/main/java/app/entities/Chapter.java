@@ -21,7 +21,7 @@ public class Chapter implements LinkableEntity {
 
     @Id
     @GeneratedValue
-    private Integer chapterId;
+    private Integer id;
 
     @Setter
     private String title;
@@ -49,7 +49,7 @@ public class Chapter implements LinkableEntity {
 
     @Override
     public Integer getId() {
-        return chapterId;
+        return id;
     }
 
     // ===== Relations =====
@@ -107,7 +107,7 @@ public class Chapter implements LinkableEntity {
         if (thisEffectiveClass != oEffectiveClass)
             return false;
         Chapter chapter = (Chapter) o;
-        return getChapterId() != null && Objects.equals(getChapterId(), chapter.getChapterId());
+        return getId() != null && Objects.equals(getId(), chapter.getId());
     }
 
     @Override

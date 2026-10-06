@@ -95,7 +95,7 @@ public class MemoryEndpointTest {
                 .post("/memories")
                 .then()
                 .statusCode(HttpStatus.CREATED.getCode())
-                .body("memoryId", notNullValue())
+                .body("id", notNullValue())
                 .body("title", equalTo("New Memory Title"));
     }
 
@@ -111,7 +111,7 @@ public class MemoryEndpointTest {
                 .get("/memories/" + memoryId)
                 .then()
                 .statusCode(HttpStatus.OK.getCode())
-                .body("memoryId", equalTo(memoryId))
+                .body("id", equalTo(memoryId))
                 .body("title", equalTo(seeded.memory1().getTitle()));
     }
 

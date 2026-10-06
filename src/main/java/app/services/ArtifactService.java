@@ -33,7 +33,7 @@ public class ArtifactService {
     public Artifact createArtifact(ArtifactRequestDTO dto, int userId) {
         User owner = userService.getById(userId);
 
-        if (artifactDAO.findByTitleAndUserId(dto.title(), owner.getUserId()) != null) {
+        if (artifactDAO.findByTitleAndUserId(dto.title(), owner.getId()) != null) {
             throw new IllegalArgumentException("An artifact with this title already exists.");
         }
 
@@ -54,7 +54,7 @@ public class ArtifactService {
             throw new IllegalArgumentException("Artifact not found with ID: " + artifactId);
         }
 
-        if (!artifact.getUser().getUserId().equals(userId)) {
+        if (!artifact.getUser().getId().equals(userId)) {
             throw new ApiException(404, "Chapter not found with ID: " + artifactId);
         }
         return artifact;
@@ -71,7 +71,7 @@ public class ArtifactService {
             throw new IllegalArgumentException("No artifacts were found.");
         }
 
-        if (!randomArtifact.getUser().getUserId().equals(userId)) {
+        if (!randomArtifact.getUser().getId().equals(userId)) {
             throw new IllegalArgumentException("You do not have permission to access this artifact.");
         }
 
@@ -87,7 +87,7 @@ public class ArtifactService {
             throw new IllegalArgumentException("Artifact not found with ID: " + artifactId);
         }
 
-        if (!artifact.getUser().getUserId().equals(userId)) {
+        if (!artifact.getUser().getId().equals(userId)) {
             throw new IllegalArgumentException("You do not have permission to access this artifact.");
         }
 

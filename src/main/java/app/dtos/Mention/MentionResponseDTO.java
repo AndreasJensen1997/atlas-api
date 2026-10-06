@@ -3,7 +3,7 @@ package app.dtos.Mention;
 import app.enums.TargetType;
 
 public record MentionResponseDTO(
-        Integer mentionId,
+        Integer id,
         Integer ownerId,
         TargetType ownerType,
         Integer startIndex,

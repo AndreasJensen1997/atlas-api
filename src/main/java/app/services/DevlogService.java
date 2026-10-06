@@ -30,7 +30,7 @@ public class DevlogService {
     public Devlog createDevlog(DevlogRequestDTO dto, int userId) {
         User owner = userService.getById(userId);
 
-        if (devlogDAO.findByTitleAndUserId(dto.title(), owner.getUserId()) != null) {
+        if (devlogDAO.findByTitleAndUserId(dto.title(), owner.getId()) != null) {
             throw new IllegalArgumentException("A devlog with this title already exists.");
         }
 
@@ -48,7 +48,7 @@ public class DevlogService {
             throw new IllegalArgumentException("Chapter not found with ID: " + devlogId);
         }
 
-        if (!devlog.getUser().getUserId().equals(userId)) {
+        if (!devlog.getUser().getId().equals(userId)) {
             throw new ApiException(404, "Chapter not found with ID: " + devlogId);
         }
         return devlog;
@@ -68,7 +68,7 @@ public class DevlogService {
             throw new IllegalArgumentException("Chapter not found with ID: " + devlogId);
         }
 
-        if (!devlog.getUser().getUserId().equals(userId)) {
+        if (!devlog.getUser().getId().equals(userId)) {
             throw new IllegalArgumentException("You do not have permission to access this chapter.");
         }
 
@@ -84,6 +84,6 @@ public class DevlogService {
     public void delete(Integer devlogId, int userId) {
         Devlog devlog = getById(devlogId, userId);
 
-        devlogDAO.delete(devlog.getDevlogId());
+        devlogDAO.delete(devlog.getId());
     }
 }

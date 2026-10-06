@@ -44,9 +44,9 @@ class StoryDAOTest {
                 .build();
 
         Story created = storyDAO.create(newStory);
-        Story fetched = storyDAO.getById(created.getStoryId());
+        Story fetched = storyDAO.getById(created.getId());
 
-        assertThat(created.getStoryId(), notNullValue());
+        assertThat(created.getId(), notNullValue());
         assertThat(fetched.getTitle(), is("Test Story"));
         assertThat(fetched.getSubtitle(), is("Test Subtitle"));
         assertThat(fetched.getContent(), is("Test story content"));
@@ -58,18 +58,18 @@ class StoryDAOTest {
     @Test
     void getById() {
         Story seed = seeded.story1();
-        Story fetched = storyDAO.getById(seed.getStoryId());
-        assertThat(fetched.getStoryId(), is(seed.getStoryId()));
+        Story fetched = storyDAO.getById(seed.getId());
+        assertThat(fetched.getId(), is(seed.getId()));
         assertThat(fetched.getTitle(), is(seed.getTitle()));
     }
 
     @Test
     void getAllByUserId() {
-        List<Story> all = storyDAO.getAllByUserId(seeded.user1().getUserId());
+        List<Story> all = storyDAO.getAllByUserId(seeded.user1().getId());
 
         assertThat(all, not(empty()));
         for (Story s : all) {
-            assertThat(s.getUser().getUserId(), is(seeded.user1().getUserId()));
+            assertThat(s.getUser().getId(), is(seeded.user1().getId()));
         }
     }
 
@@ -78,7 +78,7 @@ class StoryDAOTest {
         Story seed = seeded.story1();
         String keyword = seed.getTitle().substring(0, 3).toLowerCase();
 
-        List<Story> results = storyDAO.searchByTitle(keyword,seed.getUser().getUserId());
+        List<Story> results = storyDAO.searchByTitle(keyword,seed.getUser().getId());
 
         assertThat(results, not(empty()));
         assertThat(results, hasItem(seed));
@@ -98,7 +98,7 @@ class StoryDAOTest {
         User newUser = seeded.user2();
 
         Story updated = Story.builder()
-                .storyId(seed.getStoryId())
+                .id(seed.getId())
                 .title("Updated Story Title")
                 .subtitle("Updated Subtitle")
                 .content("Updated content")
@@ -109,7 +109,7 @@ class StoryDAOTest {
 
         Story result = storyDAO.update(updated);
 
-        assertThat(result.getStoryId(), is(seed.getStoryId()));
+        assertThat(result.getId(), is(seed.getId()));
         assertThat(result.getTitle(), is("Updated Story Title"));
         assertThat(result.getSubtitle(), is("Updated Subtitle"));
         assertThat(result.getContent(), is("Updated content"));
@@ -122,10 +122,10 @@ class StoryDAOTest {
     void delete() {
         Story seed = seeded.story1();
 
-        boolean deleted = storyDAO.delete(seed.getStoryId());
+        boolean deleted = storyDAO.delete(seed.getId());
 
         assertThat(deleted, is(true));
-        assertThrows(ApiException.class, () -> storyDAO.getById(seed.getStoryId()));
+        assertThrows(ApiException.class, () -> storyDAO.getById(seed.getId()));
     }
 
     @Test
@@ -155,7 +155,7 @@ class StoryDAOTest {
     @Test
     void update_withMissingId_throwsApiException() {
         Story missing = Story.builder()
-                .storyId(999_999)
+                .id(999_999)
                 .title("Missing")
                 .build();
 

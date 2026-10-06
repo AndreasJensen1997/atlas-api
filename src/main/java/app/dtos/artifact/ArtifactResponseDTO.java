@@ -6,7 +6,7 @@ import app.enums.Visibility;
 import java.time.LocalDate;
 
 public record ArtifactResponseDTO(
-        Integer artifactId,
+        Integer id,
         String title,
         String subtitle,
         String content,

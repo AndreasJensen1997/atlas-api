@@ -40,7 +40,9 @@ public class FragmentController extends AbstractController<FragmentRequestDTO, F
 
     @Override
     protected FragmentRequestDTO parseBody(Context ctx) {
-        return ctx.bodyAsClass(FragmentRequestDTO.class);
+        return ctx.bodyValidator(FragmentRequestDTO.class)
+                .check(req -> req.content() != null && !req.content().isBlank(), "Content cannot be blank")
+                .get();
     }
 
 

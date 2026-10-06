@@ -1,0 +1,79 @@
+### ==========================================
+### CREATE NOTIFICATIONS
+### ==========================================
+
+POST {{url}}/notifications
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "You were mentioned in a memory",
+  "notificationType": "MENTION",
+  "targetId": 1,
+  "targetType": "MEMORY",
+  "read": false,
+  "createdAt": "2026-10-06T12:00:00"
+}
+
+###
+
+POST {{url}}/notifications
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "System maintenance complete",
+  "notificationType": "SYSTEM",
+  "targetId": 1,
+  "targetType": "SYSTEM",
+  "read": false,
+  "createdAt": "2026-10-06T12:30:00"
+}
+
+###
+
+### ==========================================
+### READ NOTIFICATIONS
+### ==========================================
+
+GET {{url}}/notifications/1
+Authorization: {{JWT}}
+Accept: application/json
+
+###
+
+GET {{url}}/notifications
+Authorization: {{JWT}}
+Accept: application/json
+
+###
+
+### ==========================================
+### UPDATE NOTIFICATION
+### ==========================================
+
+PUT {{url}}/notifications/1
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "You were mentioned in a memory",
+  "notificationType": "MENTION",
+  "targetId": 1,
+  "targetType": "MEMORY",
+  "read": true,
+  "createdAt": "2026-10-06T12:00:00"
+}
+
+###
+
+### ==========================================
+### DELETE NOTIFICATION
+### ==========================================
+
+DELETE {{url}}/notifications/2
+Authorization: {{JWT}}
+Accept: application/json

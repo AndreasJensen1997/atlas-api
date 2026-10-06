@@ -89,6 +89,18 @@ public class User {
     @ToString.Exclude
     private Set<Fragment> fragments = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Setter
+    @ToString.Exclude
+    private Set<Devlog> devlogs = new HashSet<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Setter
+    @ToString.Exclude
+    private Set<Notification> notifications = new HashSet<>();
+
+
+
     // ===== JPA Lifecycle Callbacks =====
 
     @PrePersist

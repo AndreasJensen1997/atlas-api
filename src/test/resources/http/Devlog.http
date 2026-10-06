@@ -1,0 +1,70 @@
+### ==========================================
+### CREATE DEVLOGS
+### ==========================================
+
+POST {{url}}/devlogs
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "Initial Development Log",
+  "subtitle": "Setting up the core architecture",
+  "content": "Today we established the database schemas, basic controller structures, and authentication pipeline."
+}
+
+###
+
+POST {{url}}/devlogs
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "Refactoring Endpoints and Validation",
+  "subtitle": "Improving exception handling and controller logic",
+  "content": "Replaced generic runtime exceptions with structured ApiExceptions for clean 400 Bad Request responses."
+}
+
+###
+
+### ==========================================
+### READ DEVLOGS
+### ==========================================
+
+GET {{url}}/devlogs/1
+Authorization: {{JWT}}
+Accept: application/json
+
+###
+
+GET {{url}}/devlogs
+Authorization: {{JWT}}
+Accept: application/json
+
+###
+
+### ==========================================
+### UPDATE DEVLOG
+### ==========================================
+
+PUT {{url}}/devlogs/1
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "title": "Updated Devlog Title",
+  "subtitle": "Updated architecture notes",
+  "content": "Revised documentation on endpoint routing and security middleware configuration."
+}
+
+###
+
+### ==========================================
+### DELETE DEVLOG
+### ==========================================
+
+DELETE {{url}}/devlogs/2
+Authorization: {{JWT}}
+Accept: application/json

@@ -5,6 +5,7 @@ import app.dtos.artifact.ArtifactRequestDTO;
 import app.entities.Artifact;
 import app.entities.ArtifactType;
 import app.entities.User;
+import app.exceptions.ApiException;
 import app.mappers.ArtifactMapper;
 
 import java.util.List;
@@ -54,7 +55,7 @@ public class ArtifactService {
         }
 
         if (!artifact.getUser().getUserId().equals(userId)) {
-            throw new IllegalArgumentException("You do not have permission to access this artifact.");
+            throw new ApiException(404, "Chapter not found with ID: " + artifactId);
         }
         return artifact;
     }

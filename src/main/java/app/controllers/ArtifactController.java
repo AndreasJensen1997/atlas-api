@@ -3,6 +3,7 @@ package app.controllers;
 import app.controllers.generics.AbstractController;
 import app.dtos.artifact.ArtifactRequestDTO;
 import app.dtos.artifact.ArtifactResponseDTO;
+import app.dtos.chapter.ChapterRequestDTO;
 import app.entities.Artifact;
 import app.mappers.ArtifactMapper;
 import app.services.ArtifactService;
@@ -34,7 +35,10 @@ public class ArtifactController extends AbstractController<ArtifactRequestDTO, A
 
     @Override
     protected ArtifactRequestDTO parseBody(Context ctx) {
-        return ctx.bodyAsClass(ArtifactRequestDTO.class);
+        return ctx.bodyValidator(ArtifactRequestDTO.class)
+                .check(req -> req.title() != null && !req.title().isBlank(), "Title cannot be blank")
+                .check(req -> req.subtitle() != null && !req.subtitle().isBlank(), "Subtitle cannot be blank")
+                .get();
     }
 
     // ===== Entity Operations =====

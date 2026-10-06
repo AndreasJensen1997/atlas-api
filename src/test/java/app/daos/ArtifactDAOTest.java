@@ -70,8 +70,8 @@ class ArtifactDAOTest {
     @Test
     void getAll() {
         List<Artifact> all = artifactDAO.getAll();
-        assertThat(all, hasSize(3));
-        assertThat(all, containsInAnyOrder(seeded.artifact1(), seeded.artifact2(), seeded.artifact3()));
+        assertThat(all, hasSize(4));
+        assertThat(all, containsInAnyOrder(seeded.artifact1(), seeded.artifact2(), seeded.artifact3(),seeded.artifact4()));
     }
 
     @Test

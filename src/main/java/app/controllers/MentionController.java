@@ -3,6 +3,7 @@ package app.controllers;
 import app.dtos.Mention.MentionRequestDTO;
 import app.dtos.Mention.MentionResponseDTO;
 import app.enums.TargetType;
+import app.exceptions.ApiException;
 import app.services.MentionService;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.http.Context;
@@ -28,6 +29,9 @@ public class MentionController implements EndpointGroup {
     public void getIncoming(Context ctx) {
         TargetType targetType = TargetType.valueOf(ctx.pathParam("targetType").toUpperCase());
         int targetId = Integer.parseInt(ctx.pathParam("targetId"));
+        if (targetId <= 0) {
+            throw new IllegalArgumentException("ID must be a positive integer.");
+        }
         List<MentionResponseDTO> mentions = mentionService.getIncomingMentions(targetType, targetId);
         ctx.json(mentions);
     }
@@ -35,6 +39,9 @@ public class MentionController implements EndpointGroup {
     public void getOutgoing(Context ctx) {
         TargetType ownerType = TargetType.valueOf(ctx.pathParam("ownerType").toUpperCase());
         int ownerId = Integer.parseInt(ctx.pathParam("ownerId"));
+        if (ownerId <= 0) {
+            throw new IllegalArgumentException("ID must be a positive integer.");
+        }
         List<MentionResponseDTO> mentions = mentionService.getOutgoingMentions(ownerType, ownerId);
         ctx.json(mentions);
     }
@@ -47,6 +54,9 @@ public class MentionController implements EndpointGroup {
 
     public void deleteEntity(Context ctx) {
         int mentionId = Integer.parseInt(ctx.pathParam("id"));
+        if (mentionId <= 0) {
+            throw new ApiException(400, "ID must be a positive integer.");
+        }
         mentionService.deleteMention(mentionId);
         ctx.status(204);
     }

@@ -2,14 +2,15 @@ package app.daos.userOwned;
 
 import app.daos.generics.UserOwnedDAO;
 import app.entities.Devlog;
+import app.entities.Notification;
 import jakarta.persistence.EntityManagerFactory;
 
-public class NotificationDAO extends UserOwnedDAO<Devlog, Integer> {
+public class NotificationDAO extends UserOwnedDAO<Notification, Integer> {
 
     // ===== Constructor =====
 
-    protected NotificationDAO(EntityManagerFactory emf, Class<Devlog> entityClass) {
-        super(emf, entityClass);
+    public NotificationDAO(EntityManagerFactory emf) {
+        super(emf, Notification.class);
     }
 
 

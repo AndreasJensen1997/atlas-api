@@ -17,7 +17,7 @@ public class GeminiPrompt {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private Integer id;
 
     String content;
 

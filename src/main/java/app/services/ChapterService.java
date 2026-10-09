@@ -26,7 +26,6 @@ public class ChapterService {
         this.chapterMapper = chapterMapper;
     }
 
-    // ===== Create =====
 
     public Chapter createChapter(ChapterRequestDTO dto, int userId) {
         User owner = userService.getById(userId);

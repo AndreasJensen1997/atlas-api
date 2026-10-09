@@ -1,21 +1,75 @@
-POST {{url}}/generatePrompt
+### ==========================================
+### GENERATE PROMPT (AI Response Only)
+### ==========================================
+
+POST {{url}}/gemini-prompts/generate
 Authorization: {{JWT}}
 Accept: application/json
-Content-Type:application/json
+Content-Type: application/json
 
 {
-  "prompt": "Give me 3 movie titles"
+  "prompt": "Give me a small prompt about an experience i can write about in my journal"
 }
+
+###
+POST {{url}}/gemini-prompts/generate
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "prompt": "give me 3 movie titles"
+}
+
 
 
 ###
 
-POST {{url}}/savePrompt
+### ==========================================
+### SAVE PROMPT TO DATABASE
+### ==========================================
+
+POST {{url}}/gemini-prompts
 Authorization: {{JWT}}
 Accept: application/json
-Content-Type:application/json
+Content-Type: application/json
 
 {
-  "content": "This is the response from Gemini that I want to save to the database."
+  "content": "1. Interstellar\n2. 2001: A Space Odyssey\n3. The Martian"
 }
 
+###
+POST {{url}}/gemini-prompts
+Authorization: {{JWT}}
+Accept: application/json
+Content-Type: application/json
+
+{
+  "content": "Write about something from your childhood"
+}
+
+###
+
+### ==========================================
+### READ PROMPTS
+### ==========================================
+
+GET {{url}}/gemini-prompts/1
+Authorization: {{JWT}}
+Accept: application/json
+
+###
+
+GET {{url}}/gemini-prompts
+Authorization: {{JWT}}
+Accept: application/json
+
+###
+
+### ==========================================
+### DELETE PROMPT
+### ==========================================
+
+DELETE {{url}}/gemini-prompts/1
+Authorization: {{JWT}}
+Accept: application/json

@@ -30,7 +30,8 @@ public final class TestPopulator {
             TimeCapsule timeCapsule1, TimeCapsule timeCapsule2, TimeCapsule timeCapsule3,
             Mention mention1, Mention mention2, Mention mention3,
             Devlog devlog1, Devlog devlog2, Devlog devlog3,
-            Notification notification1, Notification notification2, Notification notification3
+            Notification notification1, Notification notification2, Notification notification3,
+            GeminiPrompt geminiPrompt1, GeminiPrompt geminiPrompt2, GeminiPrompt geminiPrompt3
     ) {
     }
 
@@ -39,7 +40,7 @@ public final class TestPopulator {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
             try {
-                em.createNativeQuery("TRUNCATE TABLE devlog,mention, timecapsule, story, place, person, memory, entityList, fragment, artifact, artifacttype, chapter, users RESTART IDENTITY CASCADE").executeUpdate();
+                em.createNativeQuery("TRUNCATE TABLE GeminiPrompt,devlog,mention, timecapsule, story, place, person, memory, entityList, fragment, artifact, artifacttype, chapter, users RESTART IDENTITY CASCADE").executeUpdate();
             } catch (PersistenceException e) {
                 // Ignores error if tables don't exist yet on first boot
             }
@@ -127,8 +128,6 @@ public final class TestPopulator {
             em.persist(person2);
             em.persist(person3);
 
-            // Inside your TestPopulator.populate() method:
-
             Place place1 = Place.builder().name("Copenhagen Central").content("Main station area").latitude(55.6761).longitude(12.5683).address("Bernstorffsgade 16").city("Copenhagen").country("Denmark").user(user1).build();
             Place place2 = Place.builder().name("Aarhus Ø").content("Modern harbor front").latitude(56.1629).longitude(10.2039).address("Ankersgade 1").city("Aarhus").country("Denmark").user(user2).build();
             Place place3 = Place.builder().name("Odense Zoo").content("Family attraction").latitude(55.3852).longitude(10.3736).address("Sdr. Boulevard 306").city("Odense").country("Denmark").user(user3).build();
@@ -177,6 +176,14 @@ public final class TestPopulator {
             em.persist(notification2);
             em.persist(notification3);
 
+            GeminiPrompt geminiPrompt1 = GeminiPrompt.builder().content("1. Interstellar, 2. Batman, 3. The odyssey").user(user1).build();
+            GeminiPrompt geminiPrompt2 = GeminiPrompt.builder().content("Write about something from your childhood").user(user1).build();
+            GeminiPrompt geminiPrompt3 = GeminiPrompt.builder().content("Write about a special holiday that means a lot to you").user(user2).build();
+
+            em.persist(geminiPrompt1);
+            em.persist(geminiPrompt2);
+            em.persist(geminiPrompt3);
+
 
             em.getTransaction().commit();
 
@@ -191,7 +198,8 @@ public final class TestPopulator {
                     place1, place2, place3, story1, story2, story3,
                     timeCapsule1, timeCapsule2, timeCapsule3,
                     mention1, mention2, mention3,
-                    devlog1, devlog2, devlog3, notification1, notification2, notification3);
+                    devlog1, devlog2, devlog3, notification1, notification2, notification3,
+                    geminiPrompt1,geminiPrompt2,geminiPrompt3);
         }
     }
 }

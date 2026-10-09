@@ -1,74 +1,103 @@
 package app.controllers;
 
+import app.controllers.generics.AbstractController;
+import app.dtos.geminiPrompt.GeminiPromptRequestDTO;
 import app.dtos.geminiPrompt.GeminiPromptResponseDTO;
 import app.dtos.geminiPrompt.GeminiPromptSaveDTO;
 import app.entities.GeminiPrompt;
+import app.exceptions.ApiException;
 import app.services.GeminiPromptService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.http.Context;
 
+import java.util.List;
 import java.util.Map;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 
-
-public class GeminiPromptController implements EndpointGroup {
+public class GeminiPromptController extends AbstractController<GeminiPromptSaveDTO, GeminiPromptResponseDTO, GeminiPrompt, Integer> implements EndpointGroup {
 
     // ===== Dependencies =====
 
-    private GeminiPromptService geminiPromptService;
+    private final GeminiPromptService geminiPromptService;
 
     // ===== Constructor =====
 
     public GeminiPromptController(GeminiPromptService geminiPromptService) {
         this.geminiPromptService = geminiPromptService;
+    }
 
+    // ===== Custom Operations =====
+
+    public void generatePrompt(Context ctx) throws JsonProcessingException {
+        getUserIdOrThrow(ctx);
+
+        GeminiPromptRequestDTO requestDTO = ctx.bodyValidator(GeminiPromptRequestDTO.class)
+                .check(req -> req.prompt() != null && !req.prompt().isBlank(), "Prompt text cannot be empty.")
+                .get();
+
+        String generatedText = geminiPromptService.askGemini(requestDTO.prompt());
+
+        ctx.status(200).json(Map.of("promptText", generatedText));
+    }
+
+    // ===== Request Handling =====
+
+    @Override
+    protected GeminiPromptSaveDTO parseBody(Context ctx) {
+        return ctx.bodyValidator(GeminiPromptSaveDTO.class)
+                .check(req -> req.content() != null && !req.content().isBlank(), "Content cannot be blank")
+                .get();
     }
 
     // ===== Entity Operations =====
 
-    public void generatePrompt(Context ctx) {
-        try {
-            Map<String, String> body = ctx.bodyAsClass(Map.class);
-            String userInput = body.get("prompt");
-
-            // Just get the text from Gemini
-            String generatedText = geminiPromptService.askGemini(userInput);
-
-            // Send it back to the frontend for the user to look at
-            ctx.status(200).json(Map.of("promptText", generatedText));
-
-        } catch (Exception e) {
-            ctx.status(500).json(Map.of("error", e.getMessage()));
-        }
+    @Override
+    protected GeminiPrompt createEntity(GeminiPromptSaveDTO dto, Integer userId) {
+        return geminiPromptService.savePromptText(dto.content(), userId);
     }
 
-    public void savePrompt(Context ctx) {
-        try {
-            GeminiPromptSaveDTO dto = ctx.bodyAsClass(GeminiPromptSaveDTO.class);
-            Integer currentUserId = ctx.attribute("currentUserId");
+    @Override
+    protected GeminiPrompt fetchEntityById(Integer promptId, Integer userId) {
+        return geminiPromptService.getById(promptId, userId);
+    }
 
-            if (currentUserId == null) {
-                ctx.status(401).json(Map.of("error", "Unauthorized"));
-                return;
-            }
+    @Override
+    protected List<GeminiPrompt> fetchAllByUserId(Integer userId) {
+        return geminiPromptService.getAllById(userId);
+    }
 
-            GeminiPrompt saved = geminiPromptService.savePromptText(dto.content(), currentUserId);
+    @Override
+    protected GeminiPrompt updateEntity(Integer promptId, GeminiPromptSaveDTO dto, Integer userId) {
+        throw new ApiException(405, "Updating prompt history is not supported.");
+    }
 
-            GeminiPromptResponseDTO responseDTO = new GeminiPromptResponseDTO(saved.getId(), saved.getContent());
+    @Override
+    protected GeminiPrompt getRandom(Integer userId) {
+        throw new ApiException(405, "Get random feature not supported for prompts.");
+    }
 
-            ctx.status(201).json(responseDTO);
+    @Override
+    protected void deleteEntity(Integer promptId, Integer userId) {
+        geminiPromptService.delete(promptId, userId);
+    }
 
-        } catch (Exception e) {
-            ctx.status(400).json(Map.of("error", e.getMessage()));
-        }
+    // ===== Response Mapping =====
+
+    @Override
+    protected GeminiPromptResponseDTO mapToResponse(GeminiPrompt entity) {
+        return new GeminiPromptResponseDTO(entity.getId(), entity.getContent());
     }
 
     // ===== Endpoints =====
 
     @Override
     public void addEndpoints() {
-        post("/api/generatePrompt", this::generatePrompt);
-        post("/api/savePrompt", this::savePrompt);
+        post("/api/gemini-prompts/generate", this::generatePrompt);
+        post("/api/gemini-prompts", this::create);
+        get("/api/gemini-prompts/{id}", this::getById);
+        get("/api/gemini-prompts", this::getAllById);
+        delete("/api/gemini-prompts/{id}", this::deleteById);
     }
 }

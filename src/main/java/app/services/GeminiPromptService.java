@@ -2,8 +2,10 @@ package app.services;
 
 import app.daos.userOwned.GeminiPromptDAO;
 import app.dtos.geminiPrompt.GeminiResponseDTO;
+import app.entities.Chapter;
 import app.entities.User;
 import app.entities.GeminiPrompt;
+import app.exceptions.ApiException;
 import app.mappers.GeminiPromptMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -89,7 +91,7 @@ public class GeminiPromptService {
         }
     }
 
-    // ===== Persistence =====
+    // ===== Create =====
 
     public GeminiPrompt savePromptText(String textContent, Integer userId) {
         User user = userService.getById(userId);
@@ -101,4 +103,34 @@ public class GeminiPromptService {
 
         return geminiPromptDAO.create(prompt);
     }
+
+    // ===== Read =====
+
+    public GeminiPrompt getById(Integer geminiPromptId, int userId) {
+        GeminiPrompt geminiPrompt = geminiPromptDAO.getById(geminiPromptId);
+
+        if (geminiPrompt == null) {
+            throw new IllegalArgumentException("Chapter not found with ID: " + geminiPromptId);
+        }
+
+        if (!geminiPrompt.getUser().getId().equals(userId)) {
+            throw new ApiException(404, "Prompt not found with ID: " + geminiPromptId);
+        }
+        return geminiPrompt;
+    }
+
+    public List<GeminiPrompt> getAllById(int userId) {
+
+        return geminiPromptDAO.getAllByUserId(userId);
+    }
+
+    // ===== Delete =====
+
+    public void delete(Integer chapterId, int userId) {
+        GeminiPrompt geminiPrompt = getById(chapterId, userId);
+
+        geminiPromptDAO.delete(geminiPrompt.getId());
+    }
+
+
 }

@@ -75,7 +75,7 @@ class ArtifactDAOTest {
     }
 
     @Test
-    void getAllChaptersByUserId(){
+    void getAllArtifactsByUserId(){
 
         List<Artifact> all = artifactDAO.getAllByUserId(seeded.artifact1().getUser().getId());
 

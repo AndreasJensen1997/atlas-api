@@ -1,6 +1,6 @@
 package app.dtos.geminiPrompt;
 
 public record GeminiPromptResponseDTO(
-        Long id,
+        Integer id,
         String content)
 {}

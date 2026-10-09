@@ -19,22 +19,24 @@ public class MentionDAO extends GenericDAO<Mention, Integer> {
 
     // ===== Custom Operations =====
 
-    public List<Mention> getIncomingMentions(TargetType targetType, int targetId) {
+    public List<Mention> getIncomingMentions(TargetType targetType, int targetId, int userId) {
         try (EntityManager em = emf.createEntityManager()) {
-            String jpql = "SELECT m FROM Mention m WHERE m.targetType = :targetType AND m.targetId = :targetId";
+            String jpql = "SELECT m FROM Mention m WHERE m.targetType = :targetType AND m.targetId = :targetId AND m.user.id = :userId";
             TypedQuery<Mention> query = em.createQuery(jpql, Mention.class);
             query.setParameter("targetType", targetType);
             query.setParameter("targetId", targetId);
+            query.setParameter("userId", userId);
             return query.getResultList();
         }
     }
 
-    public List<Mention> getOutgoingMentions(TargetType ownerType, int ownerId) {
+    public List<Mention> getOutgoingMentions(TargetType ownerType, int ownerId, int userId) {
         try (EntityManager em = emf.createEntityManager()) {
-            String jpql = "SELECT m FROM Mention m WHERE m.ownerType = :ownerType AND m.ownerId = :ownerId";
+            String jpql = "SELECT m FROM Mention m WHERE m.ownerType = :ownerType AND m.ownerId = :ownerId AND m.user.id = :userId";
             TypedQuery<Mention> query = em.createQuery(jpql, Mention.class);
             query.setParameter("ownerType", ownerType);
             query.setParameter("ownerId", ownerId);
+            query.setParameter("userId", userId);
             return query.getResultList();
         }
     }

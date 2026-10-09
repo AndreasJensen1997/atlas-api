@@ -29,15 +29,17 @@ class MentionDAOTest {
         mentionDAO = new MentionDAO(emf);
     }
 
-
-
     @Test
     void create() {
         Mention newMention = Mention.builder()
                 .targetType(TargetType.PERSON)
-                .targetId(1)
+                .targetId(seeded.person1().getId())
                 .ownerType(TargetType.MEMORY)
-                .ownerId(1)
+                .ownerId(seeded.memory1().getId())
+                .startIndex(0)
+                .endIndex(4)
+                .selectedText("test")
+                .user(seeded.user1())
                 .build();
 
         Mention created = mentionDAO.create(newMention);
@@ -45,9 +47,12 @@ class MentionDAOTest {
 
         assertThat(created.getId(), notNullValue());
         assertThat(fetched.getTargetType(), is(TargetType.PERSON));
-        assertThat(fetched.getTargetId(), is(1));
+        assertThat(fetched.getTargetId(), is(seeded.person1().getId()));
         assertThat(fetched.getOwnerType(), is(TargetType.MEMORY));
-        assertThat(fetched.getOwnerId(), is(1));
+        assertThat(fetched.getOwnerId(), is(seeded.memory1().getId()));
+        assertThat(fetched.getStartIndex(), is(0));
+        assertThat(fetched.getEndIndex(), is(4));
+        assertThat(fetched.getUser().getId(), is(seeded.user1().getId()));
     }
 
     @Test
@@ -68,7 +73,7 @@ class MentionDAOTest {
     @Test
     void getIncomingMentions() {
         Mention seed = seeded.mention1();
-        List<Mention> incoming = mentionDAO.getIncomingMentions(seed.getTargetType(), seed.getTargetId());
+        List<Mention> incoming = mentionDAO.getIncomingMentions(seed.getTargetType(), seed.getTargetId(),seed.getUser().getId());
 
         assertThat(incoming, not(empty()));
         for (Mention m : incoming) {
@@ -80,7 +85,7 @@ class MentionDAOTest {
     @Test
     void getOutgoingMentions() {
         Mention seed = seeded.mention1();
-        List<Mention> outgoing = mentionDAO.getOutgoingMentions(seed.getOwnerType(), seed.getOwnerId());
+        List<Mention> outgoing = mentionDAO.getOutgoingMentions(seed.getOwnerType(), seed.getOwnerId(),seed.getUser().getId());
 
         assertThat(outgoing, not(empty()));
         for (Mention m : outgoing) {
@@ -99,6 +104,10 @@ class MentionDAOTest {
                 .targetId(99)
                 .ownerType(TargetType.STORY)
                 .ownerId(88)
+                .startIndex(2)
+                .endIndex(7)
+                .selectedText("new")
+                .user(seed.getUser())
                 .build();
 
         Mention result = mentionDAO.update(updated);
@@ -108,6 +117,8 @@ class MentionDAOTest {
         assertThat(result.getTargetId(), is(99));
         assertThat(result.getOwnerType(), is(TargetType.STORY));
         assertThat(result.getOwnerId(), is(88));
+        assertThat(result.getStartIndex(), is(2));
+        assertThat(result.getEndIndex(), is(7));
     }
 
     @Test
@@ -165,5 +176,27 @@ class MentionDAOTest {
     void delete_withMissingId_throwsApiException() {
         ApiException ex = assertThrows(ApiException.class, () -> mentionDAO.delete(999_999));
         assertThat(ex.getStatusCode(), is(404));
+    }
+
+    @Test
+    void getIncomingMentions_otherUser_returnsEmpty() {
+        Mention seed = seeded.mention1();
+        int otherUserId = seeded.user2().getId();
+
+        List<Mention> result = mentionDAO.getIncomingMentions(
+                seed.getTargetType(), seed.getTargetId(), otherUserId);
+
+        assertThat(result, empty());
+    }
+
+    @Test
+    void getOutgoingMentions_otherUser_returnsEmpty() {
+        Mention seed = seeded.mention1();
+        int otherUserId = seeded.user2().getId();
+
+        List<Mention> result = mentionDAO.getOutgoingMentions(
+                seed.getOwnerType(), seed.getOwnerId(), otherUserId);
+
+        assertThat(result, empty());
     }
 }

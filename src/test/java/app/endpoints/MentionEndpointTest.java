@@ -27,6 +27,7 @@ public class MentionEndpointTest {
 
     private TestPopulator.SeededData seeded;
     private String userToken;
+    private String user2Token;
 
     @BeforeAll
     static void init() {
@@ -48,9 +49,8 @@ public class MentionEndpointTest {
         TestPopulator.cleanup(emf);
         seeded = TestPopulator.populate(emf);
 
-        userToken = "Bearer " + JWTToken.generateToken(
-                seeded.user1().getEmail()
-        );
+        userToken = "Bearer " + JWTToken.generateToken(seeded.user1().getEmail());
+        user2Token = "Bearer " + JWTToken.generateToken(seeded.user2().getEmail());
     }
 
     @AfterEach
@@ -147,18 +147,34 @@ public class MentionEndpointTest {
     // ENDPOINT TESTS FAILURE
     // ==========================================
 
-    // ===== Create =====
+    // ===== Validation: Create =====
+
+    @Test
+    void createMention_StartAfterEnd_BadRequest() {
+        MentionRequestDTO dto = new MentionRequestDTO(
+                seeded.memory1().getId(), TargetType.MEMORY,
+                10, 5, "test",
+                seeded.person1().getId(), TargetType.PERSON);
+
+        given().header("Authorization", userToken)
+                .contentType(ContentType.JSON).body(dto)
+                .when().post("/mentions")
+                .then().statusCode(HttpStatus.BAD_REQUEST.getCode());
+    }
+
+    @Test
+    void createMention_MissingFields_BadRequest() {
+        MentionRequestDTO dto = new MentionRequestDTO(null, null, null, null, null, null, null);
+
+        given().header("Authorization", userToken)
+                .contentType(ContentType.JSON).body(dto)
+                .when().post("/mentions")
+                .then().statusCode(HttpStatus.BAD_REQUEST.getCode());
+    }
 
     @Test
     void createMention_Unauthorized_WithoutToken() {
-        MentionRequestDTO requestDTO = new MentionRequestDTO(
-                seeded.memory1().getId(),
-                TargetType.MEMORY,
-                0,
-                5,
-                "test",
-                seeded.person1().getId(),
-                TargetType.PERSON
+        MentionRequestDTO requestDTO = new MentionRequestDTO(seeded.memory1().getId(), TargetType.MEMORY, 0, 5, "test", seeded.person1().getId(), TargetType.PERSON
         );
 
         given()
@@ -168,6 +184,40 @@ public class MentionEndpointTest {
                 .post("/mentions")
                 .then()
                 .statusCode(HttpStatus.UNAUTHORIZED.getCode());
+    }
+
+    // ===== Authorization: Create =====
+
+    @Test
+    void createMention_TargetBelongsToOtherUser_NotFound() {
+        // memory1 is tied to user 1, but person 2 is linked to user 2
+        MentionRequestDTO dto = new MentionRequestDTO(seeded.memory1().getId(), TargetType.MEMORY, 0, 5, "test", seeded.person2().getId(), TargetType.PERSON);
+
+        given().header("Authorization", userToken)
+                .contentType(ContentType.JSON).body(dto)
+                .when().post("/mentions")
+                .then().statusCode(HttpStatus.NOT_FOUND.getCode());
+    }
+
+    @Test
+    void createMention_OwnerBelongsToOtherUser_NotFound() {
+        MentionRequestDTO dto = new MentionRequestDTO(seeded.memory2().getId(), TargetType.MEMORY, 0, 5, "test", seeded.person1().getId(), TargetType.PERSON);
+        // memory 2 is tied to user 2
+
+        given().header("Authorization", userToken)
+                .contentType(ContentType.JSON).body(dto)
+                .when().post("/mentions")
+                .then().statusCode(HttpStatus.NOT_FOUND.getCode());
+    }
+
+    @Test
+    void createMention_TargetDoesNotExist_NotFound() {
+        MentionRequestDTO dto = new MentionRequestDTO(seeded.memory1().getId(), TargetType.MEMORY, 0, 5, "test", 999_999, TargetType.PERSON);
+
+        given().header("Authorization", userToken)
+                .contentType(ContentType.JSON).body(dto)
+                .when().post("/mentions")
+                .then().statusCode(HttpStatus.NOT_FOUND.getCode());
     }
 
     // ===== Read =====
@@ -210,6 +260,23 @@ public class MentionEndpointTest {
                 .statusCode(HttpStatus.BAD_REQUEST.getCode());
     }
 
+    @Test
+    void getOutgoingMentions_OtherUsersPage_ReturnsEmptyList() {
+        // mention3 (chapter2 → person2) tilhører user2
+        given().header("Authorization", userToken)
+                .when().get("/mentions/owner/CHAPTER/" + seeded.chapter2().getId())
+                .then().statusCode(HttpStatus.OK.getCode())
+                .body("size()", equalTo(0));
+    }
+
+    @Test
+    void getIncomingMentions_OtherUsersPage_ReturnsEmptyList() {
+        given().header("Authorization", userToken)
+                .when().get("/mentions/target/PERSON/" + seeded.person2().getId())
+                .then().statusCode(HttpStatus.OK.getCode())
+                .body("size()", equalTo(0));
+    }
+
     // ===== Delete =====
 
     @Test
@@ -239,5 +306,20 @@ public class MentionEndpointTest {
                 .delete("/mentions/9999")
                 .then()
                 .statusCode(HttpStatus.NOT_FOUND.getCode());
+    }
+
+    @Test
+    void deleteMention_OtherUsersMention_NotFound_AndStillExists() {
+        int mentionId = seeded.mention3().getId();   // tilhører user2
+
+        given().header("Authorization", userToken)
+                .when().delete("/mentions/" + mentionId)
+                .then().statusCode(HttpStatus.NOT_FOUND.getCode());
+
+        // user2 kan stadig se den, altså blev den ikke slettet
+        given().header("Authorization", user2Token)
+                .when().get("/mentions/owner/CHAPTER/" + seeded.chapter2().getId())
+                .then().statusCode(HttpStatus.OK.getCode())
+                .body("size()", equalTo(1));
     }
 }

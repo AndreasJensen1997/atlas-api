@@ -1,8 +1,10 @@
 package app.config;
 
 import app.controllers.*;
+import app.daos.generics.UserOwnedDAO;
 import app.daos.user.UserDAO;
 import app.daos.userOwned.*;
+import app.enums.TargetType;
 import app.exceptions.ApiException;
 import app.mappers.*;
 import app.services.*;
@@ -118,10 +120,21 @@ public class ApplicationConfig implements EndpointGroup {
 
         // ===== Mention =====
 
+        Map<TargetType, UserOwnedDAO<?, Integer>> pageDaos = Map.of(
+                TargetType.CHAPTER,  chapterDAO,
+                TargetType.STORY,    storyDAO,
+                TargetType.MEMORY,   memoryDAO,
+                TargetType.ARTIFACT, artifactDAO,
+                TargetType.PERSON,   personDAO,
+                TargetType.PLACE,    placeDAO
+        );
+
         MentionDAO mentionDAO = new MentionDAO(emf);
         MentionMapper mentionMapper = new MentionMapper();
-        MentionService mentionService = new MentionService(mentionDAO, mentionMapper);
+        MentionService mentionService = new MentionService(mentionDAO,userService,mentionMapper,pageDaos);
         mentionController = new MentionController(mentionService);
+
+
 
         // ===== EntityList =====
         EntityListDAO entityListDAO = new EntityListDAO(emf);

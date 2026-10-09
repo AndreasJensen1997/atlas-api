@@ -33,8 +33,12 @@ public class Mention {
 
     // ===== Text Positioning Tracking =====
 
+    @Column(nullable = false)
     private Integer startIndex;
+
+    @Column(nullable = false)
     private Integer endIndex;
+
     private String selectedText;
 
     // ===== The Target (What the link points to) =====
@@ -45,6 +49,14 @@ public class Mention {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private TargetType targetType; // ARTIFACT, MEMORY, PERSON
+
+    // ===== Relations =====
+
+    // M:1
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "user_id", nullable = false)
+    @Setter
+    private User user;
 
     // ===== Equals & HashCode =====
 

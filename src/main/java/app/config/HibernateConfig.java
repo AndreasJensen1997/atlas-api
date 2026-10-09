@@ -24,11 +24,12 @@ public final class HibernateConfig {
 
     private static Properties buildProps() {
         Properties props = HibernateBaseProperties.createBase();
+        boolean deployed = System.getenv("DEPLOYED") != null;
 
-        // Teaching-friendly default - change to update in production
-        props.put("hibernate.hbm2ddl.auto", "create");
+        // create wipes the schema on every start: local dev only. Deployed uses update.
+        props.put("hibernate.hbm2ddl.auto", deployed ? "update" : "create");
 
-        if (System.getenv("DEPLOYED") != null) {
+        if (deployed) {
             setDeployedProperties(props);
         } else {
             setDevProperties(props);

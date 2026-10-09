@@ -104,6 +104,11 @@ public class User {
     @ToString.Exclude
     private Set<GeminiPrompt> geminiPrompts = new HashSet<>();
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Setter
+    @ToString.Exclude
+    private Set<Mention> mentions = new HashSet<>();
+
 
 
     // ===== JPA Lifecycle Callbacks =====

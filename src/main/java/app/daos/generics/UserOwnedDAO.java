@@ -67,4 +67,15 @@ public class UserOwnedDAO<T, I> extends GenericDAO<T, I> {
             throw new ApiException(500, "Failed to find " + className + " by title and user: " + e.getMessage());
         }
     }
+
+    public boolean existsByIdAndUserId(I id, I userId) {
+        try (EntityManager em = emf.createEntityManager()) {
+            String jpql = "SELECT COUNT(e) FROM " + entityClass.getSimpleName() + " e WHERE e.id = :id AND e.user.id = :userId";
+            Long count = em.createQuery(jpql, Long.class)
+                    .setParameter("id", id)
+                    .setParameter("userId", userId)
+                    .getSingleResult();
+            return count > 0;
+        }
+    }
 }

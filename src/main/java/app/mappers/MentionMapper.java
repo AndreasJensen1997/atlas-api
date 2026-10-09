@@ -3,10 +3,11 @@ package app.mappers;
 import app.dtos.Mention.MentionRequestDTO;
 import app.dtos.Mention.MentionResponseDTO;
 import app.entities.Mention;
+import app.entities.User;
 
 public class MentionMapper {
 
-    public Mention toEntity(MentionRequestDTO dto) {
+    public Mention toEntity(MentionRequestDTO dto, User user ) {
         return Mention.builder()
                 .ownerId(dto.ownerId())
                 .ownerType(dto.ownerType())
@@ -15,6 +16,7 @@ public class MentionMapper {
                 .selectedText(dto.selectedText())
                 .targetId(dto.targetId())
                 .targetType(dto.targetType())
+                .user(user)
                 .build();
     }
 

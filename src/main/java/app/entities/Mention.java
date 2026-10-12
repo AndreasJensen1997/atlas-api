@@ -39,6 +39,7 @@ public class Mention {
     @Column(nullable = false)
     private Integer endIndex;
 
+    @Column(columnDefinition = "TEXT", nullable = false)
     private String selectedText;
 
     // ===== The Target (What the link points to) =====

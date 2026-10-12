@@ -31,13 +31,14 @@ public class GeminiPromptController extends AbstractController<GeminiPromptSaveD
     // ===== Custom Operations =====
 
     public void generatePrompt(Context ctx) throws JsonProcessingException {
-        getUserIdOrThrow(ctx);
-
+        Integer userId = getUserIdOrThrow(ctx);
         GeminiPromptRequestDTO requestDTO = ctx.bodyValidator(GeminiPromptRequestDTO.class)
                 .check(req -> req.prompt() != null && !req.prompt().isBlank(), "Prompt text cannot be empty.")
+                .check(req -> req.prompt() == null || req.prompt().length() <= 500,
+                        "Prompt cannot be longer than 500 characters")
                 .get();
 
-        String generatedText = geminiPromptService.askGemini(requestDTO.prompt());
+        String generatedText = geminiPromptService.askGemini(requestDTO.prompt(),userId);
 
         ctx.status(200).json(Map.of("promptText", generatedText));
     }

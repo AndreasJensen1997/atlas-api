@@ -2,22 +2,27 @@ package app.services;
 
 import app.daos.userOwned.GeminiPromptDAO;
 import app.dtos.geminiPrompt.GeminiResponseDTO;
-import app.entities.Chapter;
 import app.entities.User;
 import app.entities.GeminiPrompt;
 import app.exceptions.ApiException;
 import app.mappers.GeminiPromptMapper;
+import app.utils.general.Utils;
+import app.utils.security.RateLimiter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.net.http.HttpTimeoutException;
+import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 public class GeminiPromptService {
 
     // ===== Dependencies =====
@@ -25,7 +30,11 @@ public class GeminiPromptService {
     ObjectMapper objectMapper = new ObjectMapper();
     private final GeminiPromptDAO geminiPromptDAO;
     private final UserService userService;
-    String apiKey = System.getenv("GEMINI_API_KEY");
+    private final RateLimiter rateLimiter = new RateLimiter(10, Duration.ofHours(1));
+    private static final HttpClient HTTP_CLIENT = HttpClient.newBuilder()
+            .connectTimeout(Duration.ofSeconds(5))
+            .build();
+
 
     // ===== Constructor =====
 
@@ -34,14 +43,33 @@ public class GeminiPromptService {
         this.userService = userService;
     }
 
+
+    private static String loadApiKey() {
+        String key;
+        try {
+            key = System.getenv("DEPLOYED") != null
+                    ? System.getenv("GEMINI_API_KEY")
+                    : Utils.getPropertyValue("GEMINI_API_KEY", "config.properties");
+        } catch (ApiException e) {
+            key = null;
+        }
+        if (key == null || key.isBlank()) {
+            throw new ApiException(503, "The AI service is not configured");
+        }
+        return key;
+    }
+
     // ===== Gemini API =====
 
     public String geminiRequest(String prompt) throws JsonProcessingException {
+        String apiKey = loadApiKey();
         Map<String, Object> body = Map.of(
                 "contents", List.of(
                         Map.of("parts", List.of(
                                 Map.of("text", prompt)))),
-                "generationConfig", Map.of("responseMimeType", "application/json")
+                "generationConfig", Map.of(
+                        "responseMimeType", "application/json",
+                        "maxOutputTokens", 300)
         );
 
         String jsonBody = null;
@@ -58,37 +86,50 @@ public class GeminiPromptService {
                 .header("Content-Type", "application/json")
                 .header("x-goog-api-key", apiKey)
                 .POST(HttpRequest.BodyPublishers.ofString(jsonBody))
+                .timeout(Duration.ofSeconds(20))
                 .build();
 
-        HttpClient client = HttpClient.newHttpClient();
-        HttpResponse<String> response = null;
+        HttpResponse<String> response;
         try {
-            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            response = HTTP_CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (HttpTimeoutException e) {
+            throw new ApiException(504, "The AI service took too long to respond");
+        } catch (IOException e) {
+            throw new ApiException(502, "Could not reach the AI service", e);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new ApiException(503, "The request was interrupted");
+        }
 
-        } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+        int status = response.statusCode();
+        if (status == 429) {
+            throw new ApiException(503, "The AI service is busy right now, try again later");
+        }
+        if (status != 200) {
+            log.error("Gemini returned status {}: {}", status, response.body());
+            throw new ApiException(502, "The AI service returned an error");
         }
         return response.body();
     }
 
     // ===== Response Processing =====
 
-    public String askGemini(String userInput) throws JsonProcessingException {
-        String rawJson = geminiRequest(userInput);
+    public String askGemini(String prompt, int userId) throws JsonProcessingException {
+        rateLimiter.check(userId);
+        String rawJson = geminiRequest(prompt);
 
+        GeminiResponseDTO responseDto;
         try {
-            GeminiResponseDTO responseDto = objectMapper.readValue(rawJson, GeminiResponseDTO.class);
-
-            GeminiPrompt tempPrompt = GeminiPromptMapper.toEntity(responseDto);
-
-            if (tempPrompt == null || tempPrompt.getContent() == null) {
-                throw new RuntimeException("Could not extract text from Gemini response.");
-            }
-            return tempPrompt.getContent();
-
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to parse Gemini response: " + e.getMessage(), e);
+            responseDto = objectMapper.readValue(rawJson, GeminiResponseDTO.class);
+        } catch (JsonProcessingException e) {
+            throw new ApiException(502, "The AI service returned an unexpected response", e);
         }
+
+        GeminiPrompt tempPrompt = GeminiPromptMapper.toEntity(responseDto);
+        if (tempPrompt == null || tempPrompt.getContent() == null) {
+            throw new ApiException(502, "The AI service returned an unexpected response");
+        }
+        return tempPrompt.getContent();
     }
 
     // ===== Create =====
@@ -122,8 +163,8 @@ public class GeminiPromptService {
 
     // ===== Delete =====
 
-    public void delete(Integer chapterId, int userId) {
-        GeminiPrompt geminiPrompt = getById(chapterId, userId);
+    public void delete(Integer geminiPromptId, int userId) {
+        GeminiPrompt geminiPrompt = getById(geminiPromptId, userId);
 
         geminiPromptDAO.delete(geminiPrompt.getId());
     }

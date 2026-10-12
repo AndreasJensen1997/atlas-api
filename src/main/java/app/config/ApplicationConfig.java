@@ -201,8 +201,6 @@ public class ApplicationConfig implements EndpointGroup {
         app.before("/api/*", ctx -> SecurityFilter.verifyToken(ctx, userService));
 
         // ===== Role validation =====
-        app.before("/api/*", ctx -> SecurityFilter.verifyToken(ctx, userService));
-
         app.beforeMatched(ctx -> {
             Set<RouteRole> required = ctx.routeRoles();
 

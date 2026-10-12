@@ -53,6 +53,15 @@ class GeminiPromptDAOTest {
     }
 
     @Test
+    void create_LongContent_Success() {
+        String longText = "x".repeat(5000);
+        GeminiPrompt created = geminiPromptDAO.create(
+                GeminiPrompt.builder().content(longText).user(seeded.user1()).build());
+
+        assertThat(geminiPromptDAO.getById(created.getId()).getContent().length(), is(5000));
+    }
+
+    @Test
     void getById() {
         GeminiPrompt seed = seeded.geminiPrompt1();
         GeminiPrompt fetched = geminiPromptDAO.getById(seed.getId());

@@ -3,6 +3,7 @@ package app.controllers;
 import app.dtos.user.UserResponseDTO;
 import app.dtos.user.UserUpdateDTO;
 import app.entities.User;
+import app.enums.Role;
 import app.mappers.UserMapper;
 import app.services.UserService;
 import io.javalin.apibuilder.EndpointGroup;
@@ -93,8 +94,8 @@ public class UserController implements EndpointGroup {
     @Override
     public void addEndpoints() {
         get("api/users/current", this::getCurrentUser);
-        get("api/users/{id}", this::getById);
-        get("api/users", this::getAll);
+        get("api/users/{id}", this::getById, Role.ADMIN);
+        get("api/users", this::getAll, Role.ADMIN);
         put("api/users/{id}", this::update);
         delete("api/users/{id}", this::deleteUser);
     }

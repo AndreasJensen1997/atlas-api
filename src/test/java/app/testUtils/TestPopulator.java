@@ -17,7 +17,7 @@ public final class TestPopulator {
     }
 
     public record SeededData(
-            User user1, User user2, User user3,
+            User user1, User user2, User user3, User admin,
             Chapter chapter1, Chapter chapter2, Chapter chapter3,
             Artifact artifact1, Artifact artifact2, Artifact artifact3, Artifact artifact4,
             ArtifactType musicType, ArtifactType objectType, ArtifactType vehicleType,
@@ -58,10 +58,12 @@ public final class TestPopulator {
             User user1 = User.builder().name("Andreas").email("andreas.jensen@outlook.dk").password("1234").role(Role.USER).build();
             User user2 = User.builder().name("morten").email("morten.jensen@outlook.dk").password("1234").role(Role.USER).build();
             User user3 = User.builder().name("theis").email("theis.jensen@outlook.dk").password("1234").role(Role.USER).build();
+            User admin = User.builder().name("admin").email("admin@outlook.dk").password("1234").role(Role.ADMIN).build();
 
             em.persist(user1);
             em.persist(user2);
             em.persist(user3);
+            em.persist(admin);
 
             // Create chapters
             Chapter chapter1 = Chapter.builder().title("Years in china ").subtitle("My exchange years in china").user(user1).build();
@@ -187,7 +189,7 @@ public final class TestPopulator {
 
             em.getTransaction().commit();
 
-            return new SeededData(user1, user2, user3,
+            return new SeededData(user1, user2, user3, admin,
                     chapter1, chapter2, chapter3,
                     artifact1, artifact2, artifact3, artifact4,
                     musicType, objectType, vehicleType,

@@ -30,6 +30,7 @@ public class UserEndpointTest {
     private TestPopulator.SeededData seeded;
     private String userToken;
     private String userToken2;
+    private String adminToken;
 
     @BeforeAll
     static void init() {
@@ -56,6 +57,9 @@ public class UserEndpointTest {
         );
         userToken2 = "Bearer " + JWTToken.generateToken(
                 seeded.user2().getEmail()
+        );
+        adminToken = "Bearer " + JWTToken.generateToken(
+                seeded.admin().getEmail()
         );
     }
 
@@ -94,7 +98,7 @@ public class UserEndpointTest {
         int userId = seeded.user1().getId();
 
         given()
-                .header("Authorization", userToken)
+                .header("Authorization", adminToken)
                 .when()
                 .get("/users/" + userId)
                 .then()
@@ -106,7 +110,7 @@ public class UserEndpointTest {
     @Test
     void getAllUsers_Success() {
         List<UserResponseDTO> users = given()
-                .header("Authorization", userToken)
+                .header("Authorization", adminToken)
                 .when()
                 .get("/users")
                 .then()
@@ -157,7 +161,7 @@ public class UserEndpointTest {
 
         // Verify user was deleted
         given()
-                .header("Authorization", userToken2 )
+                .header("Authorization", adminToken )
                 .when()
                 .get("/users/" + userId)
                 .then()
@@ -191,7 +195,7 @@ public class UserEndpointTest {
     @Test
     void getUserById_WrongData() {
         given()
-                .header("Authorization", userToken)
+                .header("Authorization", adminToken)
                 .when()
                 .get("/users/-1")
                 .then()
@@ -201,7 +205,7 @@ public class UserEndpointTest {
     @Test
     void getUserById_NotFound() {
         given()
-                .header("Authorization", userToken)
+                .header("Authorization", adminToken)
                 .when()
                 .get("/users/9999")
                 .then()

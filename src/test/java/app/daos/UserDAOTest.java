@@ -57,8 +57,8 @@ class UserDAOTest {
     @Test
     void getAll() {
         List<User> all = userDAO.getAll();
-        assertThat(all, hasSize(3));
-        assertThat(all, containsInAnyOrder(seeded.user1(), seeded.user2(), seeded.user3()));
+        assertThat(all, hasSize(4));
+        assertThat(all, containsInAnyOrder(seeded.user1(), seeded.user2(), seeded.user3(),seeded.admin()));
     }
 
     @Test

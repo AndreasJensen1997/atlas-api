@@ -43,10 +43,6 @@ public class TimeCapsuleService {
     public TimeCapsule getById(Integer timeCapsuleId, int userId) {
         TimeCapsule timeCapsule = timeCapsuleDAO.getById(timeCapsuleId);
 
-        if (timeCapsule == null) {
-            throw new IllegalArgumentException("Time capsule not found with ID: " + timeCapsuleId);
-        }
-
         if (!timeCapsule.getUser().getId().equals(userId)) {
             throw new ApiException(404, "Chapter not found with ID: " + timeCapsuleId);
         }

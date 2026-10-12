@@ -10,6 +10,7 @@ import app.services.TimeCapsuleService;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.http.Context;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
@@ -35,6 +36,7 @@ public class TimeCapsuleController extends AbstractController<TimeCapsuleRequest
         return ctx.bodyValidator(TimeCapsuleRequestDTO.class)
                 .check(req -> req.title() != null && !req.title().isBlank(), "Title cannot be blank")
                 .check(req -> req.unlockDate() != null, "Unlock date cannot be blank")
+                .check(req -> req.unlockDate() == null || req.unlockDate().isAfter(LocalDate.now()), "Unlock date must be in the future")
                 .get();
     }
 

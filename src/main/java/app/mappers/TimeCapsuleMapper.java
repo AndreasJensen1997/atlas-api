@@ -24,13 +24,15 @@ public class TimeCapsuleMapper implements IMapper<TimeCapsuleRequestDTO, TimeCap
     public TimeCapsuleResponseDTO toResponse(TimeCapsule timeCapsule) {
         if (timeCapsule == null) return null;
 
+        boolean locked = timeCapsule.isLocked();
+
         return new TimeCapsuleResponseDTO(
                 timeCapsule.getId(),
                 timeCapsule.getTitle(),
                 timeCapsule.getSubtitle(),
-                timeCapsule.getContent(),
+                locked ? null : timeCapsule.getContent(),
                 timeCapsule.getUnlockDate(),
-                timeCapsule.isLockStatus()
+                locked
 
         );
     }

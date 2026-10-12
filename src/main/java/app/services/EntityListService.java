@@ -46,7 +46,8 @@ public class EntityListService {
         EntityList entityList = entityListDAO.getById(entityListId);
 
         if (!entityList.getUser().getId().equals(userId)) {
-            throw new ApiException(404, "List not found with ID: " + entityListId);        }
+            throw new ApiException(404, "List not found with ID: " + entityListId);
+        }
         return entityList;
     }
 
@@ -89,7 +90,7 @@ public class EntityListService {
         return entityListDAO.update(entityList);
     }
 
-    public EntityList addItemToList(Integer entityListId, String itemText, int userId){
+    public EntityList addItemToList(Integer entityListId, String itemText, int userId) {
         EntityList entityList = getById(entityListId, userId);
 
         EntityListItem item = EntityListItem.builder()
@@ -100,7 +101,7 @@ public class EntityListService {
         return entityListDAO.update(entityList);
     }
 
-    public EntityList removeItemFromList(Integer entityListId, Integer itemId, int userId){
+    public EntityList removeItemFromList(Integer entityListId, Integer itemId, int userId) {
         EntityList entityList = getById(entityListId, userId);
 
         EntityListItem targetItem = entityList.getItems().stream()

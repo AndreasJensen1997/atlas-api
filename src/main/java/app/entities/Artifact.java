@@ -31,6 +31,7 @@ public class Artifact implements LinkableEntity {
     private String subtitle;
 
     @Setter
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     private LocalDate createdAt;

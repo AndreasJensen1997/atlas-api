@@ -64,8 +64,6 @@ public class UserService {
             throw new IllegalArgumentException("Invalid email or password.");
         }
 
-        System.out.println("login success");
-
         return user;
     }
 
@@ -81,8 +79,6 @@ public class UserService {
         if (user == null) {
             throw new IllegalArgumentException("No user was found attached to this email");
         }
-
-        System.out.println("user successfully found :" + user.getName() + ": " + user.getId());
 
         return user;
     }

@@ -30,6 +30,7 @@ public class Chapter implements LinkableEntity {
     private String subtitle;
 
     @Setter
+    @Column(columnDefinition = "TEXT")
     private String content;
 
     @Setter

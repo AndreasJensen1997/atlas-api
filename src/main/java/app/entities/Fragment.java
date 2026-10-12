@@ -29,6 +29,7 @@ public class Fragment implements LinkableEntity {
     private String subtitle;
 
     @Setter
+    @Column(columnDefinition = "TEXT")
     String content;
 
     LocalDate createdAt;

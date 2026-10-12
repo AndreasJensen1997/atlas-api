@@ -28,6 +28,7 @@ public class Person implements LinkableEntity {
     String name;
 
     @Setter
+    @Column(columnDefinition = "TEXT")
     String content;
 
     @Enumerated(EnumType.STRING)

@@ -28,6 +28,7 @@ public class Devlog {
     String subtitle;
 
     @Setter
+    @Column(columnDefinition = "TEXT")
     String content;
 
     LocalDate createdAt;

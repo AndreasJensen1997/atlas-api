@@ -32,6 +32,7 @@ public class Memory implements LinkableEntity {
     String subtitle;
 
     @Setter
+    @Column(columnDefinition = "TEXT")
     String content;
 
     @Setter

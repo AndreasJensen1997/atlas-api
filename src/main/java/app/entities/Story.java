@@ -30,6 +30,7 @@ public class Story implements LinkableEntity {
     String subtitle;
 
     @Setter
+    @Column(columnDefinition = "TEXT")
     String content;
 
     @Setter

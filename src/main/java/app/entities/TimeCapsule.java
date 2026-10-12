@@ -28,6 +28,7 @@ public class TimeCapsule {
     String subtitle;
 
     @Setter
+    @Column(columnDefinition = "TEXT")
     String content;
 
     @Setter

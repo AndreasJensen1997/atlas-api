@@ -49,8 +49,8 @@ public class MentionEndpointTest {
         TestPopulator.cleanup(emf);
         seeded = TestPopulator.populate(emf);
 
-        userToken = "Bearer " + JWTToken.generateToken(seeded.user1().getEmail());
-        user2Token = "Bearer " + JWTToken.generateToken(seeded.user2().getEmail());
+        userToken = "Bearer " + JWTToken.generateToken(seeded.user1().getId());
+        user2Token = "Bearer " + JWTToken.generateToken(seeded.user2().getId());
     }
 
     @AfterEach

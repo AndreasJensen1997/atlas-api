@@ -51,7 +51,7 @@ public class FragmentEndpointTest {
         seeded = TestPopulator.populate(emf);
 
         userToken = "Bearer " + JWTToken.generateToken(
-                seeded.user1().getEmail()
+                seeded.user1().getId()
         );
     }
 
@@ -244,7 +244,7 @@ public class FragmentEndpointTest {
     @Test
     void getFragmentById_BelongsToAnotherUser() {
         int fragmentId = seeded.fragment1().getId();
-        String wrongToken = "Bearer " + JWTToken.generateToken(seeded.user2().getEmail());
+        String wrongToken = "Bearer " + JWTToken.generateToken(seeded.user2().getId());
 
         given()
                 .header("Authorization", wrongToken)

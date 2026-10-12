@@ -52,7 +52,7 @@ public class DevlogEndpointTest {
         seeded = TestPopulator.populate(emf);
 
         userToken = "Bearer " + JWTToken.generateToken(
-                seeded.user1().getEmail()
+                seeded.user1().getId()
         );
     }
 
@@ -257,7 +257,7 @@ public class DevlogEndpointTest {
     @Test
     void getDevlogById_BelongsToAnotherUser() {
         int devlogId = seeded.devlog1().getId();
-        String wrongToken = "Bearer " + JWTToken.generateToken(seeded.user2().getEmail());
+        String wrongToken = "Bearer " + JWTToken.generateToken(seeded.user2().getId());
 
         given()
                 .header("Authorization", wrongToken)

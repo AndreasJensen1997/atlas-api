@@ -32,14 +32,14 @@ public class JWTToken {
         return secret;
     }
 
-    public static String generateToken(String email) {
+    public static String generateToken(Integer userId) {
         try {
             // 1. Create HS256 header
             JWSHeader header = new JWSHeader(JWSAlgorithm.HS256);
 
             // 2. Set claims (payload: who the token is for, when it expires)
             JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
-                    .subject(email)
+                    .subject(String.valueOf(userId))
                     .issueTime(new Date())
                     .expirationTime(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                     .build();
@@ -58,7 +58,7 @@ public class JWTToken {
         }
     }
 
-    public static String verifyTokenAndGetSubject(String token) {
+    public static Integer verifyTokenAndGetUserId(String token) {
         try {
             SignedJWT signedJWT = SignedJWT.parse(token);
             JWSVerifier verifier = new MACVerifier(SECRET.getBytes());
@@ -75,7 +75,7 @@ public class JWTToken {
             }
 
             // 3. Return the email (stored in the 'subject')
-            return signedJWT.getJWTClaimsSet().getSubject();
+            return Integer.valueOf(signedJWT.getJWTClaimsSet().getSubject());
 
         } catch (ApiException e) {
             throw e;

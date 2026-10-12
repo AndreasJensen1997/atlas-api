@@ -4,6 +4,7 @@ import app.daos.user.UserDAO;
 import app.dtos.user.LoginRequestDTO;
 import app.dtos.user.RegisterRequestDTO;
 import app.entities.User;
+import app.exceptions.ApiException;
 import app.mappers.UserMapper;
 import app.utils.validation.UserValidator;
 import org.mindrot.jbcrypt.BCrypt;
@@ -31,7 +32,9 @@ public class UserService {
             throw new IllegalArgumentException(String.join(", ", validationErrors));
         }
 
-        if (userDao.getUserByEmail(dto.email()) != null) {
+        String email = User.normalize(dto.email());
+
+        if (userDao.getUserByEmail(email) != null) {
             throw new IllegalArgumentException("An account with this email already exists.");
         }
 
@@ -49,7 +52,7 @@ public class UserService {
             throw new IllegalArgumentException("Email and password must be provided.");
         }
 
-        User user = userDao.getUserByEmail(loginRequestDTO.email());
+        User user = userDao.getUserByEmail(User.normalize(loginRequestDTO.email()));
 
         if (user == null) {
             throw new IllegalArgumentException("Invalid email or password.");
@@ -62,22 +65,6 @@ public class UserService {
         }
 
         System.out.println("login success");
-
-        return user;
-    }
-
-    public User getByEmail(String email) {
-        if (email == null) {
-            throw new IllegalArgumentException("Email must be provided.");
-        }
-
-        User user = userDao.getUserByEmail(email);
-
-        if (user == null) {
-            throw new IllegalArgumentException("No user was found attached to this email");
-        }
-
-        System.out.println("user successfully found :" + user.getName() + ": " + user.getEmail());
 
         return user;
     }
@@ -109,11 +96,14 @@ public class UserService {
     public User update(Integer userId, String newName, String newEmail) {
         User user = getById(userId);
 
-        if (newName != null && !newName.isBlank()) {
-            user.setName(newName);
-        }
         if (newEmail != null && !newEmail.isBlank()) {
-            user.setEmail(newEmail);
+            String normalized = User.normalize(newEmail);
+            User existing = userDao.getUserByEmail(normalized);
+            if (existing != null && !existing.getId().equals(userId)) {
+                throw new ApiException(409, "An account with this email already exists.");
+            }
+            user.setEmail(normalized);
+            user.setName(newName);
         }
 
         return userDao.update(user);

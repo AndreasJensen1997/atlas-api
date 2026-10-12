@@ -53,7 +53,7 @@ public class ArtifactEndpointTest {
         seeded = TestPopulator.populate(emf);
 
         userToken = "Bearer " + JWTToken.generateToken(
-                seeded.user1().getEmail()
+                seeded.user1().getId()
         );
     }
 
@@ -99,7 +99,7 @@ public class ArtifactEndpointTest {
 
     @Test
     void createArtifact_SameTypeNameAsOtherUser_Success() {
-        String user2Token = "Bearer " + JWTToken.generateToken(seeded.user2().getEmail());
+        String user2Token = "Bearer " + JWTToken.generateToken(seeded.user2().getId());
 
         ArtifactRequestDTO dto = new ArtifactRequestDTO(
                 "My own album", "sub", "content", Visibility.PRIVATE,
@@ -312,7 +312,7 @@ public class ArtifactEndpointTest {
     @Test
     void getArtifactById_BelongsToAnotherUser() {
         int artifactId = seeded.artifact1().getId();
-        String wrongToken = "Bearer " + JWTToken.generateToken(seeded.user2().getEmail());
+        String wrongToken = "Bearer " + JWTToken.generateToken(seeded.user2().getId());
 
         given()
                 .header("Authorization", wrongToken)
@@ -389,7 +389,7 @@ public class ArtifactEndpointTest {
 
     @Test
     void updateArtifact_OtherUsersArtifact_NotFound() {
-        String user2Token = "Bearer " + JWTToken.generateToken(seeded.user2().getEmail());
+        String user2Token = "Bearer " + JWTToken.generateToken(seeded.user2().getId());
         ArtifactRequestDTO dto = new ArtifactRequestDTO(
                 "Hijack", "sub", "content", Visibility.PRIVATE,
                 ArtifactType.builder().name("tøj").build());

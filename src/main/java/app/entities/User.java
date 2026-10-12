@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 
@@ -32,6 +33,7 @@ public class User {
     private Role role;
 
     @Setter
+    @Column(unique = true)
     private String email;
 
     @ToString.Exclude
@@ -122,12 +124,15 @@ public class User {
 
     @PreUpdate
     protected void onUpdate() {
+        normalizeEmail();
+    }
+
+    public static String normalize(String email) {
+        return email == null ? null : email.trim().toLowerCase(Locale.ROOT);
     }
 
     public void normalizeEmail() {
-        if (email != null) {
-            this.email = email.trim().toLowerCase();
-        }
+        this.email = normalize(this.email);
     }
 
     // ===== Equals & HashCode =====

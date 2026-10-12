@@ -24,12 +24,12 @@ public class SecurityFilter {
         String token = header.substring(7).trim();
 
         try {
-            String email = JWTToken.verifyTokenAndGetSubject(token);
-            System.out.println("--> [AUTH DEBUG] Token verified for email: " + email);
+            Integer userId = JWTToken.verifyTokenAndGetUserId(token);
+            System.out.println("--> [AUTH DEBUG] Token verified for email: " + userId);
 
-            User user = userService.getByEmail(email);
+            User user = userService.getById(userId);
             if (user == null) {
-                System.out.println("--> [AUTH DEBUG] Failed: User not found in DB for " + email);
+                System.out.println("--> [AUTH DEBUG] Failed: User not found in DB for " + userId);
                 throw new ApiException(401, "User belonging to token no longer exists");
             }
 

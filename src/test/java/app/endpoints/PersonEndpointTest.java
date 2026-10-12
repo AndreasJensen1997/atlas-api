@@ -53,7 +53,7 @@ public class PersonEndpointTest {
         seeded = TestPopulator.populate(emf);
 
         userToken = "Bearer " + JWTToken.generateToken(
-                seeded.user1().getEmail()
+                seeded.user1().getId()
         );
     }
 
@@ -266,7 +266,7 @@ public class PersonEndpointTest {
     @Test
     void getPersonById_BelongsToAnotherUser() {
         int personId = seeded.person1().getId();
-        String wrongToken = "Bearer " + JWTToken.generateToken(seeded.user2().getEmail());
+        String wrongToken = "Bearer " + JWTToken.generateToken(seeded.user2().getId());
 
         given()
                 .header("Authorization", wrongToken)

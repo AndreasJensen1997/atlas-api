@@ -55,7 +55,7 @@ public class ChapterEndpointTest {
 
         // Generate a valid token for the seeded user to use in RestAssured headers
         userToken = "Bearer " + JWTToken.generateToken(
-                seeded.user1().getEmail()
+                seeded.user1().getId()
         );
     }
 
@@ -280,7 +280,7 @@ public class ChapterEndpointTest {
     @Test
     void getChapterById_BelongsToAnotherUser() {
         int chapterId = seeded.chapter1().getId();
-        String wrongToken = "Bearer " + JWTToken.generateToken(seeded.user2().getEmail());
+        String wrongToken = "Bearer " + JWTToken.generateToken(seeded.user2().getId());
 
         given()
                 .header("Authorization", wrongToken)

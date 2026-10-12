@@ -53,7 +53,7 @@ public class NotificationEndpointTest {
         seeded = TestPopulator.populate(emf);
 
         userToken = "Bearer " + JWTToken.generateToken(
-                seeded.user1().getEmail()
+                seeded.user1().getId()
         );
     }
 

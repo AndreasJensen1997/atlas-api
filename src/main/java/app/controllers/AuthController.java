@@ -51,7 +51,7 @@ public class AuthController implements EndpointGroup {
             LoginRequestDTO dto = ctx.bodyAsClass(LoginRequestDTO.class);
             User loggedInUser = userService.login(dto);
 
-            String token = JWTToken.generateToken(loggedInUser.getEmail());
+            String token = JWTToken.generateToken(loggedInUser.getId());
             LoginResponseDTO responseDto = new LoginResponseDTO(token);
             ctx.status(HttpStatus.OK).json(responseDto);
 

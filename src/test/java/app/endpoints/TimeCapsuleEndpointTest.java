@@ -52,7 +52,7 @@ public class TimeCapsuleEndpointTest {
         seeded = TestPopulator.populate(emf);
 
         userToken = "Bearer " + JWTToken.generateToken(
-                seeded.user1().getEmail()
+                seeded.user1().getId()
         );
     }
 
@@ -129,7 +129,7 @@ public class TimeCapsuleEndpointTest {
 
     @Test
     void getTimeCapsuleById_Unlocked_ShowsContent() {
-        String user2Token = "Bearer " + JWTToken.generateToken(seeded.user2().getEmail());
+        String user2Token = "Bearer " + JWTToken.generateToken(seeded.user2().getId());
 
         given().header("Authorization", user2Token)
                 .when().get("/time-capsules/" + seeded.timeCapsule2().getId())
@@ -237,7 +237,7 @@ public class TimeCapsuleEndpointTest {
     @Test
     void getTimeCapsuleById_BelongsToAnotherUser() {
         int timeCapsuleId = seeded.timeCapsule1().getId();
-        String wrongToken = "Bearer " + JWTToken.generateToken(seeded.user2().getEmail());
+        String wrongToken = "Bearer " + JWTToken.generateToken(seeded.user2().getId());
 
         given()
                 .header("Authorization", wrongToken)

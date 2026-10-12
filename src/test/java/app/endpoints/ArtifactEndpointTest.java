@@ -4,6 +4,7 @@ import app.config.ApplicationConfig;
 import app.config.HibernateTestConfig;
 import app.dtos.artifact.ArtifactRequestDTO;
 import app.dtos.artifact.ArtifactResponseDTO;
+import app.entities.ArtifactType;
 import app.enums.Visibility;
 import app.testUtils.TestPopulator;
 import app.utils.security.JWTToken;
@@ -96,6 +97,20 @@ public class ArtifactEndpointTest {
                 .body("title", equalTo("New Artifact Title"));
     }
 
+    @Test
+    void createArtifact_SameTypeNameAsOtherUser_Success() {
+        String user2Token = "Bearer " + JWTToken.generateToken(seeded.user2().getEmail());
+
+        ArtifactRequestDTO dto = new ArtifactRequestDTO(
+                "My own album", "sub", "content", Visibility.PRIVATE,
+                ArtifactType.builder().name("Music").build());
+
+        given().header("Authorization", user2Token)
+                .contentType(ContentType.JSON).body(dto)
+                .when().post("/artifacts")
+                .then().statusCode(HttpStatus.CREATED.getCode());
+    }
+
     // ===== Read =====
 
     @Test
@@ -155,7 +170,7 @@ public class ArtifactEndpointTest {
                 "Updated Subtitle",
                 "Updated Content",
                 Visibility.PUBLIC,
-                null
+                ArtifactType.builder().name("tøj").build()
         );
 
         given()
@@ -166,6 +181,20 @@ public class ArtifactEndpointTest {
                 .put("/artifacts/" + artifactId)
                 .then()
                 .statusCode(HttpStatus.OK.getCode());
+    }
+
+    @Test
+    void updateArtifact_TypeNameDifferentCase_ReusesExistingType() {
+        int expectedTypeId = seeded.musicType().getId();
+        ArtifactRequestDTO dto = new ArtifactRequestDTO(
+                "Updated", "sub", "content", Visibility.PRIVATE,
+                ArtifactType.builder().name("music").build());
+
+        given().header("Authorization", userToken)
+                .contentType(ContentType.JSON).body(dto)
+                .when().put("/artifacts/" + seeded.artifact1().getId())
+                .then().statusCode(HttpStatus.OK.getCode())
+                .body("artifactType.id", equalTo(expectedTypeId));
     }
 
     // ===== Delete =====
@@ -203,7 +232,8 @@ public class ArtifactEndpointTest {
                 "Test Subtitle",
                 "Test Content",
                 Visibility.PUBLIC,
-                null
+                ArtifactType.builder().name("test type").build()
+
         );
 
         given()
@@ -222,7 +252,8 @@ public class ArtifactEndpointTest {
                 "",
                 "Test Content",
                 Visibility.PUBLIC,
-                null
+                ArtifactType.builder().name("").build()
+
         );
 
         given()
@@ -233,6 +264,18 @@ public class ArtifactEndpointTest {
                 .post("/artifacts")
                 .then()
                 .statusCode(HttpStatus.BAD_REQUEST.getCode());
+    }
+
+    @Test
+    void createArtifact_BlankTypeName_BadRequest() {
+        ArtifactRequestDTO dto = new ArtifactRequestDTO(
+                "Valid title", "Valid subtitle", "content", Visibility.PRIVATE,
+                ArtifactType.builder().name("   ").build());
+
+        given().header("Authorization", userToken)
+                .contentType(ContentType.JSON).body(dto)
+                .when().post("/artifacts")
+                .then().statusCode(HttpStatus.BAD_REQUEST.getCode());
     }
 
     // ===== Read =====
@@ -309,7 +352,8 @@ public class ArtifactEndpointTest {
                 "",
                 "Updated Content",
                 Visibility.PUBLIC,
-                null
+                ArtifactType.builder().name("").build()
+
         );
 
         given()
@@ -329,7 +373,8 @@ public class ArtifactEndpointTest {
                 "Updated Subtitle",
                 "Updated Content",
                 Visibility.PUBLIC,
-                null
+                ArtifactType.builder().name("updated type").build()
+
         );
 
         given()
@@ -341,6 +386,20 @@ public class ArtifactEndpointTest {
                 .then()
                 .statusCode(HttpStatus.NOT_FOUND.getCode());
     }
+
+    @Test
+    void updateArtifact_OtherUsersArtifact_NotFound() {
+        String user2Token = "Bearer " + JWTToken.generateToken(seeded.user2().getEmail());
+        ArtifactRequestDTO dto = new ArtifactRequestDTO(
+                "Hijack", "sub", "content", Visibility.PRIVATE,
+                ArtifactType.builder().name("tøj").build());
+
+        given().header("Authorization", user2Token)
+                .contentType(ContentType.JSON).body(dto)
+                .when().put("/artifacts/" + seeded.artifact1().getId())
+                .then().statusCode(HttpStatus.NOT_FOUND.getCode());
+    }
+
 
     // ===== Delete =====
 

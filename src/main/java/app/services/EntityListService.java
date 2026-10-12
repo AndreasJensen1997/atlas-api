@@ -69,7 +69,7 @@ public class EntityListService {
     // ===== Update =====
 
     public EntityList update(Integer entityListId, EntityListRequestDTO dto, int userId) {
-        EntityList entityList = getById(entityListId, userId); // Handles ownership & non-null checks
+        EntityList entityList = getById(entityListId, userId);
 
         entityList.setTitle(dto.title());
         entityList.setSubtitle(dto.subtitle());
@@ -106,7 +106,7 @@ public class EntityListService {
         EntityListItem targetItem = entityList.getItems().stream()
                 .filter(item -> item.getId().equals(itemId))
                 .findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Item not found in this list with ID: " + itemId));
+                .orElseThrow(() -> new ApiException(404, "Item not found in this list with ID: " + itemId));
 
         entityList.removeItem(targetItem);
         return entityListDAO.update(entityList);

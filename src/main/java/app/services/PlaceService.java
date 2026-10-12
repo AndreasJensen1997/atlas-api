@@ -58,7 +58,7 @@ public class PlaceService {
         Place randomPlace = placeDAO.getRandomByUserId(userId);
 
         if (randomPlace == null) {
-            throw new IllegalArgumentException("No places were found");
+            throw new ApiException(404, "No places were found");
         }
 
         return randomPlace;

@@ -4,6 +4,7 @@ import app.controllers.*;
 import app.daos.generics.UserOwnedDAO;
 import app.daos.user.UserDAO;
 import app.daos.userOwned.*;
+import app.enums.Role;
 import app.enums.TargetType;
 import app.exceptions.ApiException;
 import app.mappers.*;
@@ -14,12 +15,14 @@ import io.javalin.Javalin;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.config.JavalinConfig;
 import io.javalin.json.JavalinJackson;
+import io.javalin.security.RouteRole;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.extern.slf4j.Slf4j;
 import io.javalin.validation.ValidationException;
 
 
 import java.util.Map;
+import java.util.Set;
 
 @Slf4j
 public class ApplicationConfig implements EndpointGroup {
@@ -121,19 +124,18 @@ public class ApplicationConfig implements EndpointGroup {
         // ===== Mention =====
 
         Map<TargetType, UserOwnedDAO<?, Integer>> pageDaos = Map.of(
-                TargetType.CHAPTER,  chapterDAO,
-                TargetType.STORY,    storyDAO,
-                TargetType.MEMORY,   memoryDAO,
+                TargetType.CHAPTER, chapterDAO,
+                TargetType.STORY, storyDAO,
+                TargetType.MEMORY, memoryDAO,
                 TargetType.ARTIFACT, artifactDAO,
-                TargetType.PERSON,   personDAO,
-                TargetType.PLACE,    placeDAO
+                TargetType.PERSON, personDAO,
+                TargetType.PLACE, placeDAO
         );
 
         MentionDAO mentionDAO = new MentionDAO(emf);
         MentionMapper mentionMapper = new MentionMapper();
-        MentionService mentionService = new MentionService(mentionDAO,userService,mentionMapper,pageDaos);
+        MentionService mentionService = new MentionService(mentionDAO, userService, mentionMapper, pageDaos);
         mentionController = new MentionController(mentionService);
-
 
 
         // ===== EntityList =====
@@ -145,20 +147,17 @@ public class ApplicationConfig implements EndpointGroup {
         // ===== Devlog =====
         DevlogDAO devlogDAO = new DevlogDAO(emf);
         DevlogMapper devlogMapper = new DevlogMapper();
-        DevlogService devlogService = new DevlogService(devlogDAO,userService,devlogMapper);
-        devlogController = new DevlogController(devlogService,devlogMapper);
+        DevlogService devlogService = new DevlogService(devlogDAO, userService, devlogMapper);
+        devlogController = new DevlogController(devlogService, devlogMapper);
 
         // ===== Notification =====
         NotificationDAO notificationDAO = new NotificationDAO(emf);
         NotificationMapper notificationMapper = new NotificationMapper();
-        NotificationService notificationService = new NotificationService(notificationDAO,userService,notificationMapper);
-        notificationController = new NotificationController(notificationService,notificationMapper);
+        NotificationService notificationService = new NotificationService(notificationDAO, userService, notificationMapper);
+        notificationController = new NotificationController(notificationService, notificationMapper);
 
 
     }
-
-
-
 
 
     @Override
@@ -197,6 +196,22 @@ public class ApplicationConfig implements EndpointGroup {
 
         // ===== Security Filter =====
         app.before("/api/*", ctx -> SecurityFilter.verifyToken(ctx, userService));
+
+        // ===== Role validation =====
+        app.before("/api/*", ctx -> SecurityFilter.verifyToken(ctx, userService));
+
+        app.beforeMatched(ctx -> {
+            Set<RouteRole> required = ctx.routeRoles();
+
+            if (required.isEmpty()) {
+                return;
+            }
+
+            Role role = ctx.attribute("role");
+            if (role == null || !required.contains(role)) {
+                throw new ApiException(403, "You do not have access to this resource");
+            }
+        });
 
         // ===== Global Exception Handling =====
 

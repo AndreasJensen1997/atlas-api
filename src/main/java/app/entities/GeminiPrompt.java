@@ -19,6 +19,7 @@ public class GeminiPrompt {
     @GeneratedValue
     private Integer id;
 
+    @Column(columnDefinition = "TEXT")
     String content;
 
     // ===== Relations =====

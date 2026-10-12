@@ -44,10 +44,6 @@ public class StoryService {
     public Story getById(Integer storyId, int userId) {
         Story story = storyDAO.getById(storyId);
 
-        if (story == null) {
-            throw new IllegalArgumentException("Story not found with ID: " + storyId);
-        }
-
         if (!story.getUser().getId().equals(userId)) {
             throw new ApiException(404, "Chapter not found with ID: " + storyId);
         }
@@ -59,15 +55,10 @@ public class StoryService {
     }
 
     public Story getRandom(Integer userId) {
-
         Story randomStory = storyDAO.getRandomByUserId(userId);
 
         if (randomStory == null) {
-            throw new IllegalArgumentException("No stories were found");
-        }
-
-        if (!randomStory.getUser().getId().equals(userId)) {
-            throw new IllegalArgumentException("You do not have permission to access this story.");
+            throw new ApiException(404, "No stories were found");
         }
 
         return randomStory;
@@ -76,7 +67,6 @@ public class StoryService {
     // ===== Update =====
 
     public Story update(Integer storyId, StoryRequestDTO dto, int userId) {
-        // Reuse getById to handle null checks and user permissions in one go
         Story story = getById(storyId, userId);
 
         story.setTitle(dto.title());

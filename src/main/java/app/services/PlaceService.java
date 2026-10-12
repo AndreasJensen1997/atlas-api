@@ -44,10 +44,6 @@ public class PlaceService {
     public Place getById(Integer placeId, int userId) {
         Place place = placeDAO.getById(placeId);
 
-        if (place == null) {
-            throw new IllegalArgumentException("Place not found with ID: " + placeId);
-        }
-
         if (!place.getUser().getId().equals(userId)) {
             throw new ApiException(404, "Chapter not found with ID: " + placeId);
         }
@@ -65,25 +61,13 @@ public class PlaceService {
             throw new IllegalArgumentException("No places were found");
         }
 
-        if (!randomPlace.getUser().getId().equals(userId)) {
-            throw new IllegalArgumentException("You do not have permission to access this place.");
-        }
-
         return randomPlace;
     }
 
     // ===== Update =====
 
     public Place update(Integer placeId, PlaceRequestDTO dto, int userId) {
-        Place place = placeDAO.getById(placeId);
-
-        if (place == null) {
-            throw new IllegalArgumentException("Place not found with ID: " + placeId);
-        }
-
-        if (!place.getUser().getId().equals(userId)) {
-            throw new IllegalArgumentException("You do not have permission to access this place.");
-        }
+        Place place = getById(placeId,userId);
 
         place.setName(dto.name());
         place.setContent(dto.content());

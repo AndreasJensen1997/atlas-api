@@ -109,10 +109,6 @@ public class GeminiPromptService {
     public GeminiPrompt getById(Integer geminiPromptId, int userId) {
         GeminiPrompt geminiPrompt = geminiPromptDAO.getById(geminiPromptId);
 
-        if (geminiPrompt == null) {
-            throw new IllegalArgumentException("Chapter not found with ID: " + geminiPromptId);
-        }
-
         if (!geminiPrompt.getUser().getId().equals(userId)) {
             throw new ApiException(404, "Prompt not found with ID: " + geminiPromptId);
         }

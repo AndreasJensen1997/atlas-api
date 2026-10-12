@@ -44,10 +44,6 @@ public class PersonService {
     public Person getById(Integer personId, int userId) {
         Person person = personDAO.getById(personId);
 
-        if (person == null) {
-            throw new IllegalArgumentException("Person not found with ID: " + personId);
-        }
-
         if (!person.getUser().getId().equals(userId)) {
             throw new ApiException(404, "Chapter not found with ID: " + personId);
         }
@@ -62,11 +58,7 @@ public class PersonService {
         Person randomPerson = personDAO.getRandomByUserId(userId);
 
         if (randomPerson == null) {
-            throw new IllegalArgumentException("No people were found");
-        }
-
-        if (!randomPerson.getUser().getId().equals(userId)) {
-            throw new IllegalArgumentException("You do not have permission to access this person.");
+            throw new ApiException(404, "No people were found");
         }
 
         return randomPerson;
@@ -75,15 +67,7 @@ public class PersonService {
     // ===== Update =====
 
     public Person update(Integer personId, PersonRequestDTO dto, int userId) {
-        Person person = personDAO.getById(personId);
-
-        if (person == null) {
-            throw new IllegalArgumentException("Person not found with ID: " + personId);
-        }
-
-        if (!person.getUser().getId().equals(userId)) {
-            throw new IllegalArgumentException("You do not have permission to access this person.");
-        }
+        Person person = getById(personId,userId);
 
         person.setName(dto.name());
         person.setContent(dto.content());

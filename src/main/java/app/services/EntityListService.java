@@ -45,10 +45,6 @@ public class EntityListService {
     public EntityList getById(Integer entityListId, int userId) {
         EntityList entityList = entityListDAO.getById(entityListId);
 
-        if (entityList == null) {
-            throw new IllegalArgumentException("List not found with ID: " + entityListId);
-        }
-
         if (!entityList.getUser().getId().equals(userId)) {
             throw new ApiException(404, "Chapter not found with ID: " + entityList);
         }
@@ -65,11 +61,7 @@ public class EntityListService {
         EntityList randomEntityList = entityListDAO.getRandomByUserId(userId);
 
         if (randomEntityList == null) {
-            throw new IllegalArgumentException("No lists were found");
-        }
-
-        if (!randomEntityList.getUser().getId().equals(userId)) {
-            throw new IllegalArgumentException("You do not have permission to access this list.");
+            throw new ApiException(404, "No list were found");
         }
 
         return randomEntityList;

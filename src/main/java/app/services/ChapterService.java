@@ -44,10 +44,6 @@ public class ChapterService {
     public Chapter getById(Integer chapterId, int userId) {
         Chapter chapter = chapterDAO.getById(chapterId);
 
-        if (chapter == null) {
-            throw new IllegalArgumentException("Chapter not found with ID: " + chapterId);
-        }
-
         if (!chapter.getUser().getId().equals(userId)) {
             throw new ApiException(404, "Chapter not found with ID: " + chapterId);
         }
@@ -60,15 +56,10 @@ public class ChapterService {
     }
 
     public Chapter getRandom(Integer userId) {
-
         Chapter randomChapter = chapterDAO.getRandomByUserId(userId);
 
         if (randomChapter == null) {
-            throw new IllegalArgumentException("No chapters were found");
-        }
-
-        if (!randomChapter.getUser().getId().equals(userId)) {
-            throw new IllegalArgumentException("You do not have permission to access this chapter.");
+            throw new ApiException(404, "No chapters were found");
         }
 
         return randomChapter;
@@ -77,15 +68,7 @@ public class ChapterService {
     // ===== Update =====
 
     public Chapter update(Integer chapterId, ChapterRequestDTO dto, int userId) {
-        Chapter chapter = chapterDAO.getById(chapterId);
-
-        if (chapter == null) {
-            throw new IllegalArgumentException("Chapter not found with ID: " + chapterId);
-        }
-
-        if (!chapter.getUser().getId().equals(userId)) {
-            throw new IllegalArgumentException("You do not have permission to access this chapter.");
-        }
+        Chapter chapter = getById(chapterId, userId);
 
         chapter.setTitle(dto.title());
         chapter.setSubtitle(dto.subtitle());

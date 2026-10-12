@@ -50,10 +50,6 @@ public class ArtifactService {
     public Artifact getById(Integer artifactId, int userId) {
         Artifact artifact = artifactDAO.getById(artifactId);
 
-        if (artifact == null) {
-            throw new IllegalArgumentException("Artifact not found with ID: " + artifactId);
-        }
-
         if (!artifact.getUser().getId().equals(userId)) {
             throw new ApiException(404, "Chapter not found with ID: " + artifactId);
         }
@@ -68,11 +64,7 @@ public class ArtifactService {
         Artifact randomArtifact = artifactDAO.getRandomByUserId(userId);
 
         if (randomArtifact == null) {
-            throw new IllegalArgumentException("No artifacts were found.");
-        }
-
-        if (!randomArtifact.getUser().getId().equals(userId)) {
-            throw new IllegalArgumentException("You do not have permission to access this artifact.");
+            throw new ApiException(404, "No artifact were found");
         }
 
         return randomArtifact;

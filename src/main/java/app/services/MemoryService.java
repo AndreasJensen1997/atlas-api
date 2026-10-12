@@ -44,10 +44,6 @@ public class MemoryService {
     public Memory getById(Integer memoryId, int userId) {
         Memory memory = memoryDAO.getById(memoryId);
 
-        if (memory == null) {
-            throw new IllegalArgumentException("Memory not found with ID: " + memoryId);
-        }
-
         if (!memory.getUser().getId().equals(userId)) {
             throw new ApiException(404, "Chapter not found with ID: " + memoryId);
         }
@@ -59,15 +55,10 @@ public class MemoryService {
     }
 
     public Memory getRandom(Integer userId) {
-
         Memory randomMemory = memoryDAO.getRandomByUserId(userId);
 
         if (randomMemory == null) {
-            throw new IllegalArgumentException("No memories were found");
-        }
-
-        if (!randomMemory.getUser().getId().equals(userId)) {
-            throw new IllegalArgumentException("You do not have permission to access this memory.");
+            throw new ApiException(404, "No memories were found");
         }
 
         return randomMemory;

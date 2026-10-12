@@ -40,10 +40,6 @@ public class NotificationService {
     public Notification getById(Integer notificationId, int userId) {
         Notification notification = notificationDAO.getById(notificationId);
 
-        if (notification == null) {
-            throw new IllegalArgumentException("Notification not found with ID: " + notificationId);
-        }
-
         if (!notification.getUser().getId().equals(userId)) {
             throw new ApiException(404, "Notification not found with ID: " + notificationId);
         }
@@ -58,15 +54,7 @@ public class NotificationService {
     // ===== Update =====
 
     public Notification update(Integer notificationId, NotificationRequestDTO dto, int userId) {
-        Notification notification = notificationDAO.getById(notificationId);
-
-        if (notification == null) {
-            throw new IllegalArgumentException("Notification not found with ID: " + notificationId);
-        }
-
-        if (!notification.getUser().getId().equals(userId)) {
-            throw new IllegalArgumentException("You do not have permission to access this notification.");
-        }
+        Notification notification = getById(notificationId,userId);
 
         notification.setTitle(dto.title());
         notification.setNotificationType(dto.notificationType());

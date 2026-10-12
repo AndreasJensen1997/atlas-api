@@ -39,10 +39,6 @@ public class FragmentService {
     public Fragment getById(Integer fragmentId, int userId) {
         Fragment fragment = fragmentDAO.getById(fragmentId);
 
-        if (fragment == null) {
-            throw new IllegalArgumentException("Fragment not found with ID: " + fragment);
-        }
-
         if (!fragment.getUser().getId().equals(userId)) {
             throw new ApiException(404, "Chapter not found with ID: " + fragmentId);
         }
@@ -56,15 +52,7 @@ public class FragmentService {
     // ===== Update =====
 
     public Fragment update(Integer fragmentId, FragmentRequestDTO dto, int userId) {
-        Fragment fragment = fragmentDAO.getById(fragmentId);
-
-        if (fragment == null) {
-            throw new IllegalArgumentException("Chapter not found with ID: " + fragmentId);
-        }
-
-        if (!fragment.getUser().getId().equals(userId)) {
-            throw new IllegalArgumentException("You do not have permission to access this fragment.");
-        }
+        Fragment fragment = getById(fragmentId,userId);
 
         fragment.setTitle(dto.title());
         fragment.setSubtitle(dto.subtitle());

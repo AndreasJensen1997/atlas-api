@@ -44,10 +44,6 @@ public class DevlogService {
     public Devlog getById(Integer devlogId, int userId) {
         Devlog devlog = devlogDAO.getById(devlogId);
 
-        if (devlog == null) {
-            throw new IllegalArgumentException("Chapter not found with ID: " + devlogId);
-        }
-
         if (!devlog.getUser().getId().equals(userId)) {
             throw new ApiException(404, "Chapter not found with ID: " + devlogId);
         }
@@ -62,15 +58,7 @@ public class DevlogService {
     // ===== Update =====
 
     public Devlog update(Integer devlogId, DevlogRequestDTO dto, int userId) {
-        Devlog devlog = devlogDAO.getById(devlogId);
-
-        if (devlog == null) {
-            throw new IllegalArgumentException("Chapter not found with ID: " + devlogId);
-        }
-
-        if (!devlog.getUser().getId().equals(userId)) {
-            throw new IllegalArgumentException("You do not have permission to access this chapter.");
-        }
+        Devlog devlog = getById(devlogId,userId);
 
         devlog.setTitle(dto.title());
         devlog.setSubtitle(dto.subtitle());

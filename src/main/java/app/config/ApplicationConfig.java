@@ -42,6 +42,7 @@ public class ApplicationConfig implements EndpointGroup {
     UserController userController;
     DevlogController devlogController;
     NotificationController notificationController;
+    ArtifactTypeController artifactTypeController;
 
     UserService userService;
 
@@ -85,6 +86,7 @@ public class ApplicationConfig implements EndpointGroup {
 
         ArtifactTypeDAO artifactTypeDAO = new ArtifactTypeDAO(emf);
         ArtifactTypeService artifactTypeService = new ArtifactTypeService(artifactTypeDAO);
+        artifactTypeController = new ArtifactTypeController(artifactTypeService);
 
         // ===== Artifact =====
 
@@ -168,6 +170,7 @@ public class ApplicationConfig implements EndpointGroup {
         memoryController.addEndpoints();
         storyController.addEndpoints();
         artifactController.addEndpoints();
+        artifactTypeController.addEndpoints();
         personController.addEndpoints();
         placeController.addEndpoints();
         timeCapsuleController.addEndpoints();

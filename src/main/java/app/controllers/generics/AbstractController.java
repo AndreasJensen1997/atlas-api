@@ -1,12 +1,9 @@
 package app.controllers.generics;
 
-import app.dtos.chapter.ChapterRequestDTO;
-import app.entities.Chapter;
+
 import app.exceptions.ApiException;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 

@@ -34,6 +34,7 @@ public class SecurityFilter {
             }
 
             ctx.attribute("userId", user.getId());
+            ctx.attribute("role", user.getRole());
             System.out.println("--> [AUTH DEBUG] SUCCESS! Set userId attribute to: " + user.getId());
 
         } catch (Exception e) {

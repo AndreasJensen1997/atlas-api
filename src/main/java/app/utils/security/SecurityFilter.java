@@ -14,10 +14,8 @@ public class SecurityFilter {
         }
 
         String header = ctx.header("Authorization");
-        System.out.println("--> [AUTH DEBUG] Header received: " + header);
 
         if (header == null || !header.startsWith("Bearer ")) {
-            System.out.println("--> [AUTH DEBUG] Failed: Header is null or missing 'Bearer '");
             throw new ApiException(401, "Missing or invalid Authorization header");
         }
 
@@ -25,20 +23,14 @@ public class SecurityFilter {
 
         try {
             Integer userId = JWTToken.verifyTokenAndGetUserId(token);
-            System.out.println("--> [AUTH DEBUG] Token verified for email: " + userId);
 
             User user = userService.getById(userId);
-            if (user == null) {
-                System.out.println("--> [AUTH DEBUG] Failed: User not found in DB for " + userId);
-                throw new ApiException(401, "User belonging to token no longer exists");
-            }
 
             ctx.attribute("userId", user.getId());
             ctx.attribute("role", user.getRole());
-            System.out.println("--> [AUTH DEBUG] SUCCESS! Set userId attribute to: " + user.getId());
 
         } catch (Exception e) {
-            System.out.println("--> [AUTH DEBUG] Failed token verification: " + e.getMessage());
+
             throw new ApiException(401, "Invalid token: " + e.getMessage());
         }
     }

@@ -39,8 +39,7 @@ class TimeCapsuleDAOTest {
                 .title("secret message")
                 .subtitle("my first timecapsule")
                 .content("Secret message for the future")
-                .unlockDate(LocalDate.of(2029,1,1))
-                .lockStatus(true)
+                .unlockDate(LocalDate.now().plusYears(5))
                 .user(existingUser)
                 .build();
 
@@ -51,7 +50,7 @@ class TimeCapsuleDAOTest {
         assertThat(fetched.getTitle(), is("secret message"));
         assertThat(fetched.getSubtitle(), is("my first timecapsule"));
         assertThat(fetched.getContent(), is("Secret message for the future"));
-        assertThat(fetched.isLockStatus(), is(true));
+        assertThat(fetched.isLocked(), is(true));
         assertThat(fetched.getUser(), is(existingUser));
     }
 
@@ -102,7 +101,6 @@ class TimeCapsuleDAOTest {
                 .id(seed.getId())
                 .content("Updated capsule content")
                 .unlockDate(seed.getUnlockDate())
-                .lockStatus(true)
                 .user(newUser)
                 .build();
 
@@ -110,7 +108,7 @@ class TimeCapsuleDAOTest {
 
         assertThat(result.getId(), is(seed.getId()));
         assertThat(result.getContent(), is("Updated capsule content"));
-        assertThat(result.isLockStatus(), is(true));
+        assertThat(result.isLocked(), is(true));
         assertThat(result.getUser(), is(newUser));
     }
 

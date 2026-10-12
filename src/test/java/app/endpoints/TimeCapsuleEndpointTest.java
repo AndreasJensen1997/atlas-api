@@ -127,6 +127,17 @@ public class TimeCapsuleEndpointTest {
                 .getList("", TimeCapsuleResponseDTO.class);
     }
 
+    @Test
+    void getTimeCapsuleById_Unlocked_ShowsContent() {
+        String user2Token = "Bearer " + JWTToken.generateToken(seeded.user2().getEmail());
+
+        given().header("Authorization", user2Token)
+                .when().get("/time-capsules/" + seeded.timeCapsule2().getId())
+                .then().statusCode(HttpStatus.OK.getCode())
+                .body("lockStatus", equalTo(false))
+                .body("content", equalTo(seeded.timeCapsule2().getContent()));
+    }
+
     // ===== Delete =====
 
     @Test
@@ -235,6 +246,25 @@ public class TimeCapsuleEndpointTest {
                 .then()
                 .statusCode(HttpStatus.NOT_FOUND.getCode());
     }
+
+    @Test
+    void getTimeCapsuleById_Locked_HidesContent() {
+        given().header("Authorization", userToken)
+                .when().get("/time-capsules/" + seeded.timeCapsule1().getId())
+                .then().statusCode(HttpStatus.OK.getCode())
+                .body("lockStatus", equalTo(true))
+                .body("content", nullValue())
+                .body("title", equalTo(seeded.timeCapsule1().getTitle()));
+    }
+
+    @Test
+    void getAllTimeCapsules_Locked_HidesContent() {
+        given().header("Authorization", userToken)
+                .when().get("/time-capsules")
+                .then().statusCode(HttpStatus.OK.getCode())
+                .body("[0].content", nullValue());
+    }
+
 
     // ===== Update =====
 

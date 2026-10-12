@@ -81,24 +81,15 @@ public class ArtifactService {
     // ===== Update =====
 
     public Artifact update(Integer artifactId, ArtifactRequestDTO dto, int userId) {
-        Artifact artifact = artifactDAO.getById(artifactId);
-
-        if (artifact == null) {
-            throw new IllegalArgumentException("Artifact not found with ID: " + artifactId);
-        }
-
-        if (!artifact.getUser().getId().equals(userId)) {
-            throw new IllegalArgumentException("You do not have permission to access this artifact.");
-        }
+        Artifact artifact = getById(artifactId, userId);
 
         artifact.setTitle(dto.title());
         artifact.setSubtitle(dto.subtitle());
         artifact.setContent(dto.content());
         artifact.setVisibility(dto.visibility());
 
-        // Update the artifact type if provided in the DTO
         if (dto.artifactType() != null) {
-            artifact.setArtifactType(dto.artifactType());
+            artifact.setArtifactType(artifactTypeService.resolveArtifactType(dto.artifactType(), artifact.getUser()));
         }
 
         return artifactDAO.update(artifact);

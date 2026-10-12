@@ -4,6 +4,9 @@ import app.daos.userOwned.ArtifactTypeDAO;
 import app.entities.ArtifactType;
 import app.entities.User;
 
+import java.util.Comparator;
+import java.util.List;
+
 public class ArtifactTypeService {
 
     // ===== Dependencies =====
@@ -19,21 +22,25 @@ public class ArtifactTypeService {
     // ===== Artifact Type Resolution =====
 
     public ArtifactType resolveArtifactType(ArtifactType requestedType, User owner) {
-        if (requestedType == null || requestedType.getName() == null) {
-            throw new IllegalArgumentException("Artifact type name cannot be null.");
+        if (requestedType == null || requestedType.getName() == null || requestedType.getName().isBlank()) {
+            throw new IllegalArgumentException("Artifact type name cannot be blank.");
+        }
+        String name = requestedType.getName().trim();
+
+        ArtifactType existing = artifactTypeDAO.findByNameIgnoreCase(name, owner.getId());
+        if (existing != null) {
+            return existing;
         }
 
-        // Check if THIS user already has an artifact type with this name
-        ArtifactType existingType = artifactTypeDAO.findByTitleAndUserId(requestedType.getName(), owner.getId());
-        if (existingType != null) {
-            return existingType;
-        }
-
-        // If it doesn't exist, create it and explicitly link it to the user!
         ArtifactType newType = new ArtifactType();
-        newType.setName(requestedType.getName());
-        newType.setUser(owner); // <-- THIS WAS MISSING
-
+        newType.setName(name);
+        newType.setUser(owner);
         return artifactTypeDAO.create(newType);
+    }
+
+    public List<ArtifactType> getAllByUserId(int userId) {
+        return artifactTypeDAO.getAllByUserId(userId).stream()
+                .sorted(Comparator.comparing(ArtifactType::getName, String.CASE_INSENSITIVE_ORDER))
+                .toList();
     }
 }

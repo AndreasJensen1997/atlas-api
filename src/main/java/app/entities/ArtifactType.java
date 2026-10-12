@@ -16,6 +16,7 @@ import java.util.Set;
 @AllArgsConstructor
 @ToString
 @Builder
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "name"}))
 public class ArtifactType {
 
     // ===== Fields =====
@@ -24,7 +25,7 @@ public class ArtifactType {
     @GeneratedValue
     private Integer id;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name; // e.g., "Song", "Movie", "Physical Object"
 
     @OneToMany(mappedBy = "artifactType", cascade = CascadeType.ALL, orphanRemoval = true)

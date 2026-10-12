@@ -43,8 +43,6 @@ public class TimeCapsule {
     @Setter
     User user;
 
-    // ===== JPA Lifecycle Callbacks =====
-
 
     public boolean isLocked() {
         return unlockDate != null && LocalDate.now().isBefore(unlockDate);

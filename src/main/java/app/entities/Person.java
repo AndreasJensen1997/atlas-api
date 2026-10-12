@@ -64,12 +64,12 @@ public class Person implements LinkableEntity {
     protected void onCreate() {
      setCreatedDate();
      setDefaultVisibility();
+     setUpdatedDate();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        setUpdatedDate();
-    }
+        this.updatedAt = LocalDate.now();    }
 
     public void setCreatedDate() {
         if (this.createdAt == null) {

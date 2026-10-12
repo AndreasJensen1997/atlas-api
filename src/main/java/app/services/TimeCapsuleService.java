@@ -44,7 +44,7 @@ public class TimeCapsuleService {
         TimeCapsule timeCapsule = timeCapsuleDAO.getById(timeCapsuleId);
 
         if (!timeCapsule.getUser().getId().equals(userId)) {
-            throw new ApiException(404, "Chapter not found with ID: " + timeCapsuleId);
+            throw new ApiException(404, "Time capsule not found with ID: " + timeCapsuleId);
         }
         return timeCapsule;
     }

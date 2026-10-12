@@ -55,12 +55,13 @@ public class Fragment implements LinkableEntity {
     @PrePersist
     protected void onCreate() {
         setCreatedDate();
+        setUpdatedDate();
         calculateWordCount();
     }
 
     @PreUpdate
     protected void onUpdate() {
-        setUpdatedDate();
+        this.updatedAt = LocalDate.now();
         calculateWordCount();
     }
 

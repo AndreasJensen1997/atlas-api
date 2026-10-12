@@ -70,8 +70,7 @@ public class Memory implements LinkableEntity {
 
     @PreUpdate
     protected void onUpdate() {
-        setUpdatedDate();
-    }
+        this.updatedAt = LocalDate.now();    }
 
     public void setDefaultVisibility() {
         if (this.visibility == null) {

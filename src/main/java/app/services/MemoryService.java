@@ -45,7 +45,7 @@ public class MemoryService {
         Memory memory = memoryDAO.getById(memoryId);
 
         if (!memory.getUser().getId().equals(userId)) {
-            throw new ApiException(404, "Chapter not found with ID: " + memoryId);
+            throw new ApiException(404, "Memory not found with ID: " + memoryId);
         }
         return memory;
     }

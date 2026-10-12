@@ -46,8 +46,7 @@ public class EntityListService {
         EntityList entityList = entityListDAO.getById(entityListId);
 
         if (!entityList.getUser().getId().equals(userId)) {
-            throw new ApiException(404, "Chapter not found with ID: " + entityList);
-        }
+            throw new ApiException(404, "List not found with ID: " + entityListId);        }
         return entityList;
     }
 

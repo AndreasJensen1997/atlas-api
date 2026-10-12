@@ -45,7 +45,7 @@ public class DevlogService {
         Devlog devlog = devlogDAO.getById(devlogId);
 
         if (!devlog.getUser().getId().equals(userId)) {
-            throw new ApiException(404, "Chapter not found with ID: " + devlogId);
+            throw new ApiException(404, "Devlog not found with ID: " + devlogId);
         }
         return devlog;
     }

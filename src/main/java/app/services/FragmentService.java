@@ -40,7 +40,7 @@ public class FragmentService {
         Fragment fragment = fragmentDAO.getById(fragmentId);
 
         if (!fragment.getUser().getId().equals(userId)) {
-            throw new ApiException(404, "Chapter not found with ID: " + fragmentId);
+            throw new ApiException(404, "Fragment not found with ID: " + fragmentId);
         }
         return fragment;
     }

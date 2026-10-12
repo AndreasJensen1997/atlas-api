@@ -45,7 +45,7 @@ public class PlaceService {
         Place place = placeDAO.getById(placeId);
 
         if (!place.getUser().getId().equals(userId)) {
-            throw new ApiException(404, "Chapter not found with ID: " + placeId);
+            throw new ApiException(404, "Place not found with ID: " + placeId);
         }
         return place;
     }

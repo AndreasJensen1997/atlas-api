@@ -51,7 +51,7 @@ public class ArtifactService {
         Artifact artifact = artifactDAO.getById(artifactId);
 
         if (!artifact.getUser().getId().equals(userId)) {
-            throw new ApiException(404, "Chapter not found with ID: " + artifactId);
+            throw new ApiException(404, "Artifact not found with ID: " + artifactId);
         }
         return artifact;
     }

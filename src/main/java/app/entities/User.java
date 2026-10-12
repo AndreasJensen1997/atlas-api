@@ -33,6 +33,8 @@ public class User {
 
     @Setter
     private String email;
+
+    @ToString.Exclude
     private String password;
 
 

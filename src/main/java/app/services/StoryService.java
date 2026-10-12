@@ -45,7 +45,7 @@ public class StoryService {
         Story story = storyDAO.getById(storyId);
 
         if (!story.getUser().getId().equals(userId)) {
-            throw new ApiException(404, "Chapter not found with ID: " + storyId);
+            throw new ApiException(404, "Story not found with ID: " + storyId);
         }
         return story;
     }

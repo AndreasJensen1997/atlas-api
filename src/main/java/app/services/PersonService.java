@@ -45,7 +45,7 @@ public class PersonService {
         Person person = personDAO.getById(personId);
 
         if (!person.getUser().getId().equals(userId)) {
-            throw new ApiException(404, "Chapter not found with ID: " + personId);
+            throw new ApiException(404, "Person not found with ID: " + personId);
         }
         return person;
     }

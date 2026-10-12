@@ -34,7 +34,6 @@ public class TimeCapsule {
     LocalDate unlockDate;
 
     LocalDate dateOpened;
-    boolean lockStatus;
 
     // ===== Relations =====
 
@@ -46,23 +45,9 @@ public class TimeCapsule {
 
     // ===== JPA Lifecycle Callbacks =====
 
-    @PrePersist
-    protected void onCreate() {
-        isLockStatus();
 
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        isLockStatus();
-
-    }
-
-    public boolean isLockStatus() {
-        if (this.unlockDate == null) {
-            return false;
-        }
-        return LocalDate.now().isBefore(this.unlockDate);
+    public boolean isLocked() {
+        return unlockDate != null && LocalDate.now().isBefore(unlockDate);
     }
 
     // ===== Equals & HashCode =====

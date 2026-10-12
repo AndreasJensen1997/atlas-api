@@ -146,9 +146,9 @@ public final class TestPopulator {
             em.persist(story2);
             em.persist(story3);
 
-            TimeCapsule timeCapsule1 = TimeCapsule.builder().title("first capsule").subtitle("my first capsule").content("Memory from 2024").unlockDate(LocalDate.of(2029, 1, 1)).lockStatus(false).user(user1).build();
-            TimeCapsule timeCapsule2 = TimeCapsule.builder().title("second capsule").subtitle("my second capsule").content("Open in 2030").unlockDate(LocalDate.of(2023, 1, 1)).lockStatus(true).user(user2).build();
-            TimeCapsule timeCapsule3 = TimeCapsule.builder().title("third capsule").subtitle("my third capsule").content("Open in 2050").unlockDate(LocalDate.of(2023, 1, 1)).lockStatus(true).user(user3).build();
+            TimeCapsule timeCapsule1 = TimeCapsule.builder().title("first capsule").subtitle("my first capsule").content("Memory from 2024").unlockDate(LocalDate.now().plusYears(5)).user(user1).build();
+            TimeCapsule timeCapsule2 = TimeCapsule.builder().title("second capsule").subtitle("my second capsule").content("Open in 2030").unlockDate(LocalDate.of(2023, 1, 1)).user(user2).build();
+            TimeCapsule timeCapsule3 = TimeCapsule.builder().title("third capsule").subtitle("my third capsule").content("Open in 2050").unlockDate(LocalDate.of(2023, 1, 1)).user(user3).build();
 
             em.persist(timeCapsule1);
             em.persist(timeCapsule2);

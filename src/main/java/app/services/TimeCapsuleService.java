@@ -31,7 +31,7 @@ public class TimeCapsuleService {
         User owner = userService.getById(userId);
 
         if (timeCapsuleDAO.findByTitleAndUserId(dto.title(), owner.getId()) != null) {
-            throw new IllegalArgumentException("A time capsule with this title already exists.");
+            throw new ApiException(409,"A time capsule with this title already exists.");
         }
 
         TimeCapsule newTimeCapsule = timeCapsuleMapper.toEntity(dto, owner);

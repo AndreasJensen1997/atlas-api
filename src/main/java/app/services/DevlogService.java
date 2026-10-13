@@ -31,7 +31,7 @@ public class DevlogService {
         User owner = userService.getById(userId);
 
         if (devlogDAO.findByTitleAndUserId(dto.title(), owner.getId()) != null) {
-            throw new IllegalArgumentException("A devlog with this title already exists.");
+            throw new ApiException(409, "A devlog with this title already exists.");
         }
 
         Devlog newDevlog = devlogMapper.toEntity(dto, owner);
@@ -58,7 +58,7 @@ public class DevlogService {
     // ===== Update =====
 
     public Devlog update(Integer devlogId, DevlogRequestDTO dto, int userId) {
-        Devlog devlog = getById(devlogId,userId);
+        Devlog devlog = getById(devlogId, userId);
 
         devlog.setTitle(dto.title());
         devlog.setSubtitle(dto.subtitle());

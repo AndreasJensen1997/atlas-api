@@ -34,7 +34,7 @@ public class ArtifactService {
         User owner = userService.getById(userId);
 
         if (artifactDAO.findByTitleAndUserId(dto.title(), owner.getId()) != null) {
-            throw new IllegalArgumentException("An artifact with this title already exists.");
+            throw new ApiException(409, "A artifact with this title already exists.");
         }
 
         ArtifactType resolvedType = artifactTypeService.resolveArtifactType(dto.artifactType(), owner);

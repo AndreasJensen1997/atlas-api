@@ -32,7 +32,7 @@ public class EntityListService {
         User owner = userService.getById(userId);
 
         if (entityListDAO.findByTitleAndUserId(dto.title(), owner.getId()) != null) {
-            throw new IllegalArgumentException("A Entity list with this title already exists.");
+            throw new ApiException(409,"A Entity list with this title already exists.");
         }
 
         EntityList newEntityList = entityListMapper.toEntity(dto, owner);

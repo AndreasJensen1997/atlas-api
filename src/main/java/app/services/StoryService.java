@@ -31,7 +31,7 @@ public class StoryService {
         User owner = userService.getById(userId);
 
         if (storyDAO.findByTitleAndUserId(dto.title(), owner.getId()) != null) {
-            throw new IllegalArgumentException("A story with this title already exists.");
+            throw new ApiException(409,"A story with this title already exists.");
         }
 
         Story newStory = storyMapper.toEntity(dto, owner);

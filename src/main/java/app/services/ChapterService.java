@@ -31,7 +31,7 @@ public class ChapterService {
         User owner = userService.getById(userId);
 
         if (chapterDAO.findByTitleAndUserId(dto.title(), owner.getId()) != null) {
-            throw new IllegalArgumentException("A chapter with this title already exists.");
+            throw new ApiException(409,"A chapter with this title already exists.");
         }
 
         Chapter newChapter = chapterMapper.toEntity(dto, owner);

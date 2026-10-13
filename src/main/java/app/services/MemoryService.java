@@ -31,7 +31,7 @@ public class MemoryService {
         User owner = userService.getById(userId);
 
         if (memoryDAO.findByTitleAndUserId(dto.title(), owner.getId()) != null) {
-            throw new IllegalArgumentException("A memory with this title already exists.");
+            throw new ApiException(409, "A memory with this title already exists.");
         }
 
         Memory newMemory = memoryMapper.toEntity(dto, owner);

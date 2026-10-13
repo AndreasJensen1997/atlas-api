@@ -35,7 +35,7 @@ public class UserService {
         String email = User.normalize(dto.email());
 
         if (userDao.getUserByEmail(email) != null) {
-            throw new IllegalArgumentException("An account with this email already exists.");
+            throw new ApiException(409, "An account with this email already exists.");
         }
 
         String hashedPassword = BCrypt.hashpw(dto.password(), BCrypt.gensalt());

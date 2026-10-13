@@ -32,7 +32,7 @@ public class PersonService {
 
         // UserOwnedDAO's findByTitleAndUserId automatically handles 'name' for Person entities
         if (personDAO.findByTitleAndUserId(dto.name(), owner.getId()) != null) {
-            throw new IllegalArgumentException("A person with this name already exists.");
+            throw new ApiException(409,"A person with this name already exists.");
         }
 
         Person newPerson = personMapper.toEntity(dto, owner);

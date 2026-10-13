@@ -32,7 +32,7 @@ public class PlaceService {
 
         // UserOwnedDAO's findByTitleAndUserId handles 'name' automatically for Place entities
         if (placeDAO.findByTitleAndUserId(dto.name(), owner.getId()) != null) {
-            throw new IllegalArgumentException("A place with this name already exists.");
+            throw new ApiException(409,"A place with this name already exists.");
         }
 
         Place newPlace = placeMapper.toEntity(dto, owner);

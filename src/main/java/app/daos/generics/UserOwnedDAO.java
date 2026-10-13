@@ -47,27 +47,6 @@ public class UserOwnedDAO<T, I> extends GenericDAO<T, I> {
         }
     }
 
-    public T findByTitleAndUserId(String title, I userId) {
-        String className = null;
-        try (EntityManager em = emf.createEntityManager()) {
-            String fieldName = "title";
-            className = entityClass.getSimpleName();
-            if (className.equals("Person") || className.equals("Place") || className.equals("ArtifactType")) {
-                fieldName = "name";
-            }
-
-            String jpql = "SELECT e FROM " + className + " e WHERE e." + fieldName + " = :title AND e.user.id = :userId";
-
-            TypedQuery<T> query = em.createQuery(jpql, entityClass);
-            query.setParameter("title", title);
-            query.setParameter("userId", userId);
-
-            return query.getResultStream().findFirst().orElse(null);
-        } catch (PersistenceException e) {
-            throw new ApiException(500, "Failed to find " + className + " by title and user: " + e.getMessage());
-        }
-    }
-
     public boolean existsByIdAndUserId(I id, I userId) {
         try (EntityManager em = emf.createEntityManager()) {
             String jpql = "SELECT COUNT(e) FROM " + entityClass.getSimpleName() + " e WHERE e.id = :id AND e.user.id = :userId";

@@ -100,7 +100,7 @@ public class UserService {
             }
             user.setEmail(normalized);
         }
-        if (newName != null && newName.isBlank()) {
+        if (newName != null && !newName.isBlank()) {
             user.setName(newName);
         }
 

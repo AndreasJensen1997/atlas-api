@@ -32,13 +32,7 @@ public class ArtifactService {
 
     public Artifact createArtifact(ArtifactRequestDTO dto, int userId) {
         User owner = userService.getById(userId);
-
-        if (artifactDAO.findByTitleAndUserId(dto.title(), owner.getId()) != null) {
-            throw new ApiException(409, "A artifact with this title already exists.");
-        }
-
         ArtifactType resolvedType = artifactTypeService.resolveArtifactType(dto.artifactType(), owner);
-
         Artifact newArtifact = artifactMapper.toEntity(dto, owner);
         newArtifact.setArtifactType(resolvedType);
 

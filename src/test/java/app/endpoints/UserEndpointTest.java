@@ -93,7 +93,7 @@ public class UserEndpointTest {
         given()
                 .contentType(ContentType.JSON).body(duplicate)
                 .when().post("/auth/register")
-                .then().statusCode(HttpStatus.BAD_REQUEST.getCode());
+                .then().statusCode(HttpStatus.CONFLICT.getCode());
 
         // Login caps lock
         LoginRequestDTO login = new LoginRequestDTO("TEST.USER@EXAMPLE.DK", "Password1!");

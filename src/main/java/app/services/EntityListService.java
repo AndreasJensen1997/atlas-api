@@ -30,11 +30,6 @@ public class EntityListService {
 
     public EntityList createEntityList(EntityListRequestDTO dto, int userId) {
         User owner = userService.getById(userId);
-
-        if (entityListDAO.findByTitleAndUserId(dto.title(), owner.getId()) != null) {
-            throw new ApiException(409,"A Entity list with this title already exists.");
-        }
-
         EntityList newEntityList = entityListMapper.toEntity(dto, owner);
 
         return entityListDAO.create(newEntityList);

@@ -29,11 +29,6 @@ public class DevlogService {
 
     public Devlog createDevlog(DevlogRequestDTO dto, int userId) {
         User owner = userService.getById(userId);
-
-        if (devlogDAO.findByTitleAndUserId(dto.title(), owner.getId()) != null) {
-            throw new ApiException(409, "A devlog with this title already exists.");
-        }
-
         Devlog newDevlog = devlogMapper.toEntity(dto, owner);
 
         return devlogDAO.create(newDevlog);

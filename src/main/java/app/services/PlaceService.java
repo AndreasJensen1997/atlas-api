@@ -29,13 +29,8 @@ public class PlaceService {
 
     public Place createPlace(PlaceRequestDTO dto, int userId) {
         User owner = userService.getById(userId);
-
-        // UserOwnedDAO's findByTitleAndUserId handles 'name' automatically for Place entities
-        if (placeDAO.findByTitleAndUserId(dto.name(), owner.getId()) != null) {
-            throw new ApiException(409,"A place with this name already exists.");
-        }
-
         Place newPlace = placeMapper.toEntity(dto, owner);
+
         return placeDAO.create(newPlace);
     }
 

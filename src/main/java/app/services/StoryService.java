@@ -29,13 +29,7 @@ public class StoryService {
 
     public Story createStory(StoryRequestDTO dto, int userId) {
         User owner = userService.getById(userId);
-
-        if (storyDAO.findByTitleAndUserId(dto.title(), owner.getId()) != null) {
-            throw new ApiException(409,"A story with this title already exists.");
-        }
-
         Story newStory = storyMapper.toEntity(dto, owner);
-
         return storyDAO.create(newStory);
     }
 

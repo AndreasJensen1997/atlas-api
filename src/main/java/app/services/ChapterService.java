@@ -29,13 +29,7 @@ public class ChapterService {
 
     public Chapter createChapter(ChapterRequestDTO dto, int userId) {
         User owner = userService.getById(userId);
-
-        if (chapterDAO.findByTitleAndUserId(dto.title(), owner.getId()) != null) {
-            throw new ApiException(409,"A chapter with this title already exists.");
-        }
-
         Chapter newChapter = chapterMapper.toEntity(dto, owner);
-
         return chapterDAO.create(newChapter);
     }
 

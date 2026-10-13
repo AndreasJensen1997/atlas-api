@@ -99,6 +99,8 @@ public class UserService {
                 throw new ApiException(409, "An account with this email already exists.");
             }
             user.setEmail(normalized);
+        }
+        if (newName != null && newName.isBlank()) {
             user.setName(newName);
         }
 

@@ -4,6 +4,7 @@ import app.enums.Visibility;
 
 public record PlaceRequestDTO(
         String name,
+        String subtitle,
         String content,
         Double latitude,
         Double longitude,

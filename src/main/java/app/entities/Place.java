@@ -27,6 +27,9 @@ public class Place implements LinkableEntity {
     private String name;
 
     @Setter
+    private String subtitle;
+
+    @Setter
     @Column(columnDefinition = "TEXT")
     String content;
 

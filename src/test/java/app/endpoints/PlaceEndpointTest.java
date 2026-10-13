@@ -78,6 +78,7 @@ public class PlaceEndpointTest {
     void createPlace_Success() {
         PlaceRequestDTO placeRequestDTO = new PlaceRequestDTO(
                 "Central Park",
+                "Favourite place in nyc",
                 "A large public park in New York City",
                 40.785091,
                 -73.968285,
@@ -156,6 +157,7 @@ public class PlaceEndpointTest {
         PlaceRequestDTO placeRequestDTO = new PlaceRequestDTO(
                 "Updated Place Name",
                 "Updated Content",
+                "updated subtitle",
                 55.676098,
                 12.568337,
                 "Updated Address",
@@ -207,6 +209,7 @@ public class PlaceEndpointTest {
         PlaceRequestDTO placeRequestDTO = new PlaceRequestDTO(
                 "Test Place",
                 "Test Content",
+                "test subtitle",
                 0.0,
                 0.0,
                 "Test Address",
@@ -229,6 +232,7 @@ public class PlaceEndpointTest {
         PlaceRequestDTO placeRequestDTO = new PlaceRequestDTO(
                 "",
                 "Test Content",
+                "test subtitle",
                 null,
                 null,
                 "",
@@ -301,6 +305,7 @@ public class PlaceEndpointTest {
         PlaceRequestDTO placeRequestDTO = new PlaceRequestDTO(
                 "Updated Name",
                 "Updated Content",
+                "updated subtitle",
                 0.0,
                 0.0,
                 "Address",
@@ -322,6 +327,7 @@ public class PlaceEndpointTest {
     void updatePlace_WrongData() {
         PlaceRequestDTO placeRequestDTO = new PlaceRequestDTO(
                 "",
+                "updated subtitle",
                 "Updated Content",
                 null,
                 null,
@@ -345,6 +351,7 @@ public class PlaceEndpointTest {
     void updatePlace_NotFound() {
         PlaceRequestDTO placeRequestDTO = new PlaceRequestDTO(
                 "Updated Name",
+                "updated subtitle",
                 "Updated Content",
                 0.0,
                 0.0,

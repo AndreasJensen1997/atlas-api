@@ -32,6 +32,7 @@ public class PlaceMapper implements IMapper<PlaceRequestDTO, PlaceResponseDTO, P
         return new PlaceResponseDTO(
                 place.getId(),
                 place.getName(),
+                place.getSubtitle(),
                 place.getContent(),
                 place.getLatitude(),
                 place.getLongitude(),

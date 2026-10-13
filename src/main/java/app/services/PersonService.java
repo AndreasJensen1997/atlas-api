@@ -70,6 +70,7 @@ public class PersonService {
         Person person = getById(personId,userId);
 
         person.setName(dto.name());
+        person.setSubtitle(dto.subtitle());
         person.setContent(dto.content());
         person.setRelation(dto.relation());
         person.setVisibility(dto.visibility());

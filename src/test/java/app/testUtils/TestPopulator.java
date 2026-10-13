@@ -122,17 +122,17 @@ public final class TestPopulator {
             em.persist(memory3);
 
 
-            Person person1 = Person.builder().name("jimmi").relation(Relation.FATHER).user(user1).build();
-            Person person2 = Person.builder().name("trine").relation(Relation.MOTHER).user(user2).build();
-            Person person3 = Person.builder().name("daniel").relation(Relation.FRIEND).user(user3).build();
+            Person person1 = Person.builder().name("jimmi").subtitle("my father").relation(Relation.FATHER).user(user1).build();
+            Person person2 = Person.builder().name("trine").subtitle("my mother").relation(Relation.MOTHER).user(user2).build();
+            Person person3 = Person.builder().name("daniel").subtitle("my friend from work").relation(Relation.FRIEND).user(user3).build();
 
             em.persist(person1);
             em.persist(person2);
             em.persist(person3);
 
-            Place place1 = Place.builder().name("Copenhagen Central").content("Main station area").latitude(55.6761).longitude(12.5683).address("Bernstorffsgade 16").city("Copenhagen").country("Denmark").user(user1).build();
-            Place place2 = Place.builder().name("Aarhus Ø").content("Modern harbor front").latitude(56.1629).longitude(10.2039).address("Ankersgade 1").city("Aarhus").country("Denmark").user(user2).build();
-            Place place3 = Place.builder().name("Odense Zoo").content("Family attraction").latitude(55.3852).longitude(10.3736).address("Sdr. Boulevard 306").city("Odense").country("Denmark").user(user3).build();
+            Place place1 = Place.builder().name("Copenhagen Central").subtitle("childhood city").content("Main station area").latitude(55.6761).longitude(12.5683).address("Bernstorffsgade 16").city("Copenhagen").country("Denmark").user(user1).build();
+            Place place2 = Place.builder().name("Aarhus Ø").subtitle("the place i got my first job").content("Modern harbor front").latitude(56.1629).longitude(10.2039).address("Ankersgade 1").city("Aarhus").country("Denmark").user(user2).build();
+            Place place3 = Place.builder().name("Odense Zoo").subtitle("the place my mom used to take me to").content("Family attraction").latitude(55.3852).longitude(10.3736).address("Sdr. Boulevard 306").city("Odense").country("Denmark").user(user3).build();
 
             em.persist(place1);
             em.persist(place2);

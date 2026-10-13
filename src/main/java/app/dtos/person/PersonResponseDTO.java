@@ -8,6 +8,7 @@ import java.time.LocalDate;
 public record PersonResponseDTO(
         Integer id,
         String name,
+        String subtitle,
         String content,
         Relation relation,
         Visibility visibility,

@@ -80,6 +80,7 @@ public class PersonEndpointTest {
         PersonRequestDTO personRequestDTO = new PersonRequestDTO(
                 "Jane Doe",
                 "Close friend from university",
+                "my best friend",
                 Relation.FATHER,
                 Visibility.PUBLIC
         );
@@ -153,6 +154,7 @@ public class PersonEndpointTest {
         PersonRequestDTO personRequestDTO = new PersonRequestDTO(
                 "Updated Person Name",
                 "Updated Content Description",
+                "my mother",
                 Relation.MOTHER,
                 Visibility.PUBLIC
         );
@@ -200,6 +202,7 @@ public class PersonEndpointTest {
         PersonRequestDTO personRequestDTO = new PersonRequestDTO(
                 "Test Name",
                 "Test Content",
+                "test subtitle",
                 Relation.ADOPTIVE_CHILD,
                 Visibility.PUBLIC
         );
@@ -218,6 +221,7 @@ public class PersonEndpointTest {
         PersonRequestDTO personRequestDTO = new PersonRequestDTO(
                 "",
                 "Test Content",
+                "test subtitle",
                 null,
                 Visibility.PUBLIC
         );
@@ -285,6 +289,7 @@ public class PersonEndpointTest {
         PersonRequestDTO personRequestDTO = new PersonRequestDTO(
                 "Updated Name",
                 "Updated Content",
+                "updated subtitle",
                 Relation.MOTHER,
                 Visibility.PUBLIC
         );
@@ -303,6 +308,7 @@ public class PersonEndpointTest {
         PersonRequestDTO personRequestDTO = new PersonRequestDTO(
                 "",
                 "Updated Content",
+                "updated subtitle",
                 null,
                 Visibility.PUBLIC
         );
@@ -322,6 +328,7 @@ public class PersonEndpointTest {
         PersonRequestDTO personRequestDTO = new PersonRequestDTO(
                 "Updated Name",
                 "Updated Content",
+                "updated subtitle",
                 Relation.AUNT,
                 Visibility.PUBLIC
         );

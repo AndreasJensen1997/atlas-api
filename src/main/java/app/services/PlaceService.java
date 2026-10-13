@@ -70,6 +70,7 @@ public class PlaceService {
         Place place = getById(placeId,userId);
 
         place.setName(dto.name());
+        place.setSubtitle(dto.subtitle());
         place.setContent(dto.content());
         place.setLatitude(dto.latitude());
         place.setLongitude(dto.longitude());

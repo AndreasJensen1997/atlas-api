@@ -28,6 +28,7 @@ public class PersonMapper implements IMapper<PersonRequestDTO, PersonResponseDTO
         return new PersonResponseDTO(
                 person.getId(),
                 person.getName(),
+                person.getSubtitle(),
                 person.getContent(),
                 person.getRelation(),
                 person.getVisibility(),

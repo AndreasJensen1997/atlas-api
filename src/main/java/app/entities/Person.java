@@ -28,6 +28,9 @@ public class Person implements LinkableEntity {
     String name;
 
     @Setter
+    private String subtitle;
+
+    @Setter
     @Column(columnDefinition = "TEXT")
     String content;
 

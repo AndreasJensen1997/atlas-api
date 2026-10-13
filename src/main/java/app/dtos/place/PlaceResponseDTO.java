@@ -7,6 +7,7 @@ import java.time.LocalDate;
 public record PlaceResponseDTO(
         Integer id,
         String name,
+        String subtitle,
         String content,
         Double latitude,
         Double longitude,

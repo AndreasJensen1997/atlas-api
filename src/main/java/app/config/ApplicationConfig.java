@@ -109,12 +109,6 @@ public class ApplicationConfig implements EndpointGroup {
         PlaceService placeService = new PlaceService(placeDAO, userService, placeMapper);
         placeController = new PlaceController(placeService, placeMapper);
 
-        // ===== Time capsule =====
-
-        TimeCapsuleDAO timeCapsuleDAO = new TimeCapsuleDAO(emf);
-        TimeCapsuleMapper timeCapsuleMapper = new TimeCapsuleMapper();
-        TimeCapsuleService timeCapsuleService = new TimeCapsuleService(timeCapsuleDAO, userService, timeCapsuleMapper);
-        timeCapsuleController = new TimeCapsuleController(timeCapsuleService, timeCapsuleMapper);
 
         // ===== Fragment =====
 
@@ -158,6 +152,12 @@ public class ApplicationConfig implements EndpointGroup {
         NotificationService notificationService = new NotificationService(notificationDAO, userService, notificationMapper);
         notificationController = new NotificationController(notificationService, notificationMapper);
 
+
+        // ===== Time capsule =====
+        TimeCapsuleDAO timeCapsuleDAO = new TimeCapsuleDAO(emf);
+        TimeCapsuleMapper timeCapsuleMapper = new TimeCapsuleMapper();
+        TimeCapsuleService timeCapsuleService = new TimeCapsuleService(timeCapsuleDAO,notificationDAO, userService, timeCapsuleMapper);
+        timeCapsuleController = new TimeCapsuleController(timeCapsuleService, timeCapsuleMapper);
 
     }
 

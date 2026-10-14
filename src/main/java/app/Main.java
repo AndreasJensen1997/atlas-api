@@ -5,6 +5,7 @@ import app.config.HibernateConfig;
 import app.daos.user.UserDAO;
 import app.exceptions.ApiException;
 import app.services.UserService;
+import app.utils.scheduling.NotificationScheduler;
 import app.utils.security.SecurityFilter;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.javalin.Javalin;
@@ -32,5 +33,11 @@ public class Main {
 
         app.startServer(7070);
         System.out.println("Atlas API is running on http://localhost:7070");
+
+
+        // ===== Scheduler =====
+        NotificationScheduler schedule = new NotificationScheduler();
+        schedule.start();
+        Runtime.getRuntime().addShutdownHook(new Thread(schedule::stop));
     }
 }

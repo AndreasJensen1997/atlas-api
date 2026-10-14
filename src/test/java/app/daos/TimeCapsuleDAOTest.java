@@ -30,7 +30,6 @@ class TimeCapsuleDAOTest {
     }
 
 
-
     @Test
     void create() {
         User existingUser = seeded.user1();
@@ -84,12 +83,26 @@ class TimeCapsuleDAOTest {
         TimeCapsule seed = seeded.timeCapsule1();
         String keyword = seed.getTitle().substring(0, 3).toLowerCase();
 
-        List<TimeCapsule> results = timeCapsuleDAO.searchByTitle(keyword,seed.getUser().getId());
+        List<TimeCapsule> results = timeCapsuleDAO.searchByTitle(keyword, seed.getUser().getId());
 
         assertThat(results, not(empty()));
         assertThat(results, hasItem(seed));
     }
 
+    @Test
+    void getAllUnlockedAndNotNotified() {
+        User existingUser = seeded.user1();
+
+        TimeCapsule capsule1 = timeCapsuleDAO.create(TimeCapsule.builder().title("first secret message").subtitle("my first timecapsule").content("Secret message for the future").unlockDate(LocalDate.now().minusYears(5)).unlockNotified(false).user(existingUser).build());
+        TimeCapsule capsule2 = timeCapsuleDAO.create(TimeCapsule.builder().title("second secret message").subtitle("my second timecapsule").content("Secret message for the future").unlockDate(LocalDate.now().minusYears(5)).unlockNotified(true).user(existingUser).build());
+        TimeCapsule capsule3 = timeCapsuleDAO.create(TimeCapsule.builder().title("third secret message").subtitle("my third timecapsule").content("Secret message for the future").unlockDate(LocalDate.now().plusYears(5)).unlockNotified(false).user(existingUser).build());
+
+        List<TimeCapsule> all = timeCapsuleDAO.findUnlockedAndNotNotifiedCapsules();
+
+        assertThat(all, hasItem(capsule1));
+        assertThat(all, not(hasItem(capsule2)));
+        assertThat(all, not(hasItem(capsule3)));
+    }
 
 
     @Test
@@ -171,7 +184,7 @@ class TimeCapsuleDAOTest {
 
     @Test
     void searchByName_withNonExistentKeyword_returnsEmptyList() {
-        List<TimeCapsule> results = timeCapsuleDAO.searchByTitle("DoesNotExist12345",999);
+        List<TimeCapsule> results = timeCapsuleDAO.searchByTitle("DoesNotExist12345", 999);
 
         assertThat(results, is(empty()));
     }

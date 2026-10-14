@@ -34,6 +34,10 @@ public class TimeCapsule {
     @Setter
     LocalDate unlockDate;
 
+    @Setter
+    @Column(columnDefinition = "boolean default false")
+    boolean unlockNotified;
+
     LocalDate dateOpened;
 
     // ===== Relations =====

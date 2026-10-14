@@ -4,5 +4,6 @@ public enum NotificationType {
     DEVLOG,
     FRIEND_REQUEST,
     MENTION,
+    TIME_CAPSULE,
     SYSTEM
 }

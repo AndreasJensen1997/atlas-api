@@ -6,5 +6,6 @@ public enum TargetType {
     MEMORY,
     ARTIFACT,
     PERSON,
-    PLACE
+    PLACE,
+
 }

@@ -1,6 +1,7 @@
 package app.entities;
 
 import app.enums.NotificationType;
+import app.enums.TargetType;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;

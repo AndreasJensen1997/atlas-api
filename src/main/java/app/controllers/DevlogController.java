@@ -1,11 +1,10 @@
 package app.controllers;
 
 import app.controllers.generics.AbstractController;
-import app.dtos.chapter.ChapterRequestDTO;
 import app.dtos.devlog.DevlogRequestDTO;
 import app.dtos.devlog.DevlogResponseDTO;
-import app.entities.Chapter;
 import app.entities.Devlog;
+import app.enums.Role;
 import app.exceptions.ApiException;
 import app.mappers.DevlogMapper;
 import app.services.DevlogService;
@@ -15,14 +14,13 @@ import io.javalin.http.Context;
 import java.util.List;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
-import static io.javalin.apibuilder.ApiBuilder.delete;
 
 public class DevlogController extends AbstractController<DevlogRequestDTO, DevlogResponseDTO, Devlog, Integer> implements EndpointGroup {
 
     // ===== Dependencies =====
 
-    DevlogService devlogService;
-    DevlogMapper devlogMapper;
+    private final DevlogService devlogService;
+    private final DevlogMapper devlogMapper;
 
     // ===== Constructor =====
 
@@ -43,36 +41,37 @@ public class DevlogController extends AbstractController<DevlogRequestDTO, Devlo
     }
 
     // ===== Entity Operations =====
+    // Devlogs are shared: every user can read them, only admins can write them.
+    // Access is checked by the route role, so userId is only needed when creating.
 
     @Override
     protected Devlog createEntity(DevlogRequestDTO dto, Integer userId) {
-        return devlogService.createDevlog(dto,userId);
+        return devlogService.createDevlog(dto, userId);
     }
 
     @Override
     protected Devlog fetchEntityById(Integer devlogId, Integer userId) {
-        return devlogService.getById(devlogId,userId);
+        return devlogService.getById(devlogId);
     }
 
     @Override
     protected List<Devlog> fetchAllByUserId(Integer userId) {
-        return devlogService.getAllById(userId);
+        return devlogService.getAll();
     }
 
     @Override
     protected Devlog getRandom(Integer userId) {
-        throw new ApiException(405, "Get random feature not supported for fragments");
+        throw new ApiException(405, "Get random feature not supported for devlogs");
     }
 
     @Override
     protected Devlog updateEntity(Integer devlogId, DevlogRequestDTO dto, Integer userId) {
-        return devlogService.update(devlogId,dto,userId);
+        return devlogService.update(devlogId, dto);
     }
 
     @Override
     protected void deleteEntity(Integer devlogId, Integer userId) {
-        devlogService.delete(devlogId, userId);
-
+        devlogService.delete(devlogId);
     }
 
     // ===== Response Mapping =====
@@ -82,13 +81,14 @@ public class DevlogController extends AbstractController<DevlogRequestDTO, Devlo
         return devlogMapper.toResponse(entity);
     }
 
+    // ===== Endpoints =====
+
     @Override
     public void addEndpoints() {
-        post("/api/devlogs", this::create);
+        post("/api/devlogs", this::create, Role.ADMIN);
         get("/api/devlogs/{id}", this::getById);
         get("/api/devlogs", this::getAllById);
-        put("/api/devlogs/{id}", this::updateById);
-        delete("/api/devlogs/{id}", this::deleteById);
-
+        put("/api/devlogs/{id}", this::updateById, Role.ADMIN);
+        delete("/api/devlogs/{id}", this::deleteById, Role.ADMIN);
     }
 }

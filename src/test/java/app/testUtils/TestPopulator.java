@@ -162,9 +162,9 @@ public final class TestPopulator {
             em.persist(mention2);
             em.persist(mention3);
 
-            Devlog devlog1 = Devlog.builder().title("notification feature").subtitle("Users are now able to get notifications").content("Update your app in order for it to work").user(user1).build();
-            Devlog devlog2 = Devlog.builder().title("system update ").subtitle("Yearly update ").content("We apologize for the inconvenience").user(user1).build();
-            Devlog devlog3 = Devlog.builder().title("1 year anniversary").subtitle("Congratulations").content("Thank you all").user(user2).build();
+            Devlog devlog1 = Devlog.builder().title("notification feature").subtitle("Users are now able to get notifications").content("Update your app in order for it to work").user(admin).build();
+            Devlog devlog2 = Devlog.builder().title("system update ").subtitle("Yearly update ").content("We apologize for the inconvenience").user(admin).build();
+            Devlog devlog3 = Devlog.builder().title("1 year anniversary").subtitle("Congratulations").content("Thank you all").user(admin).build();
 
             em.persist(devlog1);
             em.persist(devlog2);

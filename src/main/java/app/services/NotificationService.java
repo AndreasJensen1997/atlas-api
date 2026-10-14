@@ -2,13 +2,19 @@ package app.services;
 
 import app.daos.userOwned.NotificationDAO;
 import app.dtos.notification.NotificationRequestDTO;
+import app.entities.Devlog;
 import app.entities.Notification;
 import app.entities.User;
+import app.enums.NotificationType;
 import app.exceptions.ApiException;
 import app.mappers.NotificationMapper;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 
+@Slf4j
 public class NotificationService {
 
     // ===== Dependencies =====
@@ -16,6 +22,7 @@ public class NotificationService {
     private final NotificationDAO notificationDAO;
     private final UserService userService;
     private final NotificationMapper notificationMapper;
+
 
     // ===== Constructor =====
 
@@ -54,7 +61,7 @@ public class NotificationService {
     // ===== Update =====
 
     public Notification update(Integer notificationId, NotificationRequestDTO dto, int userId) {
-        Notification notification = getById(notificationId,userId);
+        Notification notification = getById(notificationId, userId);
 
         notification.setTitle(dto.title());
         notification.setNotificationType(dto.notificationType());
@@ -79,4 +86,29 @@ public class NotificationService {
 
         notificationDAO.delete(notification.getId());
     }
+
+    // ===== Custom methods =====
+
+    public void notifyAllUsers(Devlog devlog) {
+        List<User> allUsers = userService.getAll();
+
+        for (User user : allUsers) {
+            try {
+                Notification notification = Notification.builder()
+                        .title("A new devlog : \"" + devlog.getTitle() + "\" has been released")
+                        .notificationType(NotificationType.DEVLOG)
+                        .targetId(devlog.getId())
+                        .targetType("DEVLOG")
+                        .user(user)
+                        .build();
+
+                notificationDAO.create(notification);
+
+            } catch (Exception e) {
+                log.error("Could not notify user {} about devlog {}", user.getId(), devlog.getId(), e);
+            }
+        }
+
+    }
+
 }

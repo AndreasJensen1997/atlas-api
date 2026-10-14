@@ -36,8 +36,11 @@ public class Main {
 
 
         // ===== Scheduler =====
-        NotificationScheduler schedule = new NotificationScheduler();
+        NotificationScheduler schedule = new NotificationScheduler(app.getTimeCapsuleService());
         schedule.start();
-        Runtime.getRuntime().addShutdownHook(new Thread(schedule::stop));
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            schedule.stop();
+            app.shutdown();
+        }));
     }
 }

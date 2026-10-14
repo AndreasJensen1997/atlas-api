@@ -17,12 +17,16 @@ import io.javalin.config.JavalinConfig;
 import io.javalin.json.JavalinJackson;
 import io.javalin.security.RouteRole;
 import jakarta.persistence.EntityManagerFactory;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import io.javalin.validation.ValidationException;
 
 
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Slf4j
 public class ApplicationConfig implements EndpointGroup {
@@ -46,7 +50,15 @@ public class ApplicationConfig implements EndpointGroup {
 
     UserService userService;
 
+    @Getter
+    TimeCapsuleService timeCapsuleService;
+
+    ExecutorService executor;
+
     public ApplicationConfig(EntityManagerFactory emf) {
+
+        // ===== Executor (background work) =====
+        executor = Executors.newFixedThreadPool(2);
 
         // ===== User =====
 
@@ -140,23 +152,23 @@ public class ApplicationConfig implements EndpointGroup {
         EntityListService entityListService = new EntityListService(entityListDAO, userService, entityListMapper);
         entityListController = new EntityListController(entityListService, entityListMapper);
 
-        // ===== Devlog =====
-        DevlogDAO devlogDAO = new DevlogDAO(emf);
-        DevlogMapper devlogMapper = new DevlogMapper();
-        DevlogService devlogService = new DevlogService(devlogDAO, userService, devlogMapper);
-        devlogController = new DevlogController(devlogService, devlogMapper);
-
         // ===== Notification =====
         NotificationDAO notificationDAO = new NotificationDAO(emf);
         NotificationMapper notificationMapper = new NotificationMapper();
         NotificationService notificationService = new NotificationService(notificationDAO, userService, notificationMapper);
         notificationController = new NotificationController(notificationService, notificationMapper);
 
+        // ===== Devlog =====
+        DevlogDAO devlogDAO = new DevlogDAO(emf);
+        DevlogMapper devlogMapper = new DevlogMapper();
+        DevlogService devlogService = new DevlogService(devlogDAO, userService, devlogMapper, notificationService, executor);
+        devlogController = new DevlogController(devlogService, devlogMapper);
+
 
         // ===== Time capsule =====
         TimeCapsuleDAO timeCapsuleDAO = new TimeCapsuleDAO(emf);
         TimeCapsuleMapper timeCapsuleMapper = new TimeCapsuleMapper();
-        TimeCapsuleService timeCapsuleService = new TimeCapsuleService(timeCapsuleDAO,notificationDAO, userService, timeCapsuleMapper);
+        timeCapsuleService = new TimeCapsuleService(timeCapsuleDAO,notificationDAO, userService, timeCapsuleMapper);
         timeCapsuleController = new TimeCapsuleController(timeCapsuleService, timeCapsuleMapper);
 
     }
@@ -183,6 +195,7 @@ public class ApplicationConfig implements EndpointGroup {
     }
 
 
+
     public void configuration(JavalinConfig javalinConfig) {
         javalinConfig.jsonMapper(new JavalinJackson().updateMapper(mapper -> {
             mapper.registerModule(new JavaTimeModule());
@@ -193,6 +206,7 @@ public class ApplicationConfig implements EndpointGroup {
         javalinConfig.router.apiBuilder(this);
 
     }
+
 
     public Javalin startServer(int port) {
         var app = Javalin.create(this::configuration);
@@ -270,8 +284,14 @@ public class ApplicationConfig implements EndpointGroup {
         return app;
     }
 
+    public void shutdown() {
+        executor.shutdown();
+    }
+
     public void stopServer(Javalin app) {
         app.stop();
+        shutdown();
     }
+
 
 }

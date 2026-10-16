@@ -10,6 +10,7 @@ import app.exceptions.ApiException;
 import app.mappers.*;
 import app.services.*;
 import app.utils.security.SecurityFilter;
+import app.utils.websocket.ConnectionRegistry;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.javalin.Javalin;
 import io.javalin.apibuilder.EndpointGroup;
@@ -55,6 +56,10 @@ public class ApplicationConfig implements EndpointGroup {
 
     ExecutorService executor;
 
+    @Getter
+    ConnectionRegistry connectionRegistry;
+    NotificationSocketController notificationSocketController;
+
     public ApplicationConfig(EntityManagerFactory emf) {
 
         // ===== Executor (background work) =====
@@ -66,6 +71,11 @@ public class ApplicationConfig implements EndpointGroup {
         userService = new UserService(userDAO);
         authController = new AuthController(userService);
         userController = new UserController(userService);
+
+        // ===== Websocket =====
+
+        connectionRegistry = new ConnectionRegistry();
+        notificationSocketController = new NotificationSocketController(connectionRegistry, userService);
 
         // ===== Gemini prompt =====
 
@@ -155,7 +165,7 @@ public class ApplicationConfig implements EndpointGroup {
         // ===== Notification =====
         NotificationDAO notificationDAO = new NotificationDAO(emf);
         NotificationMapper notificationMapper = new NotificationMapper();
-        NotificationService notificationService = new NotificationService(notificationDAO, userService, notificationMapper);
+        NotificationService notificationService = new NotificationService(notificationDAO, userService, notificationMapper, connectionRegistry);
         notificationController = new NotificationController(notificationService, notificationMapper);
 
         // ===== Devlog =====
@@ -168,7 +178,7 @@ public class ApplicationConfig implements EndpointGroup {
         // ===== Time capsule =====
         TimeCapsuleDAO timeCapsuleDAO = new TimeCapsuleDAO(emf);
         TimeCapsuleMapper timeCapsuleMapper = new TimeCapsuleMapper();
-        timeCapsuleService = new TimeCapsuleService(timeCapsuleDAO,notificationDAO, userService, timeCapsuleMapper);
+        timeCapsuleService = new TimeCapsuleService(timeCapsuleDAO, notificationService, userService, timeCapsuleMapper);
         timeCapsuleController = new TimeCapsuleController(timeCapsuleService, timeCapsuleMapper);
 
     }
@@ -192,8 +202,8 @@ public class ApplicationConfig implements EndpointGroup {
         userController.addEndpoints();
         devlogController.addEndpoints();
         notificationController.addEndpoints();
+        notificationSocketController.addEndpoints();
     }
-
 
 
     public void configuration(JavalinConfig javalinConfig) {
@@ -243,7 +253,11 @@ public class ApplicationConfig implements EndpointGroup {
         // 2. Custom Business/API Exceptions (400, 401, 403, 404, etc.)
         // Thrown intentionally from services (e.g., throw new ApiException(404, "Chapter not found"))
         app.exception(ApiException.class, (e, ctx) -> {
-            log.warn("API Exception ({}): {}", e.getStatusCode(), e.getMessage());
+            if (e.getStatusCode() >= 500) {
+                log.error("API Exception ({}): {}", e.getStatusCode(), e.getMessage(), e); // with stack trace + cause
+            } else {
+                log.warn("API Exception ({}): {}", e.getStatusCode(), e.getMessage());
+            }
             ctx.status(e.getStatusCode()).json(Map.of(
                     "status", e.getStatusCode(),
                     "error", e.getMessage()
@@ -283,6 +297,7 @@ public class ApplicationConfig implements EndpointGroup {
         app.start(port);
         return app;
     }
+
 
     public void shutdown() {
         executor.shutdown();

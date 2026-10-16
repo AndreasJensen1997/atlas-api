@@ -8,8 +8,10 @@ import app.entities.Notification;
 import app.entities.TimeCapsule;
 import app.entities.User;
 import app.enums.NotificationType;
+import app.mappers.NotificationMapper;
 import app.mappers.TimeCapsuleMapper;
 import app.testUtils.TestPopulator;
+import app.utils.websocket.ConnectionRegistry;
 import jakarta.persistence.EntityManagerFactory;
 import org.junit.jupiter.api.*;
 
@@ -36,9 +38,9 @@ class TimeCapsuleServiceTest {
         timeCapsuleDAO = new TimeCapsuleDAO(emf);
         notificationDAO = new NotificationDAO(emf);
         UserService userService = new UserService(new UserDAO(emf));
+        NotificationService notificationService = new NotificationService(notificationDAO, userService, new NotificationMapper(), new ConnectionRegistry());
 
-        service = new TimeCapsuleService(timeCapsuleDAO, notificationDAO, userService, new TimeCapsuleMapper());
-    }
+        service = new TimeCapsuleService(timeCapsuleDAO, notificationService, userService, new TimeCapsuleMapper());    }
 
     // ===== Helpers =====
 

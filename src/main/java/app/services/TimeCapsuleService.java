@@ -20,15 +20,15 @@ public class TimeCapsuleService {
     // ===== Dependencies =====
 
     private final TimeCapsuleDAO timeCapsuleDAO;
-    private final NotificationDAO notificationDAO;
+    private final NotificationService notificationService;
     private final UserService userService;
     private final TimeCapsuleMapper timeCapsuleMapper;
 
     // ===== Constructor =====
 
-    public TimeCapsuleService(TimeCapsuleDAO timeCapsuleDAO, NotificationDAO notificationDAO, UserService userService, TimeCapsuleMapper timeCapsuleMapper) {
+    public TimeCapsuleService(TimeCapsuleDAO timeCapsuleDAO, NotificationService notificationService, UserService userService, TimeCapsuleMapper timeCapsuleMapper) {
         this.timeCapsuleDAO = timeCapsuleDAO;
-        this.notificationDAO = notificationDAO;
+        this.notificationService = notificationService;
         this.userService = userService;
         this.timeCapsuleMapper = timeCapsuleMapper;
     }
@@ -72,7 +72,7 @@ public class TimeCapsuleService {
                         .user(capsule.getUser())
                         .build();
 
-                notificationDAO.create(notification);
+                notificationService.sendNotification(notification);
                 capsule.setUnlockNotified(true);
 
                 timeCapsuleDAO.update(capsule);

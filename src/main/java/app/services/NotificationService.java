@@ -8,6 +8,7 @@ import app.entities.User;
 import app.enums.NotificationType;
 import app.exceptions.ApiException;
 import app.mappers.NotificationMapper;
+import app.utils.websocket.ConnectionRegistry;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -22,14 +23,16 @@ public class NotificationService {
     private final NotificationDAO notificationDAO;
     private final UserService userService;
     private final NotificationMapper notificationMapper;
+    private final ConnectionRegistry connectionRegistry;
 
 
     // ===== Constructor =====
 
-    public NotificationService(NotificationDAO notificationDAO, UserService userService, NotificationMapper notificationMapper) {
+    public NotificationService(NotificationDAO notificationDAO, UserService userService, NotificationMapper notificationMapper, ConnectionRegistry connectionRegistry) {
         this.notificationDAO = notificationDAO;
         this.userService = userService;
         this.notificationMapper = notificationMapper;
+        this.connectionRegistry = connectionRegistry;
     }
 
     // ===== Create =====
@@ -89,6 +92,11 @@ public class NotificationService {
 
     // ===== Custom methods =====
 
+    public void sendNotification(Notification notification) {
+        Notification saved = notificationDAO.create(notification);
+        connectionRegistry.send(saved.getUser().getId(), notificationMapper.toResponse(saved));
+    }
+
     public void notifyAllUsers(Devlog devlog) {
         List<User> allUsers = userService.getAll();
 
@@ -102,13 +110,12 @@ public class NotificationService {
                         .user(user)
                         .build();
 
-                notificationDAO.create(notification);
+                sendNotification(notification);
 
             } catch (Exception e) {
                 log.error("Could not notify user {} about devlog {}", user.getId(), devlog.getId(), e);
             }
         }
-
     }
 
 }

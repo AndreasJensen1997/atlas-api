@@ -7,6 +7,7 @@ import app.exceptions.ApiException;
 import app.services.UserService;
 import app.utils.scheduling.NotificationScheduler;
 import app.utils.security.SecurityFilter;
+import app.utils.websocket.ConnectionRegistry;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.javalin.Javalin;
 import io.javalin.json.JavalinJackson;
@@ -22,6 +23,7 @@ public class Main {
 
     public static void main(String[] args) {
 
+
         log.info("Initializing Atlas Application...");
 
         // ===== Initialize Database & Services =====
@@ -34,13 +36,14 @@ public class Main {
         app.startServer(7070);
         System.out.println("Atlas API is running on http://localhost:7070");
 
-
         // ===== Scheduler =====
-        NotificationScheduler schedule = new NotificationScheduler(app.getTimeCapsuleService());
+        NotificationScheduler schedule = new NotificationScheduler(app.getTimeCapsuleService(),app.getConnectionRegistry());
         schedule.start();
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             schedule.stop();
             app.shutdown();
         }));
+
+
     }
 }

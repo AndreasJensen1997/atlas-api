@@ -5,12 +5,14 @@ import app.dtos.user.UserResponseDTO;
 import app.dtos.user.LoginRequestDTO;
 import app.dtos.user.RegisterRequestDTO;
 import app.entities.User;
+import app.enums.Role;
 import app.mappers.UserMapper;
 import app.services.UserService;
 import app.utils.security.JWTToken;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
+import org.jetbrains.annotations.NotNull;
 //
 import static io.javalin.apibuilder.ApiBuilder.*;
 
@@ -60,11 +62,16 @@ public class AuthController implements EndpointGroup {
         }
     }
 
+    public void healthCheck(@NotNull Context ctx) {
+        ctx.status(200).json("{\"msg\": \"API is up and running\"}");
+    }
+
     // ===== Endpoints =====
 
     @Override
     public void addEndpoints() {
         post("/api/auth/register", this::register);
         post("/api/auth/login", this::login);
+        get("/api/v1/auth/healthcheck", this::healthCheck);
     }
 }

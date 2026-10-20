@@ -5,7 +5,6 @@ import app.dtos.user.UserResponseDTO;
 import app.dtos.user.LoginRequestDTO;
 import app.dtos.user.RegisterRequestDTO;
 import app.entities.User;
-import app.enums.Role;
 import app.mappers.UserMapper;
 import app.services.UserService;
 import app.utils.security.JWTToken;

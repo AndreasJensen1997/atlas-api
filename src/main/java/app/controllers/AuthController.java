@@ -72,6 +72,6 @@ public class AuthController implements EndpointGroup {
     public void addEndpoints() {
         post("/api/auth/register", this::register);
         post("/api/auth/login", this::login);
-        get("/api/v1/auth/healthcheck", this::healthCheck);
+        get("/api/auth/healthcheck", this::healthCheck);
     }
 }

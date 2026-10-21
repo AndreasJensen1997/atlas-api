@@ -43,7 +43,5 @@ public class Main {
             schedule.stop();
             app.shutdown();
         }));
-
-
     }
 }

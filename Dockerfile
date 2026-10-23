@@ -1,4 +1,4 @@
-# Start with Amazon Corretto 17 Alpine base image
+# Start with Amazon Corretto 25 Alpine base image
 FROM amazoncorretto:25-alpine
 
 # Install curl on Alpine

@@ -8,6 +8,7 @@ import app.enums.TargetType;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.PersistenceException;
+import org.mindrot.jbcrypt.BCrypt;
 
 import java.time.LocalDate;
 
@@ -54,11 +55,12 @@ public final class TestPopulator {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
 
+            final String password = BCrypt.hashpw("12345678", BCrypt.gensalt(4));
             // Create baseline users
-            User user1 = User.builder().name("Andreas").email("andreas.jensen@outlook.dk").password("1234").role(Role.USER).build();
-            User user2 = User.builder().name("morten").email("morten.jensen@outlook.dk").password("1234").role(Role.USER).build();
-            User user3 = User.builder().name("theis").email("theis.jensen@outlook.dk").password("1234").role(Role.USER).build();
-            User admin = User.builder().name("admin").email("admin@outlook.dk").password("1234").role(Role.ADMIN).build();
+            User user1 = User.builder().name("Andreas").email("andreas.jensen@outlook.dk").password(password).role(Role.USER).build();
+            User user2 = User.builder().name("morten").email("morten.jensen@outlook.dk").password(password).role(Role.USER).build();
+            User user3 = User.builder().name("theis").email("theis.jensen@outlook.dk").password(password).role(Role.USER).build();
+            User admin = User.builder().name("admin").email("admin@outlook.dk").password(password).role(Role.ADMIN).build();
 
             em.persist(user1);
             em.persist(user2);

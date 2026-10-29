@@ -123,6 +123,20 @@ A simplified class diagram. Every entity belongs to one user. Mentions point at 
 ![Atlas class diagram](documents/images/class-diagram.png)
 
 
+### ER Diagram
+
+The ERD for atlas. Here you can see the polymorfic relationship that the mentions entity has. As it has no foreign keys to the entities it can link to
+
+![Atlas er diagram](documents/images/ERD.png)
+
+
+### Architecture diagram
+
+A diagram that shows the architecture of atlas. It shows each layer as well as shortly explains its responsibility
+
+![Atlas architecture diagram](documents/images/Architecture.png)
+
+
 
 ### Project structure
 

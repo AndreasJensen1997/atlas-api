@@ -3,7 +3,7 @@
 ### ==========================================
 
 POST {{url}}/notifications
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type: application/json
 
@@ -19,7 +19,7 @@ Content-Type: application/json
 ###
 
 POST {{url}}/notifications
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type: application/json
 
@@ -39,13 +39,13 @@ Content-Type: application/json
 ### ==========================================
 
 GET {{url}}/notifications/1
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ###
 
 GET {{url}}/notifications
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ###
@@ -55,7 +55,7 @@ Accept: application/json
 ### ==========================================
 
 PUT {{url}}/notifications/1
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type: application/json
 
@@ -75,5 +75,5 @@ Content-Type: application/json
 ### ==========================================
 
 DELETE {{url}}/notifications/2
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json

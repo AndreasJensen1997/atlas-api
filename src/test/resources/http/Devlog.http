@@ -3,7 +3,7 @@
 ### ==========================================
 
 POST {{url}}/devlogs
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type: application/json
 
@@ -16,7 +16,7 @@ Content-Type: application/json
 ###
 
 POST {{url}}/devlogs
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type: application/json
 
@@ -33,13 +33,13 @@ Content-Type: application/json
 ### ==========================================
 
 GET {{url}}/devlogs/1
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ###
 
 GET {{url}}/devlogs
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ###
@@ -49,7 +49,7 @@ Accept: application/json
 ### ==========================================
 
 PUT {{url}}/devlogs/1
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type: application/json
 
@@ -66,5 +66,5 @@ Content-Type: application/json
 ### ==========================================
 
 DELETE {{url}}/devlogs/2
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json

@@ -3,7 +3,7 @@
 ### ==========================================
 
 POST {{url}}/gemini-prompts/generate
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type: application/json
 
@@ -13,7 +13,7 @@ Content-Type: application/json
 
 ###
 POST {{url}}/gemini-prompts/generate
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type: application/json
 
@@ -30,7 +30,7 @@ Content-Type: application/json
 ### ==========================================
 
 POST {{url}}/gemini-prompts
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type: application/json
 
@@ -40,7 +40,7 @@ Content-Type: application/json
 
 ###
 POST {{url}}/gemini-prompts
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type: application/json
 
@@ -55,13 +55,13 @@ Content-Type: application/json
 ### ==========================================
 
 GET {{url}}/gemini-prompts/1
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ###
 
 GET {{url}}/gemini-prompts
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ###
@@ -71,5 +71,5 @@ Accept: application/json
 ### ==========================================
 
 DELETE {{url}}/gemini-prompts/1
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json

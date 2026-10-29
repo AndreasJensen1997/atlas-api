@@ -1,6 +1,6 @@
 ### Create First Story
 POST {{url}}/stories
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type: application/json
 
@@ -17,7 +17,7 @@ Content-Type: application/json
 
 ### Create Second Story
 POST {{url}}/stories
-Authorization:{{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type: application/json
 
@@ -34,28 +34,28 @@ Content-Type: application/json
 
 ### Get Story By ID (ID: 1)
 GET {{url}}/stories/1
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ###
 
 ### Get All Stories for User
 GET {{url}}/stories
-Authorization:{{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ###
 
 ### Delete Story (ID: 2)
 DELETE {{url}}/stories/2
-Authorization:{{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ###
 
 ### Update Story (ID: 1)
 PUT {{url}}/stories/1
-Authorization:{{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type: application/json
 
@@ -71,6 +71,6 @@ Content-Type: application/json
 ###
 
 GET {{url}}/stories/random
-Authorization:{{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type:a

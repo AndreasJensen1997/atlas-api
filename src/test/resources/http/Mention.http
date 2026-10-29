@@ -4,7 +4,7 @@
 
 ### Mention 1: Chapter #1 mentions Person #3 ("Jane Doe")
 POST {{url}}/mentions
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type: application/json
 
@@ -22,7 +22,7 @@ Content-Type: application/json
 
 ### Mention 2: Chapter #1 ALSO mentions Place #2 ("Central Park")
 POST {{url}}/mentions
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type: application/json
 
@@ -40,7 +40,7 @@ Content-Type: application/json
 
 ### Mention 3: TimeCapsule #1 ALSO mentions Person #3 ("Jane Doe")
 POST {{url}}/mentions
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type: application/json
 
@@ -58,7 +58,7 @@ Content-Type: application/json
 
 ### Mention 4: Person #3 ("Jane Doe")'s page mentions Place #2 ("Central Park")
 POST {{url}}/mentions
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type: application/json
 
@@ -81,7 +81,7 @@ Content-Type: application/json
 ### Get Outgoing Mentions for Chapter #1
 # Expected Result: Returns 2 mentions (pointing to Person #3 and Place #2)
 GET {{url}}/mentions/owner/CHAPTER/1
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ###
@@ -89,7 +89,7 @@ Accept: application/json
 ### Get Outgoing Mentions for TimeCapsule #1
 # Expected Result: Returns 1 mention (pointing to Person #3)
 GET {{url}}/mentions/owner/STORY/1
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ###
@@ -101,7 +101,7 @@ Accept: application/json
 ### Get Incoming Mentions for Person #3 ("Jane Doe")
 # Expected Result: Returns 2 backlinks (referenced by Chapter #1 and TimeCapsule #1)
 GET {{url}}/mentions/target/PERSON/3
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ###
@@ -109,7 +109,7 @@ Accept: application/json
 ### Get Incoming Mentions for Place #2 ("Central Park")
 # Expected Result: Returns 2 backlinks (referenced by Chapter #1 and Person #3)
 GET {{url}}/mentions/target/PLACE/2
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ###
@@ -120,5 +120,5 @@ Accept: application/json
 
 ### Delete Mention #1
 DELETE {{url}}/mentions/1
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json

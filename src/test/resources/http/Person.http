@@ -1,6 +1,6 @@
 ### 1. Create a Person
 POST {{url}}/persons
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type: application/json
 
@@ -13,7 +13,7 @@ Content-Type: application/json
 
 ### 1. Create second Person
 POST {{url}}/persons
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type: application/json
 
@@ -28,28 +28,28 @@ Content-Type: application/json
 
 ### 2. Get All People
 GET {{url}}/persons
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ###
 
 ### 3. Get Person by ID
 GET {{url}}/persons/1
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ###
 
 ### 4. Get Random Person
 GET {{url}}/persons/random
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ###
 
 ### 5. Update a Person
 PUT {{url}}/persons/1
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type: application/json
 
@@ -64,5 +64,5 @@ Content-Type: application/json
 
 ### 6. Delete a Person
 DELETE {{url}}/persons/1
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json

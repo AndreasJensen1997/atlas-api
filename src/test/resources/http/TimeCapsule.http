@@ -1,5 +1,5 @@
 POST {{url}}/time-capsules
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type:application/json
 
@@ -12,7 +12,7 @@ Content-Type:application/json
 
 ###
 POST {{url}}/time-capsules
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type:application/json
 
@@ -26,21 +26,21 @@ Content-Type:application/json
 ###
 
 GET {{url}}/time-capsules/1
-Authorization:{{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type:application/json
 
 ###
 
 GET {{url}}/time-capsules
-Authorization:{{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type:application/json
 
 ###
 
 DELETE {{url}}/time-capsules/2
-Authorization:{{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type:application/json
 

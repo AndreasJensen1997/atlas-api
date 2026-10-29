@@ -1,5 +1,5 @@
 POST {{url}}/fragments
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type:application/json
 
@@ -12,7 +12,7 @@ Content-Type:application/json
 
 ###
 POST {{url}}/fragments
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type:application/json
 
@@ -26,28 +26,28 @@ Content-Type:application/json
 ###
 
 GET {{url}}/fragments/1
-Authorization:{{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type:application/json
 
 ###
 
 GET {{url}}/fragments
-Authorization:{{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type:application/json
 
 ###
 
 DELETE {{url}}/fragments/2
-Authorization:{{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type:application/json
 
 ###
 
 PUT {{url}}/fragments/1
-Authorization:{{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type:application/json
 

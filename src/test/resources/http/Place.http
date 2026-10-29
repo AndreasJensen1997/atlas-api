@@ -1,6 +1,6 @@
 ### 1. Create a Place
 POST {{url}}/places
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type: application/json
 
@@ -17,7 +17,7 @@ Content-Type: application/json
 
 ### 1. Create second Place
 POST {{url}}/places
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type: application/json
 
@@ -36,28 +36,28 @@ Content-Type: application/json
 
 ### 2. Get All Places
 GET {{url}}/places
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ###
 
 ### 3. Get Place by ID
 GET {{url}}/places/1
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ###
 
 ### 4. Get Random Place
 GET {{url}}/places/random
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ###
 
 ### 5. Update a Place
 PUT {{url}}/places/1
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type: application/json
 
@@ -76,5 +76,5 @@ Content-Type: application/json
 
 ### 6. Delete a Place
 DELETE {{url}}/places/1
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json

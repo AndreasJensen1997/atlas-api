@@ -31,7 +31,7 @@ public abstract class GenericDAO<T,I> implements IDAO<T,I> {
         if (t == null) {
             throw new ApiException(400, "Entity is required");
         }
-        String entityName = t.getClass().getSimpleName(); // Gets "Chapter", "Artifact", e
+        String entityName = t.getClass().getSimpleName();
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
             try {
@@ -54,14 +54,14 @@ public abstract class GenericDAO<T,I> implements IDAO<T,I> {
 
     @Override
     public T getById(I i) {
-        String entityName = entityClass.getSimpleName(); // Safe to define here for all errors
+        String entityName = entityClass.getSimpleName();
 
         if (i == null) {
             throw new ApiException(400, entityName + " id is required");
         }
 
         try (EntityManager em = emf.createEntityManager()) {
-            T t = em.find(entityClass, i); // Use entityClass instead of T.class
+            T t = em.find(entityClass, i);
 
             if (t == null) {
                 throw new ApiException(404, entityName + " not found");
@@ -79,7 +79,6 @@ public abstract class GenericDAO<T,I> implements IDAO<T,I> {
         String entityName = entityClass.getSimpleName();
 
         try (EntityManager em = emf.createEntityManager()) {
-            // Dynamically builds: "SELECT e FROM Chapter e" or "SELECT e FROM AppUser e"
             String jpql = "SELECT e FROM " + entityName + " e";
 
             TypedQuery<T> query = em.createQuery(jpql, entityClass);
@@ -98,7 +97,6 @@ public abstract class GenericDAO<T,I> implements IDAO<T,I> {
             throw new ApiException(400, entityName + " is required");
         }
 
-        // Extract the ID dynamically using JPA metadata
         Object id = emf.getPersistenceUnitUtil().getIdentifier(t);
         if (id == null) {
             throw new ApiException(400, entityName + " id is required");
@@ -107,7 +105,6 @@ public abstract class GenericDAO<T,I> implements IDAO<T,I> {
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
             try {
-                // Verify the record exists before updating
                 T existing = em.find(entityClass, (I) id);
                 if (existing == null) {
                     throw new ApiException(404, entityName + " not found");
@@ -147,7 +144,6 @@ public abstract class GenericDAO<T,I> implements IDAO<T,I> {
                     throw new ApiException(404, entityName + " not found");
                 }
 
-                // Automatically clean up mentions where this entity is the owner or target
                 try {
                     TargetType type = TargetType.valueOf(entityName.toUpperCase());
                     em.createQuery(

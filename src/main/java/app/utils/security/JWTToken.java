@@ -13,7 +13,6 @@ import java.util.Date;
 
 public class JWTToken {
 
-    // Must be at least 32 characters (256 bits) long for HS256
     private static final String SECRET = loadSecret();
     private static final long EXPIRATION_TIME = 86400000; // 1 day in milliseconds
 
@@ -34,10 +33,8 @@ public class JWTToken {
 
     public static String generateToken(Integer userId) {
         try {
-            // 1. Create HS256 header
             JWSHeader header = new JWSHeader(JWSAlgorithm.HS256);
 
-            // 2. Set claims (payload: who the token is for, when it expires)
             JWTClaimsSet claimsSet = new JWTClaimsSet.Builder()
                     .subject(String.valueOf(userId))
                     .issueTime(new Date())
@@ -46,11 +43,9 @@ public class JWTToken {
 
             SignedJWT signedJWT = new SignedJWT(header, claimsSet);
 
-            // 3. Sign the token with your secret
             JWSSigner signer = new MACSigner(SECRET.getBytes());
             signedJWT.sign(signer);
 
-            // 4. Return the serialized token string
             return signedJWT.serialize();
 
         } catch (JOSEException e) {
@@ -63,18 +58,15 @@ public class JWTToken {
             SignedJWT signedJWT = SignedJWT.parse(token);
             JWSVerifier verifier = new MACVerifier(SECRET.getBytes());
 
-            // 1. Verify the signature
             if (!signedJWT.verify(verifier)) {
                 throw new ApiException(401, "Invalid token signature");
             }
 
-            // 2. Check if the token has expired
             Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
             if (expirationTime != null && new Date().after(expirationTime)) {
                 throw new ApiException(401, "Token has expired");
             }
 
-            // 3. Return the email (stored in the 'subject')
             return Integer.valueOf(signedJWT.getJWTClaimsSet().getSubject());
 
         } catch (ApiException e) {

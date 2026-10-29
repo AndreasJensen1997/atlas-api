@@ -41,8 +41,6 @@ public class DevlogController extends AbstractController<DevlogRequestDTO, Devlo
     }
 
     // ===== Entity Operations =====
-    // Devlogs are shared: every user can read them, only admins can write them.
-    // Access is checked by the route role, so userId is only needed when creating.
 
     @Override
     protected Devlog createEntity(DevlogRequestDTO dto, Integer userId) {

@@ -11,7 +11,7 @@ public class UserDAO extends GenericDAO<User, Integer> {
     // ===== Constructor =====
 
     public UserDAO(EntityManagerFactory emf) {
-        super(emf, User.class); // Passes both the factory and the entity class up
+        super(emf, User.class);
     }
 
     // ===== Custom Operations =====

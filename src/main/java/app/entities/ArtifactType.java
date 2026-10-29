@@ -26,7 +26,7 @@ public class ArtifactType {
     private Integer id;
 
     @Column(nullable = false)
-    private String name; // e.g., "Song", "Movie", "Physical Object"
+    private String name;
 
     @OneToMany(mappedBy = "artifactType", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude

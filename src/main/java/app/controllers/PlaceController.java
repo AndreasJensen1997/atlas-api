@@ -78,11 +78,11 @@ public class PlaceController extends AbstractController<PlaceRequestDTO, PlaceRe
 
     @Override
     public void addEndpoints() {
-        post("/api/places", this::create);
-        get("/api/places/random", this::randomByUserId);
-        get("/api/places/{id}", this::getById);
-        get("/api/places", this::getAllById);
-        put("/api/places/{id}", this::updateById);
-        delete("/api/places/{id}", this::deleteById);
+        post("places", this::create);
+        get("places/random", this::randomByUserId);
+        get("places/{id}", this::getById);
+        get("places", this::getAllById);
+        put("places/{id}", this::updateById);
+        delete("places/{id}", this::deleteById);
     }
 }

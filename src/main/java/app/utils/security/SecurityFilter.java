@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 public class SecurityFilter {
 
     public static void verifyToken(Context ctx, UserService userService) {
-        if (ctx.path().startsWith("/api/auth/")) {
+        if (ctx.path().startsWith("/api/v1/auth/")) {
             return;
         }
 

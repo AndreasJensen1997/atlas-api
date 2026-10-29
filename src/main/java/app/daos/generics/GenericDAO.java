@@ -31,7 +31,7 @@ public abstract class GenericDAO<T,I> implements IDAO<T,I> {
         if (t == null) {
             throw new ApiException(400, "Entity is required");
         }
-        String entityName = t.getClass().getSimpleName(); // Gets "Chapter", "Artifact", etc.
+        String entityName = t.getClass().getSimpleName(); // Gets "Chapter", "Artifact", e
         try (EntityManager em = emf.createEntityManager()) {
             em.getTransaction().begin();
             try {

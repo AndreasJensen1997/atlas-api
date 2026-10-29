@@ -29,6 +29,8 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import static io.javalin.apibuilder.ApiBuilder.path;
+
 @Slf4j
 public class ApplicationConfig implements EndpointGroup {
 
@@ -186,23 +188,26 @@ public class ApplicationConfig implements EndpointGroup {
 
     @Override
     public void addEndpoints() {
-        authController.addEndpoints();
-        geminiPromptController.addEndpoints();
-        chapterController.addEndpoints();
-        memoryController.addEndpoints();
-        storyController.addEndpoints();
-        artifactController.addEndpoints();
-        artifactTypeController.addEndpoints();
-        personController.addEndpoints();
-        placeController.addEndpoints();
-        timeCapsuleController.addEndpoints();
-        fragmentController.addEndpoints();
-        mentionController.addEndpoints();
-        entityListController.addEndpoints();
-        userController.addEndpoints();
-        devlogController.addEndpoints();
-        notificationController.addEndpoints();
-        notificationSocketController.addEndpoints();
+        path("api/v1", () -> {
+            authController.addEndpoints();
+            geminiPromptController.addEndpoints();
+            chapterController.addEndpoints();
+            memoryController.addEndpoints();
+            storyController.addEndpoints();
+            artifactController.addEndpoints();
+            artifactTypeController.addEndpoints();
+            personController.addEndpoints();
+            placeController.addEndpoints();
+            timeCapsuleController.addEndpoints();
+            fragmentController.addEndpoints();
+            mentionController.addEndpoints();
+            entityListController.addEndpoints();
+            userController.addEndpoints();
+            devlogController.addEndpoints();
+            notificationController.addEndpoints();
+        });
+
+        notificationSocketController.addEndpoints(); 
     }
 
 

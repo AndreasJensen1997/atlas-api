@@ -95,10 +95,10 @@ public class GeminiPromptController extends AbstractController<GeminiPromptSaveD
 
     @Override
     public void addEndpoints() {
-        post("/api/gemini-prompts/generate", this::generatePrompt);
-        post("/api/gemini-prompts", this::create);
-        get("/api/gemini-prompts/{id}", this::getById);
-        get("/api/gemini-prompts", this::getAllById);
-        delete("/api/gemini-prompts/{id}", this::deleteById);
+        post("gemini-prompts/generate", this::generatePrompt);
+        post("gemini-prompts", this::create);
+        get("gemini-prompts/{id}", this::getById);
+        get("gemini-prompts", this::getAllById);
+        delete("gemini-prompts/{id}", this::deleteById);
     }
 }

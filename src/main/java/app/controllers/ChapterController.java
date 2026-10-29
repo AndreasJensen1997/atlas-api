@@ -84,11 +84,11 @@ public class ChapterController extends AbstractController<ChapterRequestDTO, Cha
 
     @Override
     public void addEndpoints() {
-        post("/api/chapters", this::create);
-        get("/api/chapters/random", this::randomByUserId);
-        get("/api/chapters/{id}", this::getById);
-        get("/api/chapters", this::getAllById);
-        put("/api/chapters/{id}", this::updateById);
-        delete("/api/chapters/{id}", this::deleteById);
+        post("chapters", this::create);
+        get("chapters/random", this::randomByUserId);
+        get("chapters/{id}", this::getById);
+        get("chapters", this::getAllById);
+        put("chapters/{id}", this::updateById);
+        delete("chapters/{id}", this::deleteById);
     }
 }

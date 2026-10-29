@@ -86,11 +86,11 @@ public class MemoryController extends AbstractController<MemoryRequestDTO, Memor
 
     @Override
     public void addEndpoints() {
-        post("/api/memories", this::create);
-        get("/api/memories", this::getAllById);
-        get("/api/memories/random", this::randomByUserId);
-        get("/api/memories/{id}", this::getById);
-        put("/api/memories/{id}", this::updateById);
-        delete("/api/memories/{id}", this::deleteById);
+        post("memories", this::create);
+        get("memories", this::getAllById);
+        get("memories/random", this::randomByUserId);
+        get("memories/{id}", this::getById);
+        put("memories/{id}", this::updateById);
+        delete("memories/{id}", this::deleteById);
     }
 }

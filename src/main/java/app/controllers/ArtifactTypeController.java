@@ -34,6 +34,6 @@ public class ArtifactTypeController implements EndpointGroup {
 
     @Override
     public void addEndpoints() {
-        get("/api/artifact-types", this::getAll);
+        get("artifact-types", this::getAll);
     }
 }

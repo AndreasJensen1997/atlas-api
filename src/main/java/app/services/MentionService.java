@@ -56,6 +56,7 @@ public class MentionService {
     public MentionResponseDTO createMention(MentionRequestDTO dto, int userId) {
         requirePageOwnedByUser(dto.ownerType(), dto.ownerId(), userId);
         requirePageOwnedByUser(dto.targetType(), dto.targetId(), userId);
+
         User user = userService.getById(userId);
         Mention mention = mentionMapper.toEntity(dto, user);
         return mentionMapper.toResponse(mentionDAO.create(mention));

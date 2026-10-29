@@ -46,4 +46,6 @@ Content-Type:application/json
   "password": "12345678!"
 }
 
-
+> {%
+    client.global.set("token", response.body.token);
+%}

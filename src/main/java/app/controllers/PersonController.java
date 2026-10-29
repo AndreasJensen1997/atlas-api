@@ -80,11 +80,11 @@ public class  PersonController extends AbstractController<PersonRequestDTO, Pers
 
     @Override
     public void addEndpoints() {
-        post("/api/persons", this::create);
-        get("/api/persons/random", this::randomByUserId);
-        get("/api/persons/{id}", this::getById);
-        get("/api/persons", this::getAllById);
-        put("/api/persons/{id}", this::updateById);
-        delete("/api/persons/{id}", this::deleteById);
+        post("persons", this::create);
+        get("persons/random", this::randomByUserId);
+        get("persons/{id}", this::getById);
+        get("persons", this::getAllById);
+        put("persons/{id}", this::updateById);
+        delete("persons/{id}", this::deleteById);
     }
 }

@@ -43,7 +43,7 @@ public class TimeCapsuleEndpointTest {
         // 3. RestAssured configuration
         RestAssured.baseURI = "http://localhost";
         RestAssured.port = 7777;
-        RestAssured.basePath = "/api";
+        RestAssured.basePath = "/api/v1";
     }
 
     @BeforeEach

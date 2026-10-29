@@ -89,10 +89,10 @@ public class FragmentController extends AbstractController<FragmentRequestDTO, F
 
     @Override
     public void addEndpoints() {
-        post("/api/fragments", this::create);
-        get("/api/fragments/{id}", this::getById);
-        get("/api/fragments", this::getAllById);
-        put("/api/fragments/{id}", this::updateById);
-        delete("/api/fragments/{id}", this::deleteById);
+        post("fragments", this::create);
+        get("fragments/{id}", this::getById);
+        get("fragments", this::getAllById);
+        put("fragments/{id}", this::updateById);
+        delete("fragments/{id}", this::deleteById);
     }
 }

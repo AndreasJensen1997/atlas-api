@@ -90,9 +90,9 @@ public class MentionController implements EndpointGroup {
 
     @Override
     public void addEndpoints() {
-        post("/api/mentions", this::create);
-        get("/api/mentions/owner/{ownerType}/{ownerId}", this::getOutgoing);
-        get("/api/mentions/target/{targetType}/{targetId}", this::getIncoming);
-        delete("/api/mentions/{id}", this::deleteEntity);
+        post("mentions", this::create);
+        get("mentions/owner/{ownerType}/{ownerId}", this::getOutgoing);
+        get("mentions/target/{targetType}/{targetId}", this::getIncoming);
+        delete("mentions/{id}", this::deleteEntity);
     }
 }

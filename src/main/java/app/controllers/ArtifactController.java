@@ -84,11 +84,11 @@ public class ArtifactController extends AbstractController<ArtifactRequestDTO, A
 
     @Override
     public void addEndpoints() {
-        post("/api/artifacts", this::create);
-        get("/api/artifacts/random", this::randomByUserId);
-        get("/api/artifacts/{id}", this::getById);
-        get("/api/artifacts", this::getAllById);
-        put("/api/artifacts/{id}", this::updateById);
-        delete("/api/artifacts/{id}", this::deleteById);
+        post("artifacts", this::create);
+        get("artifacts/random", this::randomByUserId);
+        get("artifacts/{id}", this::getById);
+        get("artifacts", this::getAllById);
+        put("artifacts/{id}", this::updateById);
+        delete("artifacts/{id}", this::deleteById);
     }
 }

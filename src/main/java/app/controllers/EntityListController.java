@@ -83,11 +83,11 @@ public class EntityListController extends AbstractController<EntityListRequestDT
 
     @Override
     public void addEndpoints() {
-        post("/api/entity-lists", this::create);
-        get("/api/entity-lists/random", this::randomByUserId);
-        get("/api/entity-lists/{id}", this::getById);
-        get("/api/entity-lists", this::getAllById);
-        put("/api/entity-lists/{id}", this::updateById);
-        delete("/api/entity-lists/{id}", this::deleteById);
+        post("entity-lists", this::create);
+        get("entity-lists/random", this::randomByUserId);
+        get("entity-lists/{id}", this::getById);
+        get("entity-lists", this::getAllById);
+        put("entity-lists/{id}", this::updateById);
+        delete("entity-lists/{id}", this::deleteById);
     }
 }

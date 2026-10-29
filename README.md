@@ -8,6 +8,17 @@ This repository contains the **backend API**.
 
 ---
 
+## Documentation
+
+| Document | What it contains |
+|---|---|
+| [User stories](documents/user-stories.md) | All 13 user stories with acceptance criteria and where in the code each one lives |
+| [Full API documentation](documents/documentation.md) | Every endpoint in detail |
+| [Class diagram](documents/class-diagram.md) | The domain model: the entities and how they relate |
+| [Gherkin scenarios](documents/gherkin.md) | API behaviour written as Given / When / Then |
+
+---
+
 ## Status
 
 Atlas is under active development. The API is feature-complete for the core idea; some of the originally planned features are still future work.
@@ -98,6 +109,14 @@ Atlas does some work outside the request/response cycle:
 - **`ScheduledExecutorService`** (single thread) runs two jobs: the time capsule check (every minute) and the WebSocket heartbeat (every 20 seconds). The `unlockNotified` flag on a capsule makes sure each capsule only notifies once.
 - **`ConnectionRegistry`** remembers the open WebSocket connections per user. It uses a `ConcurrentHashMap` of thread-safe sets, and writes to a connection are `synchronized`, because Jetty does not allow two threads to write to the same connection at once.
 - Both pools are shut down when the server stops.
+
+### Domain model
+
+A simplified class diagram. Every entity belongs to one user. Mentions point at pages by **type and id**, without foreign keys. See [the class diagram document](documents/class-diagram.md) for an explanation.
+
+![Atlas class diagram](documents/images/class-diagram.png)
+
+
 
 ### Project structure
 
@@ -224,6 +243,22 @@ Errors are JSON:
 
 ---
 
+## Most important user stories
+
+The full list, with acceptance criteria and the code behind each story, is in [documents/user-stories.md](documents/user-stories.md).
+
+| Story | In short |
+|---|---|
+| **US-1** Register and log in | Create an account and get a JWT. Passwords are stored as BCrypt hashes |
+| **US-3** Keep my data private | Nobody can see or change another user's pages. A page that belongs to someone else answers `404` |
+| **US-4** Link a text to another page | Highlight text and link it to a person, place, memory, chapter, story or artifact (a *mention*) |
+| **US-5** See what links to a page | Backlinks: every mention that points at a page |
+| **US-7** Seal a message in a time capsule | The content stays hidden until the unlock date |
+| **US-8** Get a journaling prompt from AI | Gemini generates a prompt, rate limited to 10 per hour per user |
+| **US-11 to US-13** Notifications | An admin publishes a devlog, every user is notified, and the notification is pushed live over a WebSocket |
+
+---
+
 ## Security
 
 - Passwords are hashed with BCrypt. The hash is never returned.
@@ -236,15 +271,21 @@ Errors are JSON:
 
 ---
 
-## Known limitations
+## Deployment
 
-- No search, timeline, images or sharing yet (see Status).
-- No pagination on list endpoints.
-- `createdAt` and `updatedAt` on pages are dates without a time.
-- The AI rate limit and the WebSocket connection registry are kept in memory: they reset when the server restarts and work for a single server only. Several servers would need a shared store (for example Redis).
-- Login has no protection against repeated password guesses.
-- The WebSocket token is sent in the URL, so it can end up in server logs. A more careful design sends it as the first message.
-- A time capsule opens at midnight in the server's time zone.
-- The auth endpoints return some errors as `{ "error": "..." }` without the `status` field.
-- The schema is managed by Hibernate (`update`), not by migrations.
-- Deleting an admin account also deletes the devlogs that admin wrote.
+- The `Dockerfile` packages the fat jar (`target/app.jar`) on top of Amazon Corretto 25.
+- The GitHub Actions workflow (`.github/workflows/workflow.yml`) runs on every push to `master`: it builds with Maven, runs the tests, builds the Docker image and pushes it to Docker Hub.
+- In production a Docker Compose setup runs four containers: **PostgreSQL**, **Atlas**, **Caddy** (HTTPS and reverse proxy) and **Watchtower** (pulls the new image when one is published).
+- Configuration comes from environment variables. When `DEPLOYED` is set, Atlas reads these instead of `config.properties` and updates the schema instead of recreating it:
+
+  | Variable | Meaning |
+    |---|---|
+  | `DEPLOYED` | Switches to production configuration |
+  | `CONNECTION_STR` | JDBC prefix, e.g. `jdbc:postgresql://db:5432/` |
+  | `DB_NAME`, `DB_USERNAME`, `DB_PASSWORD` | Database name and credentials |
+  | `JWT_SECRET` | At least 32 bytes. Atlas refuses to start without it |
+  | `GEMINI_API_KEY` | Optional. Without it the AI endpoint answers `503` |
+
+- Health check: `GET /api/auth/healthcheck`.
+
+---

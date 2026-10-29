@@ -3,7 +3,7 @@
 ### ==========================================
 
 POST {{url}}/chapters
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type: application/json
 
@@ -19,7 +19,7 @@ Content-Type: application/json
 ###
 
 POST {{url}}/chapters
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type: application/json
 
@@ -39,19 +39,19 @@ Content-Type: application/json
 ### ==========================================
 
 GET {{url}}/chapters/random
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ###
 
 GET {{url}}/chapters/1
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ###
 
 GET {{url}}/chapters
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 
 ###
@@ -61,7 +61,7 @@ Accept: application/json
 ### ==========================================
 
 PUT {{url}}/chapters/1
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json
 Content-Type: application/json
 
@@ -79,5 +79,5 @@ Content-Type: application/json
 ### ==========================================
 
 DELETE {{url}}/chapters/2
-Authorization: {{JWT}}
+Authorization: Bearer {{token}}
 Accept: application/json

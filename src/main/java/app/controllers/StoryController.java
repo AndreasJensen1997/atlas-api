@@ -86,11 +86,11 @@ public class StoryController extends AbstractController<StoryRequestDTO, StoryRe
 
     @Override
     public void addEndpoints() {
-        post("/api/stories", this::create);
-        get("/api/stories", this::getAllById);
-        get("/api/stories/random", this::randomByUserId);
-        get("/api/stories/{id}", this::getById);
-        put("/api/stories/{id}", this::updateById);
-        delete("/api/stories/{id}", this::deleteById);
+        post("stories", this::create);
+        get("stories", this::getAllById);
+        get("stories/random", this::randomByUserId);
+        get("stories/{id}", this::getById);
+        put("stories/{id}", this::updateById);
+        delete("stories/{id}", this::deleteById);
     }
 }

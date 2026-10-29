@@ -85,10 +85,10 @@ public class DevlogController extends AbstractController<DevlogRequestDTO, Devlo
 
     @Override
     public void addEndpoints() {
-        post("/api/devlogs", this::create, Role.ADMIN);
-        get("/api/devlogs/{id}", this::getById);
-        get("/api/devlogs", this::getAllById);
-        put("/api/devlogs/{id}", this::updateById, Role.ADMIN);
-        delete("/api/devlogs/{id}", this::deleteById, Role.ADMIN);
+        post("devlogs", this::create, Role.ADMIN);
+        get("devlogs/{id}", this::getById);
+        get("devlogs", this::getAllById);
+        put("devlogs/{id}", this::updateById, Role.ADMIN);
+        delete("devlogs/{id}", this::deleteById, Role.ADMIN);
     }
 }

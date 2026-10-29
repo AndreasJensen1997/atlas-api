@@ -84,10 +84,10 @@ public class TimeCapsuleController extends AbstractController<TimeCapsuleRequest
 
     @Override
     public void addEndpoints() {
-        post("/api/time-capsules", this::create);
-        get("/api/time-capsules/random", this::randomByUserId);
-        get("/api/time-capsules/{id}", this::getById);
-        get("/api/time-capsules", this::getAllById);
-        delete("/api/time-capsules/{id}", this::deleteById);
+        post("time-capsules", this::create);
+        get("time-capsules/random", this::randomByUserId);
+        get("time-capsules/{id}", this::getById);
+        get("time-capsules", this::getAllById);
+        delete("time-capsules/{id}", this::deleteById);
     }
 }

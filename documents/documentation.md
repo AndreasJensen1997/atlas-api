@@ -1,4 +1,3 @@
-# Atlas API documentation
 
 Base URL (local): `http://localhost:7070`. All HTTP endpoints are under `/api`. The WebSocket endpoint is `/ws/notifications`.
 

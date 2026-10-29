@@ -69,8 +69,8 @@ public class AuthController implements EndpointGroup {
 
     @Override
     public void addEndpoints() {
-        post("/api/auth/register", this::register);
-        post("/api/auth/login", this::login);
-        get("/api/auth/healthcheck", this::healthCheck);
+        post("auth/register", this::register);
+        post("auth/login", this::login);
+        get("auth/healthcheck", this::healthCheck);
     }
 }

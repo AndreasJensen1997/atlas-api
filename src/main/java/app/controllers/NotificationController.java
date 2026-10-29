@@ -81,10 +81,10 @@ public class NotificationController extends AbstractController<NotificationReque
 
     @Override
     public void addEndpoints() {
-        post("/api/notifications", this::create);
-        get("/api/notifications/{id}", this::getById);
-        get("/api/notifications", this::getAllById);
-        put("/api/notifications/{id}", this::updateById);
-        delete("/api/notifications/{id}", this::deleteById);
+        post("notifications", this::create);
+        get("notifications/{id}", this::getById);
+        get("notifications", this::getAllById);
+        put("notifications/{id}", this::updateById);
+        delete("notifications/{id}", this::deleteById);
     }
 }

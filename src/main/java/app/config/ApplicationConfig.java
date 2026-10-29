@@ -21,6 +21,7 @@ import jakarta.persistence.EntityManagerFactory;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import io.javalin.validation.ValidationException;
+import io.javalin.http.HttpStatus;
 
 
 import java.util.Map;
@@ -239,7 +240,7 @@ public class ApplicationConfig implements EndpointGroup {
 
             Role role = ctx.attribute("role");
             if (role == null || !required.contains(role)) {
-                throw new ApiException(403, "You do not have access to this resource");
+                throw new ApiException(HttpStatus.FORBIDDEN, "You do not have access to this resource");
             }
         });
 
@@ -249,14 +250,14 @@ public class ApplicationConfig implements EndpointGroup {
         // Triggered by ctx.bodyValidator(...) when validation rules fail
         app.exception(ValidationException.class, (e, ctx) -> {
             log.warn("Validation Error: {}", e.getErrors());
-            ctx.status(400).json(Map.of(
+            ctx.status(HttpStatus.BAD_REQUEST).json(Map.of(
                     "status", 400,
                     "error", e.getErrors()
             ));
         });
 
         // 2. Custom Business/API Exceptions (400, 401, 403, 404, etc.)
-        // Thrown intentionally from services (e.g., throw new ApiException(404, "Chapter not found"))
+        // Thrown intentionally from services (e.g., throw new ApiException(HttpStatus.NOT_FOUND, "Chapter not found"))
         app.exception(ApiException.class, (e, ctx) -> {
             if (e.getStatusCode() >= 500) {
                 log.error("API Exception ({}): {}", e.getStatusCode(), e.getMessage(), e); // with stack trace + cause
@@ -273,7 +274,7 @@ public class ApplicationConfig implements EndpointGroup {
         // Thrown when invalid parameters or primitive conversions fail (e.g., Integer.parseInt)
         app.exception(IllegalArgumentException.class, (e, ctx) -> {
             log.warn("Illegal Argument: {}", e.getMessage());
-            ctx.status(400).json(Map.of(
+            ctx.status(HttpStatus.BAD_REQUEST).json(Map.of(
                     "status", 400,
                     "error", e.getMessage()
             ));
@@ -283,7 +284,7 @@ public class ApplicationConfig implements EndpointGroup {
         // Thrown by Hibernate/JPA if an entity is missing during lookup
         app.exception(jakarta.persistence.EntityNotFoundException.class, (e, ctx) -> {
             log.warn("Entity Not Found: {}", e.getMessage());
-            ctx.status(404).json(Map.of(
+            ctx.status(HttpStatus.NOT_FOUND).json(Map.of(
                     "status", 404,
                     "error", e.getMessage()
             ));
@@ -293,7 +294,7 @@ public class ApplicationConfig implements EndpointGroup {
         // Catches unexpected crashes or database failure bugs
         app.exception(Exception.class, (e, ctx) -> {
             log.error("Unhandled Internal Server Error", e);
-            ctx.status(500).json(Map.of(
+            ctx.status(HttpStatus.INTERNAL_SERVER_ERROR).json(Map.of(
                     "status", 500,
                     "error", "An unexpected internal server error occurred."
             ));

@@ -7,6 +7,8 @@ import app.entities.EntityListItem;
 import app.entities.User;
 import app.exceptions.ApiException;
 import app.mappers.EntityListMapper;
+import io.javalin.http.HttpStatus;
+
 
 import java.util.List;
 
@@ -41,7 +43,7 @@ public class EntityListService {
         EntityList entityList = entityListDAO.getById(entityListId);
 
         if (!entityList.getUser().getId().equals(userId)) {
-            throw new ApiException(404, "List not found with ID: " + entityListId);
+            throw new ApiException(HttpStatus.NOT_FOUND, "List not found with ID: " + entityListId);
         }
         return entityList;
     }
@@ -56,7 +58,7 @@ public class EntityListService {
         EntityList randomEntityList = entityListDAO.getRandomByUserId(userId);
 
         if (randomEntityList == null) {
-            throw new ApiException(404, "No list were found");
+            throw new ApiException(HttpStatus.NOT_FOUND, "No list were found");
         }
 
         return randomEntityList;
@@ -102,7 +104,7 @@ public class EntityListService {
         EntityListItem targetItem = entityList.getItems().stream()
                 .filter(item -> item.getId().equals(itemId))
                 .findFirst()
-                .orElseThrow(() -> new ApiException(404, "Item not found in this list with ID: " + itemId));
+                .orElseThrow(() -> new ApiException(HttpStatus.NOT_FOUND, "Item not found in this list with ID: " + itemId));
 
         entityList.removeItem(targetItem);
         return entityListDAO.update(entityList);

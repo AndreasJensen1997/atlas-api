@@ -8,6 +8,7 @@ import app.mappers.UserMapper;
 import app.services.UserService;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.http.Context;
+import io.javalin.http.HttpStatus;
 
 import static io.javalin.apibuilder.ApiBuilder.*;
 
@@ -88,7 +89,7 @@ public class UserController implements EndpointGroup {
         }
 
         userService.delete(id);
-        ctx.status(204);
+        ctx.status(HttpStatus.NO_CONTENT);
     }
 
     @Override

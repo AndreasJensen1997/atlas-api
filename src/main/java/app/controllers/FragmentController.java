@@ -1,22 +1,17 @@
 package app.controllers;
 
 import app.controllers.generics.AbstractController;
-import app.dtos.chapter.ChapterRequestDTO;
-import app.dtos.chapter.ChapterResponseDTO;
+
 import app.dtos.fragment.FragmentRequestDTO;
 import app.dtos.fragment.FragmentResponseDTO;
-import app.dtos.timeCapsule.TimeCapsuleRequestDTO;
-import app.dtos.timeCapsule.TimeCapsuleResponseDTO;
-import app.entities.Chapter;
 import app.entities.Fragment;
-import app.entities.TimeCapsule;
 import app.exceptions.ApiException;
 import app.mappers.FragmentMapper;
-import app.mappers.TimeCapsuleMapper;
 import app.services.FragmentService;
-import app.services.TimeCapsuleService;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.http.Context;
+import io.javalin.http.HttpStatus;
+
 
 import java.util.List;
 
@@ -75,7 +70,7 @@ public class FragmentController extends AbstractController<FragmentRequestDTO, F
 
     @Override
     protected Fragment getRandom(Integer userId) {
-        throw new ApiException(405, "Get random feature not supported for fragments");
+        throw new ApiException(HttpStatus.METHOD_NOT_ALLOWED, "Get random feature not supported for fragments");
     }
 
     // ===== Response Mapping =====

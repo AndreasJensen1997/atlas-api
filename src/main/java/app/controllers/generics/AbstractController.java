@@ -37,7 +37,7 @@ public abstract class AbstractController<Req, Res, T, ID> {
     protected ID getUserIdOrThrow(Context ctx) {
         ID userId = ctx.attribute("userId");
         if (userId == null) {
-            throw new ApiException(401, "Unauthorized");
+            throw new ApiException(HttpStatus.UNAUTHORIZED.getCode(), "Unauthorized");
         }
         return userId;
     }
@@ -59,7 +59,7 @@ public abstract class AbstractController<Req, Res, T, ID> {
         T entity = fetchEntityById(entityId, userId);
 
         Res responseDTO = mapToResponse(entity);
-        ctx.status(200).json(responseDTO);
+        ctx.status(HttpStatus.OK).json(responseDTO);
     }
 
     public void getAllById(Context ctx) {
@@ -70,7 +70,7 @@ public abstract class AbstractController<Req, Res, T, ID> {
                 .map(this::mapToResponse)
                 .toList();
 
-        ctx.status(200).json(allResponseDTOs);
+        ctx.status(HttpStatus.OK).json(allResponseDTOs);
     }
 
     public void updateById(Context ctx) {
@@ -82,7 +82,7 @@ public abstract class AbstractController<Req, Res, T, ID> {
         T updatedEntity = updateEntity(entityId, requestDTO, userId);
         Res responseDTO = mapToResponse(updatedEntity);
 
-        ctx.status(200).json(responseDTO);
+        ctx.status(HttpStatus.OK).json(responseDTO);
     }
 
     public void deleteById(Context ctx) {
@@ -91,7 +91,7 @@ public abstract class AbstractController<Req, Res, T, ID> {
         ID entityId = parseId(ctx);
         deleteEntity(entityId, userId);
 
-        ctx.status(200).json(Map.of("message", "Deleted successfully"));
+        ctx.status(HttpStatus.OK).json(Map.of("message", "Deleted successfully"));
     }
 
     public void randomByUserId(Context ctx) {
@@ -100,6 +100,6 @@ public abstract class AbstractController<Req, Res, T, ID> {
         T randomEntity = getRandom(userId);
         Res responseDTO = mapToResponse(randomEntity);
 
-        ctx.status(200).json(responseDTO);
+        ctx.status(HttpStatus.OK).json(responseDTO);
     }
 }

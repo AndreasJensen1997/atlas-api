@@ -9,7 +9,7 @@ import app.mappers.TimeCapsuleMapper;
 import app.services.TimeCapsuleService;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.http.Context;
-
+import io.javalin.http.HttpStatus;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -60,7 +60,7 @@ public class TimeCapsuleController extends AbstractController<TimeCapsuleRequest
 
     @Override
     protected TimeCapsule updateEntity(Integer entityId, TimeCapsuleRequestDTO dto, Integer userId) {
-        throw new ApiException(405, "Time capsules cannot be updated.");
+        throw new ApiException(HttpStatus.METHOD_NOT_ALLOWED, "Time capsules cannot be updated.");
     }
 
     @Override
@@ -70,7 +70,7 @@ public class TimeCapsuleController extends AbstractController<TimeCapsuleRequest
 
     @Override
     protected TimeCapsule getRandom(Integer userId) {
-        throw new ApiException(405, "Time capsules does not support random feature.");
+        throw new ApiException(HttpStatus.METHOD_NOT_ALLOWED, "Time capsules does not support random feature.");
     }
 
     // ===== Response Mapping =====

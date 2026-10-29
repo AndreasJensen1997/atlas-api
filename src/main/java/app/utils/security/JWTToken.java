@@ -8,6 +8,8 @@ import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import io.javalin.http.HttpStatus;
+
 
 import java.util.Date;
 
@@ -59,12 +61,12 @@ public class JWTToken {
             JWSVerifier verifier = new MACVerifier(SECRET.getBytes());
 
             if (!signedJWT.verify(verifier)) {
-                throw new ApiException(401, "Invalid token signature");
+                throw new ApiException(HttpStatus.UNAUTHORIZED, "Invalid token signature");
             }
 
             Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
             if (expirationTime != null && new Date().after(expirationTime)) {
-                throw new ApiException(401, "Token has expired");
+                throw new ApiException(HttpStatus.UNAUTHORIZED, "Token has expired");
             }
 
             return Integer.valueOf(signedJWT.getJWTClaimsSet().getSubject());
@@ -72,7 +74,7 @@ public class JWTToken {
         } catch (ApiException e) {
             throw e;
         } catch (Exception e) {
-            throw new ApiException(401, "Invalid or malformed token", e);
+            throw new ApiException(HttpStatus.UNAUTHORIZED, "Invalid or malformed token", e);
         }
     }
 }

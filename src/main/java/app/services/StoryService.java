@@ -6,6 +6,8 @@ import app.entities.Story;
 import app.entities.User;
 import app.exceptions.ApiException;
 import app.mappers.StoryMapper;
+import io.javalin.http.HttpStatus;
+
 
 import java.util.List;
 
@@ -39,7 +41,7 @@ public class StoryService {
         Story story = storyDAO.getById(storyId);
 
         if (!story.getUser().getId().equals(userId)) {
-            throw new ApiException(404, "Story not found with ID: " + storyId);
+            throw new ApiException(HttpStatus.NOT_FOUND, "Story not found with ID: " + storyId);
         }
         return story;
     }
@@ -52,7 +54,7 @@ public class StoryService {
         Story randomStory = storyDAO.getRandomByUserId(userId);
 
         if (randomStory == null) {
-            throw new ApiException(404, "No stories were found");
+            throw new ApiException(HttpStatus.NOT_FOUND, "No stories were found");
         }
 
         return randomStory;

@@ -10,6 +10,7 @@ import app.services.GeminiPromptService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.http.Context;
+import io.javalin.http.HttpStatus;
 
 import java.util.List;
 import java.util.Map;
@@ -40,7 +41,7 @@ public class GeminiPromptController extends AbstractController<GeminiPromptSaveD
 
         String generatedText = geminiPromptService.askGemini(requestDTO.prompt(),userId);
 
-        ctx.status(200).json(Map.of("promptText", generatedText));
+        ctx.status(HttpStatus.OK).json(Map.of("promptText", generatedText));
     }
 
     // ===== Request Handling =====
@@ -71,12 +72,12 @@ public class GeminiPromptController extends AbstractController<GeminiPromptSaveD
 
     @Override
     protected GeminiPrompt updateEntity(Integer promptId, GeminiPromptSaveDTO dto, Integer userId) {
-        throw new ApiException(405, "Updating prompt history is not supported.");
+        throw new ApiException(HttpStatus.METHOD_NOT_ALLOWED.getCode(), "Updating prompt history is not supported.");
     }
 
     @Override
     protected GeminiPrompt getRandom(Integer userId) {
-        throw new ApiException(405, "Get random feature not supported for prompts.");
+        throw new ApiException(HttpStatus.METHOD_NOT_ALLOWED.getCode(), "Get random feature not supported for prompts.");
     }
 
     @Override

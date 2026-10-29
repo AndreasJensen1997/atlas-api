@@ -5,6 +5,8 @@ import app.exceptions.ApiException;
 import app.services.UserService;
 import io.javalin.http.Context;
 import lombok.extern.slf4j.Slf4j;
+import io.javalin.http.HttpStatus;
+
 
 @Slf4j
 public class SecurityFilter {
@@ -16,7 +18,7 @@ public class SecurityFilter {
 
         String header = ctx.header("Authorization");
         if (header == null || !header.startsWith("Bearer ")) {
-            throw new ApiException(401, "Missing or invalid Authorization header");
+            throw new ApiException(HttpStatus.UNAUTHORIZED, "Missing or invalid Authorization header");
         }
         String token = header.substring(7).trim();
 
@@ -29,7 +31,7 @@ public class SecurityFilter {
 
         } catch (Exception e) {
             log.debug("Token rejected: {}", e.getMessage());
-            throw new ApiException(401, "Invalid token: " + e.getMessage());
+            throw new ApiException(HttpStatus.UNAUTHORIZED, "Invalid token: " + e.getMessage());
         }
     }
 }

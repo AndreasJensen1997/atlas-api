@@ -9,6 +9,8 @@ import app.mappers.NotificationMapper;
 import app.services.NotificationService;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.http.Context;
+import io.javalin.http.HttpStatus;
+
 
 import java.util.List;
 
@@ -57,7 +59,7 @@ public class NotificationController extends AbstractController<NotificationReque
 
     @Override
     protected Notification getRandom(Integer userId) {
-        throw new ApiException(405, "Get random feature not supported for notifications");
+        throw new ApiException(HttpStatus.METHOD_NOT_ALLOWED, "Get random feature not supported for notifications");
     }
 
     @Override

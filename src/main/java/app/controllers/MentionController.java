@@ -7,6 +7,7 @@ import app.exceptions.ApiException;
 import app.services.MentionService;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.http.Context;
+import io.javalin.http.HttpStatus;
 
 import java.util.List;
 
@@ -29,7 +30,7 @@ public class MentionController implements EndpointGroup {
     private int getUserId(Context ctx) {
         Integer userId = ctx.attribute("userId");
         if (userId == null) {
-            throw new ApiException(401, "Unauthorized");
+            throw new ApiException(HttpStatus.UNAUTHORIZED.getCode(), "Unauthorized");
         }
         return userId;
     }
@@ -72,7 +73,7 @@ public class MentionController implements EndpointGroup {
                 .get();
 
         MentionResponseDTO created = mentionService.createMention(dto, userId);
-        ctx.status(201).json(created);
+        ctx.status(HttpStatus.CREATED).json(created);
     }
 
     public void deleteEntity(Context ctx) {
@@ -80,10 +81,10 @@ public class MentionController implements EndpointGroup {
         int userId = getUserId(ctx);
 
         if (mentionId <= 0) {
-            throw new ApiException(400, "ID must be a positive integer.");
+            throw new ApiException(HttpStatus.BAD_REQUEST, "ID must be a positive integer.");
         }
         mentionService.deleteMention(mentionId,userId);
-        ctx.status(204);
+        ctx.status(HttpStatus.NO_CONTENT);
     }
 
     // ===== Endpoints =====

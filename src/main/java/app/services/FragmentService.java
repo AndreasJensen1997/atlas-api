@@ -6,6 +6,8 @@ import app.entities.Fragment;
 import app.entities.User;
 import app.exceptions.ApiException;
 import app.mappers.FragmentMapper;
+import io.javalin.http.HttpStatus;
+
 
 import java.util.List;
 
@@ -40,7 +42,7 @@ public class FragmentService {
         Fragment fragment = fragmentDAO.getById(fragmentId);
 
         if (!fragment.getUser().getId().equals(userId)) {
-            throw new ApiException(404, "Fragment not found with ID: " + fragmentId);
+            throw new ApiException(HttpStatus.NOT_FOUND, "Fragment not found with ID: " + fragmentId);
         }
         return fragment;
     }

@@ -1,15 +1,14 @@
 package app.services;
 
-import app.daos.userOwned.NotificationDAO;
 import app.daos.userOwned.TimeCapsuleDAO;
 import app.dtos.timeCapsule.TimeCapsuleRequestDTO;
 import app.entities.Notification;
 import app.entities.TimeCapsule;
 import app.entities.User;
 import app.enums.NotificationType;
-import app.enums.TargetType;
 import app.exceptions.ApiException;
 import app.mappers.TimeCapsuleMapper;
+import io.javalin.http.HttpStatus;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -48,7 +47,7 @@ public class TimeCapsuleService {
         TimeCapsule timeCapsule = timeCapsuleDAO.getById(timeCapsuleId);
 
         if (!timeCapsule.getUser().getId().equals(userId)) {
-            throw new ApiException(404, "Time capsule not found with ID: " + timeCapsuleId);
+            throw new ApiException(HttpStatus.NOT_FOUND, "Time capsule not found with ID: " + timeCapsuleId);
         }
         return timeCapsule;
     }

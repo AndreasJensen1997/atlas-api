@@ -3,7 +3,6 @@ package app.controllers;
 import app.controllers.generics.AbstractController;
 import app.dtos.artifact.ArtifactRequestDTO;
 import app.dtos.artifact.ArtifactResponseDTO;
-import app.dtos.chapter.ChapterRequestDTO;
 import app.entities.Artifact;
 import app.mappers.ArtifactMapper;
 import app.services.ArtifactService;

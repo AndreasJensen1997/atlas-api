@@ -6,6 +6,7 @@ import app.entities.Place;
 import app.entities.User;
 import app.exceptions.ApiException;
 import app.mappers.PlaceMapper;
+import io.javalin.http.HttpStatus;
 
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class PlaceService {
         Place place = placeDAO.getById(placeId);
 
         if (!place.getUser().getId().equals(userId)) {
-            throw new ApiException(404, "Place not found with ID: " + placeId);
+            throw new ApiException(HttpStatus.NOT_FOUND, "Place not found with ID: " + placeId);
         }
         return place;
     }
@@ -53,7 +54,7 @@ public class PlaceService {
         Place randomPlace = placeDAO.getRandomByUserId(userId);
 
         if (randomPlace == null) {
-            throw new ApiException(404, "No places were found");
+            throw new ApiException(HttpStatus.NOT_FOUND, "No places were found");
         }
 
         return randomPlace;

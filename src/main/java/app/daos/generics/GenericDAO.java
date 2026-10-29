@@ -2,6 +2,7 @@ package app.daos.generics;
 
 import app.enums.TargetType;
 import app.exceptions.ApiException;
+import io.javalin.http.HttpStatus;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.PersistenceException;
@@ -29,7 +30,7 @@ public abstract class GenericDAO<T,I> implements IDAO<T,I> {
     @Override
     public T create(T t) {
         if (t == null) {
-            throw new ApiException(400, "Entity is required");
+            throw new ApiException(HttpStatus.BAD_REQUEST.getCode(), "Entity is required");
         }
         String entityName = t.getClass().getSimpleName();
         try (EntityManager em = emf.createEntityManager()) {
@@ -41,7 +42,7 @@ public abstract class GenericDAO<T,I> implements IDAO<T,I> {
                 if (em.getTransaction().isActive()) {
                     em.getTransaction().rollback();
                 }
-                throw new ApiException(500, "Failed to create " + entityName, e);
+                throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to create " + entityName, e);
             } catch (RuntimeException e) {
                 if (em.getTransaction().isActive()) {
                     em.getTransaction().rollback();
@@ -57,20 +58,20 @@ public abstract class GenericDAO<T,I> implements IDAO<T,I> {
         String entityName = entityClass.getSimpleName();
 
         if (i == null) {
-            throw new ApiException(400, entityName + " id is required");
+            throw new ApiException(HttpStatus.BAD_REQUEST.getCode(), entityName + " id is required");
         }
 
         try (EntityManager em = emf.createEntityManager()) {
             T t = em.find(entityClass, i);
 
             if (t == null) {
-                throw new ApiException(404, entityName + " not found");
+                throw new ApiException(HttpStatus.NOT_FOUND.getCode(), entityName + " not found");
             }
 
             return t;
 
         } catch (PersistenceException e) {
-            throw new ApiException(500, "Get " + entityName + " failed: " + e.getMessage());
+            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR.getCode(), "Get " + entityName + " failed: " + e.getMessage());
         }
     }
 
@@ -85,7 +86,7 @@ public abstract class GenericDAO<T,I> implements IDAO<T,I> {
 
             return query.getResultList();
         } catch (PersistenceException e) {
-            throw new ApiException(500, "Failed to retrieve " + entityName + " list: " + e.getMessage());
+            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR.getCode(), "Failed to retrieve " + entityName + " list: " + e.getMessage());
         }
     }
 
@@ -94,12 +95,12 @@ public abstract class GenericDAO<T,I> implements IDAO<T,I> {
         String entityName = entityClass.getSimpleName();
 
         if (t == null) {
-            throw new ApiException(400, entityName + " is required");
+            throw new ApiException(HttpStatus.BAD_REQUEST.getCode(), entityName + " is required");
         }
 
         Object id = emf.getPersistenceUnitUtil().getIdentifier(t);
         if (id == null) {
-            throw new ApiException(400, entityName + " id is required");
+            throw new ApiException(HttpStatus.BAD_REQUEST.getCode(), entityName + " id is required");
         }
 
         try (EntityManager em = emf.createEntityManager()) {
@@ -107,7 +108,7 @@ public abstract class GenericDAO<T,I> implements IDAO<T,I> {
             try {
                 T existing = em.find(entityClass, (I) id);
                 if (existing == null) {
-                    throw new ApiException(404, entityName + " not found");
+                    throw new ApiException(HttpStatus.NOT_FOUND.getCode(), entityName + " not found");
                 }
 
                 T updated = em.merge(t);
@@ -118,7 +119,7 @@ public abstract class GenericDAO<T,I> implements IDAO<T,I> {
                 if (em.getTransaction().isActive()) {
                     em.getTransaction().rollback();
                 }
-                throw new ApiException(500, "Update " + entityName + " failed: " + e.getMessage());
+                throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR.getCode(), "Update " + entityName + " failed: " + e.getMessage());
             } catch (RuntimeException e) {
                 if (em.getTransaction().isActive()) {
                     em.getTransaction().rollback();
@@ -133,7 +134,7 @@ public abstract class GenericDAO<T,I> implements IDAO<T,I> {
         String entityName = entityClass.getSimpleName();
 
         if (id == null) {
-            throw new ApiException(400, entityName + " id is required");
+            throw new ApiException(HttpStatus.BAD_REQUEST.getCode(), entityName + " id is required");
         }
 
         try (EntityManager em = emf.createEntityManager()) {
@@ -141,7 +142,7 @@ public abstract class GenericDAO<T,I> implements IDAO<T,I> {
             try {
                 T entityToRemove = em.find(entityClass, id);
                 if (entityToRemove == null) {
-                    throw new ApiException(404, entityName + " not found");
+                    throw new ApiException(HttpStatus.NOT_FOUND.getCode(), entityName + " not found");
                 }
 
                 try {
@@ -163,7 +164,7 @@ public abstract class GenericDAO<T,I> implements IDAO<T,I> {
                 if (em.getTransaction().isActive()) {
                     em.getTransaction().rollback();
                 }
-                throw new ApiException(500, "Delete " + entityName + " failed: " + e.getMessage());
+                throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR.getCode(), "Delete " + entityName + " failed: " + e.getMessage());
             } catch (RuntimeException e) {
                 if (em.getTransaction().isActive()) {
                     em.getTransaction().rollback();
@@ -192,7 +193,7 @@ public abstract class GenericDAO<T,I> implements IDAO<T,I> {
             return entities.get(randomIndex);
 
         } catch (PersistenceException e) {
-            throw new ApiException(500, "Failed to get random " + entityName + ": " + e.getMessage());
+            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR.getCode(), "Failed to get random " + entityName + ": " + e.getMessage());
         }
     }
 }

@@ -8,7 +8,7 @@ import app.exceptions.ApiException;
 import app.mappers.UserMapper;
 import app.utils.validation.UserValidator;
 import org.mindrot.jbcrypt.BCrypt;
-
+import io.javalin.http.HttpStatus;
 import java.util.List;
 
 public class UserService {
@@ -35,7 +35,7 @@ public class UserService {
         String email = User.normalize(dto.email());
 
         if (userDao.getUserByEmail(email) != null) {
-            throw new ApiException(409, "An account with this email already exists.");
+            throw new ApiException(HttpStatus.CONFLICT, "An account with this email already exists.");
         }
 
         String hashedPassword = BCrypt.hashpw(dto.password(), BCrypt.gensalt());
@@ -96,7 +96,7 @@ public class UserService {
             String normalized = User.normalize(newEmail);
             User existing = userDao.getUserByEmail(normalized);
             if (existing != null && !existing.getId().equals(userId)) {
-                throw new ApiException(409, "An account with this email already exists.");
+                throw new ApiException(HttpStatus.CONFLICT, "An account with this email already exists.");
             }
             user.setEmail(normalized);
         }

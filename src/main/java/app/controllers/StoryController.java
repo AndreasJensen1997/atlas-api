@@ -1,10 +1,8 @@
 package app.controllers;
 
 import app.controllers.generics.AbstractController;
-import app.dtos.chapter.ChapterRequestDTO;
 import app.dtos.story.StoryRequestDTO;
 import app.dtos.story.StoryResponseDTO;
-import app.entities.Memory;
 import app.entities.Story;
 import app.mappers.StoryMapper;
 import app.services.StoryService;

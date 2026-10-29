@@ -11,7 +11,7 @@ import app.utils.security.RateLimiter;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
-
+import io.javalin.http.HttpStatus;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -54,7 +54,7 @@ public class GeminiPromptService {
             key = null;
         }
         if (key == null || key.isBlank()) {
-            throw new ApiException(503, "The AI service is not configured");
+            throw new ApiException(HttpStatus.SERVICE_UNAVAILABLE, "The AI service is not configured");
         }
         return key;
     }
@@ -93,21 +93,21 @@ public class GeminiPromptService {
         try {
             response = HTTP_CLIENT.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (HttpTimeoutException e) {
-            throw new ApiException(504, "The AI service took too long to respond");
+            throw new ApiException(HttpStatus.GATEWAY_TIMEOUT, "The AI service took too long to respond");
         } catch (IOException e) {
-            throw new ApiException(502, "Could not reach the AI service", e);
+            throw new ApiException(HttpStatus.BAD_GATEWAY, "Could not reach the AI service", e);
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw new ApiException(503, "The request was interrupted");
+            throw new ApiException(HttpStatus.SERVICE_UNAVAILABLE, "The request was interrupted");
         }
 
         int status = response.statusCode();
         if (status == 429) {
-            throw new ApiException(503, "The AI service is busy right now, try again later");
+            throw new ApiException(HttpStatus.SERVICE_UNAVAILABLE, "The AI service is busy right now, try again later");
         }
         if (status != 200) {
             log.error("Gemini returned status {}: {}", status, response.body());
-            throw new ApiException(502, "The AI service returned an error");
+            throw new ApiException(HttpStatus.BAD_GATEWAY, "The AI service returned an error");
         }
         return response.body();
     }
@@ -122,12 +122,12 @@ public class GeminiPromptService {
         try {
             responseDto = objectMapper.readValue(rawJson, GeminiResponseDTO.class);
         } catch (JsonProcessingException e) {
-            throw new ApiException(502, "The AI service returned an unexpected response", e);
+            throw new ApiException(HttpStatus.BAD_GATEWAY, "The AI service returned an unexpected response", e);
         }
 
         GeminiPrompt tempPrompt = GeminiPromptMapper.toEntity(responseDto);
         if (tempPrompt == null || tempPrompt.getContent() == null) {
-            throw new ApiException(502, "The AI service returned an unexpected response");
+            throw new ApiException(HttpStatus.BAD_GATEWAY, "The AI service returned an unexpected response");
         }
         return tempPrompt.getContent();
     }
@@ -151,7 +151,7 @@ public class GeminiPromptService {
         GeminiPrompt geminiPrompt = geminiPromptDAO.getById(geminiPromptId);
 
         if (!geminiPrompt.getUser().getId().equals(userId)) {
-            throw new ApiException(404, "Prompt not found with ID: " + geminiPromptId);
+            throw new ApiException(HttpStatus.NOT_FOUND, "Prompt not found with ID: " + geminiPromptId);
         }
         return geminiPrompt;
     }

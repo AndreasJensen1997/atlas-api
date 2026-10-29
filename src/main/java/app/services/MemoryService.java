@@ -6,6 +6,8 @@ import app.entities.Memory;
 import app.entities.User;
 import app.exceptions.ApiException;
 import app.mappers.MemoryMapper;
+import io.javalin.http.HttpStatus;
+
 
 import java.util.List;
 
@@ -39,7 +41,7 @@ public class MemoryService {
         Memory memory = memoryDAO.getById(memoryId);
 
         if (!memory.getUser().getId().equals(userId)) {
-            throw new ApiException(404, "Memory not found with ID: " + memoryId);
+            throw new ApiException(HttpStatus.NOT_FOUND, "Memory not found with ID: " + memoryId);
         }
         return memory;
     }
@@ -52,7 +54,7 @@ public class MemoryService {
         Memory randomMemory = memoryDAO.getRandomByUserId(userId);
 
         if (randomMemory == null) {
-            throw new ApiException(404, "No memories were found");
+            throw new ApiException(HttpStatus.NOT_FOUND, "No memories were found");
         }
 
         return randomMemory;

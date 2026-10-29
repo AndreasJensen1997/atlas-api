@@ -6,6 +6,8 @@ import app.entities.Chapter;
 import app.entities.User;
 import app.exceptions.ApiException;
 import app.mappers.ChapterMapper;
+import io.javalin.http.HttpStatus;
+
 
 import java.util.List;
 
@@ -39,7 +41,7 @@ public class ChapterService {
         Chapter chapter = chapterDAO.getById(chapterId);
 
         if (!chapter.getUser().getId().equals(userId)) {
-            throw new ApiException(404, "Chapter not found with ID: " + chapterId);
+            throw new ApiException(HttpStatus.NOT_FOUND, "Chapter not found with ID: " + chapterId);
         }
         return chapter;
     }
@@ -53,7 +55,7 @@ public class ChapterService {
         Chapter randomChapter = chapterDAO.getRandomByUserId(userId);
 
         if (randomChapter == null) {
-            throw new ApiException(404, "No chapters were found");
+            throw new ApiException(HttpStatus.NOT_FOUND, "No chapters were found");
         }
 
         return randomChapter;

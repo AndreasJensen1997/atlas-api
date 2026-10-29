@@ -6,6 +6,7 @@ import app.exceptions.ApiException;
 import app.services.ArtifactTypeService;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.http.Context;
+import io.javalin.http.HttpStatus;
 
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class ArtifactTypeController implements EndpointGroup {
         Integer userId = ctx.attribute("userId");
 
         if (userId == null){
-            throw new ApiException(401, "Unauthorized");
+            throw new ApiException(HttpStatus.UNAUTHORIZED, "Unauthorized");
         }
 
         List<ArtifactTypeResponseDTO> types = artifactTypeService.getAllByUserId(userId).stream()

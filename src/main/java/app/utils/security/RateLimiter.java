@@ -1,7 +1,7 @@
 package app.utils.security;
 
 import app.exceptions.ApiException;
-
+import io.javalin.http.HttpStatus;
 import java.time.Duration;
 import java.util.ArrayDeque;
 import java.util.Deque;
@@ -28,7 +28,7 @@ public class RateLimiter {
                 timestamps.pollFirst();
             }
             if (timestamps.size() >= maxRequests) {
-                throw new ApiException(429, "Too many requests, try again later");
+                throw new ApiException(HttpStatus.TOO_MANY_REQUESTS, "Too many requests, try again later");
             }
             timestamps.addLast(now);
         }

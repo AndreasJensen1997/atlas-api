@@ -10,10 +10,9 @@ import app.exceptions.ApiException;
 import app.mappers.NotificationMapper;
 import app.utils.websocket.ConnectionRegistry;
 import lombok.extern.slf4j.Slf4j;
-
+import io.javalin.http.HttpStatus;
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
+
 
 @Slf4j
 public class NotificationService {
@@ -51,7 +50,7 @@ public class NotificationService {
         Notification notification = notificationDAO.getById(notificationId);
 
         if (!notification.getUser().getId().equals(userId)) {
-            throw new ApiException(404, "Notification not found with ID: " + notificationId);
+            throw new ApiException(HttpStatus.NOT_FOUND, "Notification not found with ID: " + notificationId);
         }
 
         return notification;

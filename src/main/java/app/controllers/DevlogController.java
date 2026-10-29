@@ -10,6 +10,7 @@ import app.mappers.DevlogMapper;
 import app.services.DevlogService;
 import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.http.Context;
+import io.javalin.http.HttpStatus;
 
 import java.util.List;
 
@@ -59,7 +60,7 @@ public class DevlogController extends AbstractController<DevlogRequestDTO, Devlo
 
     @Override
     protected Devlog getRandom(Integer userId) {
-        throw new ApiException(405, "Get random feature not supported for devlogs");
+        throw new ApiException(HttpStatus.METHOD_NOT_ALLOWED, "Get random feature not supported for devlogs");
     }
 
     @Override

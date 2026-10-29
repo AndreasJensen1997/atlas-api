@@ -1,7 +1,7 @@
 package app.utils.general;
 
 import app.exceptions.ApiException;
-
+import io.javalin.http.HttpStatus;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -17,10 +17,10 @@ public class Utils {
             if (value != null) {
                 return value.trim();
             } else {
-                throw new ApiException(500, String.format("Property %s not found in %s", propName, resourceName));
+                throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, String.format("Property %s not found in %s", propName, resourceName));
             }
         } catch (IOException ex) {
-            throw new ApiException(500, String.format("Could not read property %s.", propName));
+            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, String.format("Could not read property %s.", propName));
         }
     }
 }

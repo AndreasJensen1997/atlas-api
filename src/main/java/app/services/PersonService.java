@@ -6,6 +6,7 @@ import app.entities.Person;
 import app.entities.User;
 import app.exceptions.ApiException;
 import app.mappers.PersonMapper;
+import io.javalin.http.HttpStatus;
 
 import java.util.List;
 
@@ -40,7 +41,7 @@ public class PersonService {
         Person person = personDAO.getById(personId);
 
         if (!person.getUser().getId().equals(userId)) {
-            throw new ApiException(404, "Person not found with ID: " + personId);
+            throw new ApiException(HttpStatus.NOT_FOUND, "Person not found with ID: " + personId);
         }
         return person;
     }
@@ -53,7 +54,7 @@ public class PersonService {
         Person randomPerson = personDAO.getRandomByUserId(userId);
 
         if (randomPerson == null) {
-            throw new ApiException(404, "No people were found");
+            throw new ApiException(HttpStatus.NOT_FOUND, "No people were found");
         }
 
         return randomPerson;

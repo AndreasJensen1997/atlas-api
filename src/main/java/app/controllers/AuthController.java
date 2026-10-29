@@ -12,7 +12,6 @@ import io.javalin.apibuilder.EndpointGroup;
 import io.javalin.http.Context;
 import io.javalin.http.HttpStatus;
 import org.jetbrains.annotations.NotNull;
-//
 import static io.javalin.apibuilder.ApiBuilder.*;
 
 
@@ -40,10 +39,10 @@ public class AuthController implements EndpointGroup {
 
             UserResponseDTO responseDto = UserMapper.toResponse(registeredUser);
 
-            ctx.status(201).json(responseDto);
+            ctx.status(HttpStatus.CREATED).json(responseDto);
 
         } catch (IllegalArgumentException e) {
-            ctx.status(400).json(Map.of("error", e.getMessage()));
+            ctx.status(HttpStatus.BAD_REQUEST).json(Map.of("error", e.getMessage()));
         }
     }
 
@@ -57,12 +56,12 @@ public class AuthController implements EndpointGroup {
             ctx.status(HttpStatus.OK).json(responseDto);
 
         } catch (IllegalArgumentException e) {
-            ctx.status(401).json(Map.of("error", e.getMessage()));
+            ctx.status(HttpStatus.UNAUTHORIZED).json(Map.of("error", e.getMessage()));
         }
     }
 
     public void healthCheck(@NotNull Context ctx) {
-        ctx.status(200).json("{\"msg\": \"API is up and running\"}");
+        ctx.status(HttpStatus.OK).json("{\"msg\": \"API is up and running\"}");
     }
 
     // ===== Endpoints =====

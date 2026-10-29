@@ -3,7 +3,6 @@ package app.services;
 import app.daos.userOwned.ArtifactTypeDAO;
 import app.entities.ArtifactType;
 import app.entities.User;
-
 import java.util.Comparator;
 import java.util.List;
 

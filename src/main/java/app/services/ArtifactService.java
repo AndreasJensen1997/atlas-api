@@ -7,6 +7,7 @@ import app.entities.ArtifactType;
 import app.entities.User;
 import app.exceptions.ApiException;
 import app.mappers.ArtifactMapper;
+import io.javalin.http.HttpStatus;
 
 import java.util.List;
 
@@ -45,7 +46,7 @@ public class ArtifactService {
         Artifact artifact = artifactDAO.getById(artifactId);
 
         if (!artifact.getUser().getId().equals(userId)) {
-            throw new ApiException(404, "Artifact not found with ID: " + artifactId);
+            throw new ApiException(HttpStatus.NOT_FOUND, "Artifact not found with ID: " + artifactId);
         }
         return artifact;
     }
@@ -58,7 +59,7 @@ public class ArtifactService {
         Artifact randomArtifact = artifactDAO.getRandomByUserId(userId);
 
         if (randomArtifact == null) {
-            throw new ApiException(404, "No artifact were found");
+            throw new ApiException(HttpStatus.NOT_FOUND, "No artifact were found");
         }
 
         return randomArtifact;

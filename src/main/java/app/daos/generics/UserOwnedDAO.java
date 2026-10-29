@@ -2,6 +2,7 @@ package app.daos.generics;
 
 import app.entities.Chapter;
 import app.exceptions.ApiException;
+import io.javalin.http.HttpStatus;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.PersistenceException;
@@ -43,7 +44,7 @@ public class UserOwnedDAO<T, I> extends GenericDAO<T, I> {
 
             return query.getResultList();
         } catch (PersistenceException e) {
-            throw new ApiException(500, "Failed to search " + entityClass.getSimpleName() + "s: " + e.getMessage());
+            throw new ApiException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to search " + entityClass.getSimpleName() + "s: " + e.getMessage());
         }
     }
 

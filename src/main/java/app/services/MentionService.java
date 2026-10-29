@@ -38,7 +38,7 @@ public class MentionService {
     private Mention getOwnedMention(Integer mentionId, int userId) {
         Mention mention = mentionDAO.getById(mentionId);
         if (!mention.getUser().getId().equals(userId)) {
-            throw new ApiException(404, "Mention not found");
+            throw new ApiException(HttpStatus.NOT_FOUND, "Mention not found");
         }
         return mention;
     }
@@ -47,7 +47,7 @@ public class MentionService {
         UserOwnedDAO<?, Integer> dao = pageDaos.get(type);
 
         if (dao == null || !dao.existsByIdAndUserId(pageId, userId)) {
-            throw new ApiException(404, type + " not found with ID: " + pageId);
+            throw new ApiException(HttpStatus.NOT_FOUND, type + " not found with ID: " + pageId);
         }
     }
 

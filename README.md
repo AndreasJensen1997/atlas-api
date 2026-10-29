@@ -64,7 +64,7 @@ Atlas is under active development. The API is feature-complete for the core idea
 
 **External services**
 
-- Google Gemini API (optional, only for `POST /api/gemini-prompts/generate`)
+- Google Gemini API (optional, only for `POST /api/v1/gemini-prompts/generate`)
 
 ---
 
@@ -92,7 +92,7 @@ Atlas does some work outside the request/response cycle:
 ```
  request thread (Jetty)             background threads
  ──────────────────────             ───────────────────────────────────────
- POST /api/devlogs (admin)  ──►     ExecutorService (2 threads)
+ POST /api/v1/devlogs (admin)  ──►     ExecutorService (2 threads)
    saves the devlog                   notifyAllUsers: one Notification per user
    returns 201 at once                        │
                                               ▼
@@ -144,7 +144,7 @@ src/test/java/app
 
 ## API overview
 
-All endpoints are under `/api`. Everything except `/api/auth/*` requires the header
+All endpoints are under `/api/v1`. Everything except `/api/v1/auth/*` requires the header
 
 ```
 Authorization: Bearer <token>
@@ -154,8 +154,8 @@ Authorization: Bearer <token>
 
 | Method | Path | Description |
 |---|---|---|
-| POST | `/api/auth/register` | Create an account. Body: `name`, `email`, `password`, `passwordCheck`. Returns `201`, or `409` if the email is taken |
-| POST | `/api/auth/login` | Body: `email`, `password`. Returns `{ "token": "..." }` |
+| POST | `/api/v1/auth/register` | Create an account. Body: `name`, `email`, `password`, `passwordCheck`. Returns `201`, or `409` if the email is taken |
+| POST | `/api/v1/auth/login` | Body: `email`, `password`. Returns `{ "token": "..." }` |
 
 Emails are trimmed and lower-cased, so `Anna@Example.dk` and `anna@example.dk` are the same account. Passwords need at least 8 characters, one digit and one special character.
 
@@ -163,10 +163,10 @@ Emails are trimmed and lower-cased, so `Anna@Example.dk` and `anna@example.dk` a
 
 | Method | Path | Access |
 |---|---|---|
-| GET | `/api/users/current` | The logged-in user |
-| PUT | `/api/users/{id}` | Your own account only (name, email) |
-| DELETE | `/api/users/{id}` | Your own account only |
-| GET | `/api/users`, `/api/users/{id}` | **Admin only** |
+| GET | `/api/v1/users/current` | The logged-in user |
+| PUT | `/api/v1/users/{id}` | Your own account only (name, email) |
+| DELETE | `/api/v1/users/{id}` | Your own account only |
+| GET | `/api/v1/users`, `/api/v1/users/{id}` | **Admin only** |
 
 ### Pages and other resources
 
@@ -174,21 +174,21 @@ Every resource below belongs to the logged-in user. You only ever see and change
 
 | Resource | Path | Operations |
 |---|---|---|
-| Chapters | `/api/chapters` | list, `random`, get, create, update, delete |
-| Stories | `/api/stories` | list, `random`, get, create, update, delete |
-| Memories | `/api/memories` | list, `random`, get, create, update, delete |
-| Artifacts | `/api/artifacts` | list, `random`, get, create, update, delete |
-| People | `/api/persons` | list, `random`, get, create, update, delete |
-| Places | `/api/places` | list, `random`, get, create, update, delete |
-| Lists | `/api/entity-lists` | list, `random`, get, create, update, delete |
-| Fragments | `/api/fragments` | list, get, create, update, delete |
-| Devlogs | `/api/devlogs` | list and get (**everyone**), create, update, delete (**admin only**) |
-| Notifications | `/api/notifications` | list, get, create, update, delete (your own) |
-| Time capsules | `/api/time-capsules` | list, get, create, delete (no update) |
-| Artifact types | `/api/artifact-types` | list |
-| AI prompts | `/api/gemini-prompts` | list, get, save, delete, and `POST /generate` |
+| Chapters | `/api/v1/chapters` | list, `random`, get, create, update, delete |
+| Stories | `/api/v1/stories` | list, `random`, get, create, update, delete |
+| Memories | `/api/v1/memories` | list, `random`, get, create, update, delete |
+| Artifacts | `/api/v1/artifacts` | list, `random`, get, create, update, delete |
+| People | `/api/v1/persons` | list, `random`, get, create, update, delete |
+| Places | `/api/v1/places` | list, `random`, get, create, update, delete |
+| Lists | `/api/v1/entity-lists` | list, `random`, get, create, update, delete |
+| Fragments | `/api/v1/fragments` | list, get, create, update, delete |
+| Devlogs | `/api/v1/devlogs` | list and get (**everyone**), create, update, delete (**admin only**) |
+| Notifications | `/api/v1/notifications` | list, get, create, update, delete (your own) |
+| Time capsules | `/api/v1/time-capsules` | list, get, create, delete (no update) |
+| Artifact types | `/api/v1/artifact-types` | list |
+| AI prompts | `/api/v1/gemini-prompts` | list, get, save, delete, and `POST /generate` |
 
-Typical calls: `GET /api/memories` (list), `GET /api/memories/random`, `GET /api/memories/{id}`, `POST /api/memories`, `PUT /api/memories/{id}`, `DELETE /api/memories/{id}`.
+Typical calls: `GET /api/v1/memories` (list), `GET /api/v1/memories/random`, `GET /api/v1/memories/{id}`, `POST /api/v1/memories`, `PUT /api/v1/memories/{id}`, `DELETE /api/v1/memories/{id}`.
 
 ### Mentions (links between pages)
 
@@ -196,10 +196,10 @@ A mention says: *the text between `startIndex` and `endIndex` in page A links to
 
 | Method | Path | Description |
 |---|---|---|
-| POST | `/api/mentions` | Create a mention |
-| GET | `/api/mentions/owner/{ownerType}/{ownerId}` | Links that start from a page |
-| GET | `/api/mentions/target/{targetType}/{targetId}` | Backlinks: what links **to** a page |
-| DELETE | `/api/mentions/{id}` | Delete a mention |
+| POST | `/api/v1/mentions` | Create a mention |
+| GET | `/api/v1/mentions/owner/{ownerType}/{ownerId}` | Links that start from a page |
+| GET | `/api/v1/mentions/target/{targetType}/{targetId}` | Backlinks: what links **to** a page |
+| DELETE | `/api/v1/mentions/{id}` | Delete a mention |
 
 `ownerType` and `targetType` are one of `CHAPTER`, `STORY`, `MEMORY`, `ARTIFACT`, `PERSON`, `PLACE`. **Both pages must belong to you**, and `startIndex` must be smaller than `endIndex`. Deleting a page also deletes its mentions.
 
@@ -212,14 +212,14 @@ Notifications are created by the system:
 | `DEVLOG` | An admin publishes a devlog (every user gets one) |
 | `TIME_CAPSULE` | One of your time capsules reaches its unlock date |
 
-Connect to `ws://localhost:7070/ws/notifications?token=<JWT>` to receive each new notification as a JSON message the moment it is created. If the token is missing, invalid or expired, the server closes the connection with code `4401`. The server pings every 20 seconds to keep the connection open. The same notifications are always available over `GET /api/notifications`, so a client that was offline can catch up.
+Connect to `ws://localhost:7070/ws/notifications?token=<JWT>` to receive each new notification as a JSON message the moment it is created. If the token is missing, invalid or expired, the server closes the connection with code `4401`. The server pings every 20 seconds to keep the connection open. The same notifications are always available over `GET /api/v1/notifications`, so a client that was offline can catch up.
 
 ### Things worth knowing
 
 - **Artifact categories are free text.** When you create or update an artifact you send a category name (e.g. "Clothing"). It is created for you the first time, and reused afterwards. Matching ignores case and surrounding spaces, and categories are private to each user.
 - **Time capsules are sealed.** While `unlockDate` is in the future the API returns `content: null` and `lockStatus: true`. The capsule opens on the unlock date itself, and the owner is notified within a minute.
 - **Titles do not have to be unique.** Pages are identified by id, so two pages may share a title.
-- **AI prompts.** `POST /api/gemini-prompts/generate` sends a prompt (max 500 characters) to Gemini and returns the generated text. Each user may make 10 requests per hour. Upstream problems are reported as `429`, `502`, `503` or `504`. Saving a generated prompt is a separate call.
+- **AI prompts.** `POST /api/v1/gemini-prompts/generate` sends a prompt (max 500 characters) to Gemini and returns the generated text. Each user may make 10 requests per hour. Upstream problems are reported as `429`, `502`, `503` or `504`. Saving a generated prompt is a separate call.
 
 ### Errors
 
@@ -286,6 +286,6 @@ The full list, with acceptance criteria and the code behind each story, is in [d
   | `JWT_SECRET` | At least 32 bytes. Atlas refuses to start without it |
   | `GEMINI_API_KEY` | Optional. Without it the AI endpoint answers `503` |
 
-- Health check: `GET /api/auth/healthcheck`.
+- Health check: `GET /api/v1/auth/healthcheck`.
 
 ---

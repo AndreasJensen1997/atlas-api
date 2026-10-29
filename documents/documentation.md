@@ -5,13 +5,13 @@ Base URL (local): `http://localhost:7070`. All HTTP endpoints are under `/api`. 
 
 ### Authentication
 
-Everything except `/api/auth/*` requires a token:
+Everything except `/api/v1/auth/*` requires a token:
 
 ```
 Authorization: Bearer <token>
 ```
 
-The token comes from `POST /api/auth/login`. It expires after 24 hours. The WebSocket takes the token as a query parameter instead (see [WebSocket](#websocket-live-notifications)).
+The token comes from `POST /api/v1/auth/login`. It expires after 24 hours. The WebSocket takes the token as a query parameter instead (see [WebSocket](#websocket-live-notifications)).
 
 ### Data ownership
 
@@ -27,7 +27,7 @@ Almost all errors have this format:
 { "status": 404, "error": "Memory not found with ID: 5" }
 ```
 
-Some validation errors on the two `/api/auth/*` endpoints return `{ "error": "..." }` without `status`.
+Some validation errors on the two `/api/v1/auth/*` endpoints return `{ "error": "..." }` without `status`.
 
 | Status | Meaning |
 |---|---|
@@ -47,29 +47,29 @@ Most resources share the same five endpoints. `{resource}` is the path from the 
 
 | Method | URL | Request body | Success | Errors |
 |---|---|---|---|---|
-| POST | `/api/{resource}` | `<Resource>RequestDTO` | `201` + response DTO | 400 |
-| GET | `/api/{resource}` | | `200` + list of response DTOs (only yours) | |
-| GET | `/api/{resource}/{id}` | | `200` + response DTO | 400, 404 |
-| PUT | `/api/{resource}/{id}` | `<Resource>RequestDTO` | `200` + updated response DTO | 400, 404 |
-| DELETE | `/api/{resource}/{id}` | | `200` + `{ "message": "Deleted successfully" }` | 400, 404 |
-| GET | `/api/{resource}/random` | | `200` + one random response DTO of yours | 404 if you have none |
+| POST | `/api/v1/{resource}` | `<Resource>RequestDTO` | `201` + response DTO | 400 |
+| GET | `/api/v1/{resource}` | | `200` + list of response DTOs (only yours) | |
+| GET | `/api/v1/{resource}/{id}` | | `200` + response DTO | 400, 404 |
+| PUT | `/api/v1/{resource}/{id}` | `<Resource>RequestDTO` | `200` + updated response DTO | 400, 404 |
+| DELETE | `/api/v1/{resource}/{id}` | | `200` + `{ "message": "Deleted successfully" }` | 400, 404 |
+| GET | `/api/v1/{resource}/random` | | `200` + one random response DTO of yours | 404 if you have none |
 
 Not every resource has every endpoint:
 
 | Resource | Path | Notes |
 |---|---|---|
-| Chapters | `/api/chapters` | |
-| Stories | `/api/stories` | |
-| Memories | `/api/memories` | |
-| Artifacts | `/api/artifacts` | |
-| People | `/api/persons` | |
-| Places | `/api/places` | |
-| Lists | `/api/entity-lists` | |
-| Fragments | `/api/fragments` | no `random` |
-| Devlogs | `/api/devlogs` | no `random`. Read: all users. Write: **admin only** |
-| Notifications | `/api/notifications` | no `random` |
-| Time capsules | `/api/time-capsules` | no `PUT` (405), no `random` (405) |
-| AI prompts | `/api/gemini-prompts` | no `PUT` (405), no `random` (405) |
+| Chapters | `/api/v1/chapters` | |
+| Stories | `/api/v1/stories` | |
+| Memories | `/api/v1/memories` | |
+| Artifacts | `/api/v1/artifacts` | |
+| People | `/api/v1/persons` | |
+| Places | `/api/v1/places` | |
+| Lists | `/api/v1/entity-lists` | |
+| Fragments | `/api/v1/fragments` | no `random` |
+| Devlogs | `/api/v1/devlogs` | no `random`. Read: all users. Write: **admin only** |
+| Notifications | `/api/v1/notifications` | no `random` |
+| Time capsules | `/api/v1/time-capsules` | no `PUT` (405), no `random` (405) |
+| AI prompts | `/api/v1/gemini-prompts` | no `PUT` (405), no `random` (405) |
 
 ---
 
@@ -77,8 +77,8 @@ Not every resource has every endpoint:
 
 | Method | URL | Request body | Success | Errors |
 |---|---|---|---|---|
-| POST | `/api/auth/register` | `RegisterRequestDTO` | `201` + `UserResponseDTO` | 400 invalid input, 409 email already in use |
-| POST | `/api/auth/login` | `LoginRequestDTO` | `200` + `LoginResponseDTO` | 401 wrong email or password |
+| POST | `/api/v1/auth/register` | `RegisterRequestDTO` | `201` + `UserResponseDTO` | 400 invalid input, 409 email already in use |
+| POST | `/api/v1/auth/login` | `LoginRequestDTO` | `200` + `LoginResponseDTO` | 401 wrong email or password |
 
 Emails are trimmed and lower-cased. Passwords need at least 8 characters, one digit and one special character.
 
@@ -105,11 +105,11 @@ Emails are trimmed and lower-cased. Passwords need at least 8 characters, one di
 
 | Method | URL | Access | Request body | Success | Errors |
 |---|---|---|---|---|---|
-| GET | `/api/users/current` | Any user | | `200` + `UserResponseDTO` | 401 |
-| GET | `/api/users` | **Admin only** | | `200` + list of `UserResponseDTO` | 403 |
-| GET | `/api/users/{id}` | **Admin only** | | `200` + `UserResponseDTO` | 403, 404 |
-| PUT | `/api/users/{id}` | Your own account | `UserUpdateDTO` | `200` + `UserResponseDTO` | 400 (also when `{id}` is not you), 404, 409 email already in use |
-| DELETE | `/api/users/{id}` | Your own account | | `204` | 400 (also when `{id}` is not you), 404 |
+| GET | `/api/v1/users/current` | Any user | | `200` + `UserResponseDTO` | 401 |
+| GET | `/api/v1/users` | **Admin only** | | `200` + list of `UserResponseDTO` | 403 |
+| GET | `/api/v1/users/{id}` | **Admin only** | | `200` + `UserResponseDTO` | 403, 404 |
+| PUT | `/api/v1/users/{id}` | Your own account | `UserUpdateDTO` | `200` + `UserResponseDTO` | 400 (also when `{id}` is not you), 404, 409 email already in use |
+| DELETE | `/api/v1/users/{id}` | Your own account | | `204` | 400 (also when `{id}` is not you), 404 |
 
 **UserResponseDTO**
 
@@ -130,19 +130,19 @@ The password hash is never returned. Nobody can become admin through the API. Pr
 
 Fields marked **required** are validated by the controller (`400` if blank). `visibility` is `PRIVATE` or `PUBLIC`. `PUBLIC` is stored but not used yet. `createdAt` and `updatedAt` are set by the server (dates, `yyyy-MM-dd`). Titles do not have to be unique.
 
-### Memories: `/api/memories`
+### Memories: `/api/v1/memories`
 
 Request: `title` (**required**), `subtitle` (**required**), `content`, `date`, `visibility`
 
 Response: `id`, `title`, `subtitle`, `content`, `date`, `createdAt`, `updatedAt`, `visibility`
 
-### Chapters: `/api/chapters` and Stories: `/api/stories`
+### Chapters: `/api/v1/chapters` and Stories: `/api/v1/stories`
 
 Request: `title` (**required**), `subtitle` (**required**), `content`, `startDate`, `endDate`, `visibility`. `endDate` must not be before `startDate`.
 
 Response: `id`, `title`, `subtitle`, `content`, `startDate`, `endDate`, `createdAt`, `updatedAt`, `visibility`
 
-### Artifacts: `/api/artifacts`
+### Artifacts: `/api/v1/artifacts`
 
 Request: `title` (**required**), `subtitle` (**required**), `content`, `visibility`, `artifactType`
 
@@ -152,21 +152,21 @@ Response: `id`, `title`, `subtitle`, `content`, `createdAt`, `updatedAt`, `visib
 
 | Method | URL | Success |
 |---|---|---|
-| GET | `/api/artifact-types` | `200` + list of `{ "id": 1, "name": "Clothing" }` (your own categories) |
+| GET | `/api/v1/artifact-types` | `200` + list of `{ "id": 1, "name": "Clothing" }` (your own categories) |
 
-### People: `/api/persons`
+### People: `/api/v1/persons`
 
 Request: `name` (**required**), `subtitle`, `content`, `relation`, `visibility`
 
 Response: `id`, `name`, `subtitle`, `content`, `relation`, `visibility`, `createdAt`, `updatedAt`
 
-### Places: `/api/places`
+### Places: `/api/v1/places`
 
 Request: `name` (**required**), `subtitle`, `content`, `latitude`, `longitude`, `address`, `city`, `country`, `visibility`
 
 Response: the same fields plus `id`, `createdAt`, `updatedAt`
 
-### Lists: `/api/entity-lists`
+### Lists: `/api/v1/entity-lists`
 
 Request: `title` (**required**), `subtitle`, `visibility`, `items` (list of strings)
 
@@ -175,13 +175,13 @@ Request: `title` (**required**), `subtitle`, `visibility`, `items` (list of stri
 ```
 Response: `id`, `title`, `subtitle`, `createdAt`, `updatedAt`, `itemAmount`, `visibility`, `items` (list of `{ "id", "text" }`)
 
-### Fragments: `/api/fragments`
+### Fragments: `/api/v1/fragments`
 
 Request: `title`, `subtitle`, `content` (**required**)
 
 Response: `id`, `title`, `subtitle`, `content`, `createdAt`, `updatedAt`, `wordCount`
 
-### Time capsules: `/api/time-capsules`
+### Time capsules: `/api/v1/time-capsules`
 
 Request: `title` (**required**), `subtitle`, `content`, `unlockDate` (**required**, must be in the future)
 
@@ -197,11 +197,11 @@ Devlogs are announcements written by admins, for example when a new feature is r
 
 | Method | URL | Access | Request body | Success | Errors |
 |---|---|---|---|---|---|
-| GET | `/api/devlogs` | Any user | | `200` + list of **all** devlogs | |
-| GET | `/api/devlogs/{id}` | Any user | | `200` + `DevlogResponseDTO` | 400, 404 |
-| POST | `/api/devlogs` | **Admin only** | `DevlogRequestDTO` | `201` + `DevlogResponseDTO` | 400, 403 |
-| PUT | `/api/devlogs/{id}` | **Admin only** | `DevlogRequestDTO` | `200` + `DevlogResponseDTO` | 400, 403, 404 |
-| DELETE | `/api/devlogs/{id}` | **Admin only** | | `200` + `{ "message": "Deleted successfully" }` | 400, 403, 404 |
+| GET | `/api/v1/devlogs` | Any user | | `200` + list of **all** devlogs | |
+| GET | `/api/v1/devlogs/{id}` | Any user | | `200` + `DevlogResponseDTO` | 400, 404 |
+| POST | `/api/v1/devlogs` | **Admin only** | `DevlogRequestDTO` | `201` + `DevlogResponseDTO` | 400, 403 |
+| PUT | `/api/v1/devlogs/{id}` | **Admin only** | `DevlogRequestDTO` | `200` + `DevlogResponseDTO` | 400, 403, 404 |
+| DELETE | `/api/v1/devlogs/{id}` | **Admin only** | | `200` + `{ "message": "Deleted successfully" }` | 400, 403, 404 |
 
 Request: `title`, `subtitle`, `content` (all **required**). The creation date is set by the server.
 
@@ -215,11 +215,11 @@ Response: `id`, `title`, `subtitle`, `content`, `createdAt`
 
 | Method | URL | Request body | Success | Errors |
 |---|---|---|---|---|
-| GET | `/api/notifications` | | `200` + list of your notifications | |
-| GET | `/api/notifications/{id}` | | `200` + `NotificationResponseDTO` | 400, 404 |
-| POST | `/api/notifications` | `NotificationRequestDTO` | `201` + `NotificationResponseDTO` | 400 |
-| PUT | `/api/notifications/{id}` | `NotificationRequestDTO` | `200` + `NotificationResponseDTO` | 400, 404 |
-| DELETE | `/api/notifications/{id}` | | `200` + `{ "message": "Deleted successfully" }` | 400, 404 |
+| GET | `/api/v1/notifications` | | `200` + list of your notifications | |
+| GET | `/api/v1/notifications/{id}` | | `200` + `NotificationResponseDTO` | 400, 404 |
+| POST | `/api/v1/notifications` | `NotificationRequestDTO` | `201` + `NotificationResponseDTO` | 400 |
+| PUT | `/api/v1/notifications/{id}` | `NotificationRequestDTO` | `200` + `NotificationResponseDTO` | 400, 404 |
+| DELETE | `/api/v1/notifications/{id}` | | `200` + `{ "message": "Deleted successfully" }` | 400, 404 |
 
 Request: `title` (**required**), `notificationType` (**required**), `targetId`, `targetType`, `read`, `createdAt`
 
@@ -236,7 +236,7 @@ Response: `id`, `title`, `notificationType`, `targetId`, `targetType`, `read`, `
 
 ## WebSocket: live notifications
 
-Instead of polling `GET /api/notifications`, a client can keep a WebSocket open and receive each notification the moment it is created.
+Instead of polling `GET /api/v1/notifications`, a client can keep a WebSocket open and receive each notification the moment it is created.
 
 ```
 ws://localhost:7070/ws/notifications?token=<JWT>
@@ -244,7 +244,7 @@ ws://localhost:7070/ws/notifications?token=<JWT>
 
 | | |
 |---|---|
-| Authentication | The JWT from `/api/auth/login`, passed as the `token` query parameter (browsers cannot set an `Authorization` header on a WebSocket) |
+| Authentication | The JWT from `/api/v1/auth/login`, passed as the `token` query parameter (browsers cannot set an `Authorization` header on a WebSocket) |
 | Messages from the server | One JSON text message per notification, in the `NotificationResponseDTO` format |
 | Messages from the client | None are needed (anything sent is ignored) |
 | Heartbeat | The server sends a ping every 20 seconds. Browsers answer automatically. Without traffic the connection would be closed after about 30 seconds |
@@ -261,7 +261,7 @@ ws.onclose = e => console.log("closed", e.code, e.reason);
 ws.onmessage = e => console.log("notification:", JSON.parse(e.data));
 ```
 
-The notification is always saved first, so a client that was offline can fetch what it missed with `GET /api/notifications`.
+The notification is always saved first, so a client that was offline can fetch what it missed with `GET /api/v1/notifications`.
 
 ---
 
@@ -271,10 +271,10 @@ A mention says: *the text between `startIndex` and `endIndex` in page A links to
 
 | Method | URL | Request body | Success | Errors |
 |---|---|---|---|---|
-| POST | `/api/mentions` | `MentionRequestDTO` | `201` + `MentionResponseDTO` | 400, 404 if either page is missing or not yours |
-| GET | `/api/mentions/owner/{ownerType}/{ownerId}` | | `200` + list: links that start from a page | 400 |
-| GET | `/api/mentions/target/{targetType}/{targetId}` | | `200` + list: backlinks, what links **to** a page | 400 |
-| DELETE | `/api/mentions/{id}` | | `204` | 400, 404 |
+| POST | `/api/v1/mentions` | `MentionRequestDTO` | `201` + `MentionResponseDTO` | 400, 404 if either page is missing or not yours |
+| GET | `/api/v1/mentions/owner/{ownerType}/{ownerId}` | | `200` + list: links that start from a page | 400 |
+| GET | `/api/v1/mentions/target/{targetType}/{targetId}` | | `200` + list: backlinks, what links **to** a page | 400 |
+| DELETE | `/api/v1/mentions/{id}` | | `204` | 400, 404 |
 
 `ownerType` and `targetType` are one of `CHAPTER`, `STORY`, `MEMORY`, `ARTIFACT`, `PERSON`, `PLACE`. Deleting a page also deletes its mentions.
 
@@ -296,13 +296,13 @@ All fields are required, ids must be positive and `startIndex >= 0` and `< endIn
 
 | Method | URL | Request body | Success | Errors |
 |---|---|---|---|---|
-| POST | `/api/gemini-prompts/generate` | `GeminiPromptRequestDTO` | `200` + `{ "promptText": "..." }` | 400, 429, 502, 503, 504 |
-| POST | `/api/gemini-prompts` | `GeminiPromptSaveDTO` | `201` + `GeminiPromptResponseDTO` | 400 |
-| GET | `/api/gemini-prompts` | | `200` + list | |
-| GET | `/api/gemini-prompts/{id}` | | `200` + `GeminiPromptResponseDTO` | 404 |
-| DELETE | `/api/gemini-prompts/{id}` | | `200` + `{ "message": "Deleted successfully" }` | 404 |
+| POST | `/api/v1/gemini-prompts/generate` | `GeminiPromptRequestDTO` | `200` + `{ "promptText": "..." }` | 400, 429, 502, 503, 504 |
+| POST | `/api/v1/gemini-prompts` | `GeminiPromptSaveDTO` | `201` + `GeminiPromptResponseDTO` | 400 |
+| GET | `/api/v1/gemini-prompts` | | `200` + list | |
+| GET | `/api/v1/gemini-prompts/{id}` | | `200` + `GeminiPromptResponseDTO` | 404 |
+| DELETE | `/api/v1/gemini-prompts/{id}` | | `200` + `{ "message": "Deleted successfully" }` | 404 |
 
-`generate` does **not** save anything. It sends the prompt to Gemini and returns the text. The saved history is a separate call (`POST /api/gemini-prompts`).
+`generate` does **not** save anything. It sends the prompt to Gemini and returns the text. The saved history is a separate call (`POST /api/v1/gemini-prompts`).
 
 Limits: `prompt` must not be blank and at most 500 characters. Each user may call `generate` 10 times per hour (`429` afterwards). `503` means the server has no Gemini key configured.
 

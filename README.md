@@ -8,6 +8,12 @@ This repository contains the **backend API**.
 
 ---
 
+## Links 
+
+Portfolio website: https://andreasjensen1997.github.io/Portfolio/
+
+Deployed API: https://atlas.andreasjensen.dk
+
 ## Documentation
 
 | Document | What it contains |
